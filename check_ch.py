@@ -1,5 +1,6 @@
 from canlib import canlib
-
+import time
+import matplotlib.pyplot as plt
 # Mapping from COB-ID to PDO and its information
 pdo_map = {
     0x186: "TX1",
@@ -30,24 +31,42 @@ desc_map = {
 }
 
 
-def format_can_message(msg):
-    data_hex = ' '.join(['{:02X}'.format(byte) for byte in msg.data])
-    pdo_label = pdo_map.get(msg.id, "Unknown PDO")
-    descriptions = []
-
-    for i in range(0, len(msg.data), 2):  # Assuming data bytes always come in pairs
-        desc = desc_map.get((msg.id, (i, i+1)))
+def decode_data(msg_id, data_bytes):
+    data_values = {}
+    for i in range(0, len(data_bytes), 2):
+        desc = desc_map.get((msg_id, (i, i+1)))
         if desc:
-            descriptions.append(desc)
+            value = (data_bytes[i] << 8) + \
+                data_bytes[i+1]  # 16-bit big-endian value
+            data_values[desc] = value
 
-    description_str = ', '.join(descriptions)
+    # For single byte data
+    for i in range(len(data_bytes)):
+        desc = desc_map.get((msg_id, i))
+        if desc:
+            value = data_bytes[i]
+            data_values[desc] = value
 
-    return f"Received message: ID={msg.id} ({pdo_label}), Descriptions=[{description_str}], Data=[{data_hex}], DLC={msg.dlc}, Flags={msg.flags}, Timestamp={msg.timestamp}"
+    return data_values
+
+
+def format_can_message(msg):
+    pdo_label = pdo_map.get(msg.id, "Unknown PDO")
+    data_values = decode_data(msg.id, msg.data)
+
+    return {
+        'pdo_label': pdo_label,
+        'data_values': data_values,
+        'dlc': msg.dlc,
+        'flags': msg.flags,
+        'timestamp': msg.timestamp,
+    }
 
 
 def read_can_messages():
     # Initialize and open the channel
-    channel = 0  # As mentioned: "Kvaser U100 (channel 0)"
+    channel = 0
+
     with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
         ch.setBusOutputControl(canlib.canDRIVER_NORMAL)
         ch.setBusParams(canlib.canBITRATE_500K)
@@ -56,14 +75,23 @@ def read_can_messages():
         while True:
             try:
                 msg = ch.read()
-                formatted_msg = format_can_message(msg)
-                print(formatted_msg)
+                msg_data = format_can_message(msg)
+
+                # Print one parameter per line
+                print(f"Received message:")
+                print(f"ID={msg.id} ({msg_data['pdo_label']})")
+                for desc, value in msg_data['data_values'].items():
+                    print(f"{desc}={value}")
+                print(f"DLC={msg_data['dlc']}")
+                print(f"Flags={msg_data['flags']}")
+                print(f"Timestamp={msg_data['timestamp']}\n")
+
             except canlib.CanNoMsg:
                 pass  # No new message yet
             except KeyboardInterrupt:
                 break  # Exit the loop on Ctrl+C
 
-        ch.busOff()
+    ch.busOff()
 
 
 if __name__ == "__main__":
