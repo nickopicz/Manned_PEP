@@ -1,7 +1,7 @@
 {
 	"workbench.colorCustomizations": {
-		"terminal.background": "#1D1F21",
-		"terminal.foreground": "#C5C8C6",
+		"terminal.background": "#0f5ba7",
+		"terminal.foreground": "#7fd19a",
 		"terminalCursor.background": "#C5C8C6",
 		"terminalCursor.foreground": "#C5C8C6",
 		"terminal.ansiBlack": "#1D1F21",
@@ -19,7 +19,10 @@
 		"terminal.ansiMagenta": "#A36AC7",
 		"terminal.ansiRed": "#CC342B",
 		"terminal.ansiWhite": "#C5C8C6",
-		"terminal.ansiYellow": "#FBA922"
+		"terminal.ansiYellow": "#f8ea20",
+		"activityBar.background": "#243125",
+		"titleBar.activeBackground": "#324433",
+		"titleBar.activeForeground": "#F9FBF9"
 	},
 	"[python]": {
 		"editor.defaultFormatter": "ms-python.autopep8"
