@@ -109,6 +109,7 @@ def format_can_message(msg):
 def read_can_messages(trial_number):
     # Initialize and open the channel
     channel = 0
+    in_memory_data = []  # Step 1: Initialize in-memory data storage
     with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
         ch.setBusOutputControl(canlib.canDRIVER_NORMAL)
         ch.setBusParams(canlib.canBITRATE_500K)
@@ -118,6 +119,12 @@ def read_can_messages(trial_number):
                 msg = ch.read()
                 pdo_label = pdo_map.get(msg.id, "Unknown_PDO")
                 msg_data = format_can_message(msg)
+
+                in_memory_data.append({
+                    'pdo_label': pdo_label,
+                    'trial_number': trial_number,
+                    'msg': msg
+                })
                 # print("msg_data: ", msg_data)
                 # create_table_for_pdo(pdo_label)
                 # store_to_db(pdo_label, trial_number, msg)
@@ -141,7 +148,10 @@ def read_can_messages(trial_number):
             except KeyboardInterrupt:
                 break  # Exit the loop on Ctrl+C
             # time.sleep(0.5)
-    ch.busOff()
+        ch.busOff()
+
+    for entry in in_memory_data:
+        store_to_db(entry['pdo_label'], entry['trial_number'], entry['msg'])
 
 
 if __name__ == "__main__":
