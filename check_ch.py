@@ -149,7 +149,6 @@ def read_can_messages(trial_number):
                 break  # Exit the loop on Ctrl+C
             # time.sleep(0.5)
         ch.busOff()
-
     for entry in in_memory_data:
         store_to_db(entry['pdo_label'], entry['trial_number'], entry['msg'])
 
