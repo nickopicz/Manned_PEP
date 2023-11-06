@@ -5,7 +5,10 @@ import struct
 import os
 
 from database_functions import create_table_for_pdo, store_to_db, get_next_trial_number
+
+from Frames_database import store_frames_to_database
 # Mapping from COB-ID to PDO and its information
+FRAMES_DATABASE = "db/frames_data.db"
 
 value_range_map = {
     # COB-ID, Bytes : (Data Type, Description, Value Range, Units)
@@ -120,11 +123,13 @@ def read_can_messages(trial_number):
                 pdo_label = pdo_map.get(msg.id, "Unknown_PDO")
                 msg_data = format_can_message(msg)
                 print("raw data: ", msg)
-                in_memory_data.append({
-                    'pdo_label': pdo_label,
-                    'trial_number': trial_number,
-                    'msg': msg
-                })
+                # in_memory_data.append({
+                #     'pdo_label': pdo_label,
+                #     'trial_number': trial_number,
+                #     'msg': msg
+                # })
+                print("msg: ", msg)
+                in_memory_data.append(msg)
                 # print("msg_data: ", msg_data)
                 # create_table_for_pdo(pdo_label)
                 # store_to_db(pdo_label, trial_number, msg)
@@ -150,7 +155,7 @@ def read_can_messages(trial_number):
             # time.sleep(0.5)
         ch.busOff()
     for entry in in_memory_data:
-        store_to_db(entry['pdo_label'], entry['trial_number'], entry['msg'])
+        store_frames_to_database(entry)
 
 
 if __name__ == "__main__":

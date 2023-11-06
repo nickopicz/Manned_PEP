@@ -6,7 +6,7 @@ import os
 
 # Adjust these constants according to your setup
 DATABASE_NAME = "db/can_data.db"
-
+FRAME_DATABASE = "db/frames_data.db"
 
 def fetch_can_data(trial_number, pdo_label):
     conn = sqlite3.connect(DATABASE_NAME)
@@ -46,6 +46,40 @@ def main():
             print(f"{desc}: {value} {units} (Range: {value_range})")
 
         previous_timestamp = simulated_msg.timestamp
+
+
+
+def sim_frames():
+    for frame in simulate_live_feed(trial_number=1, delay=0.05):
+        print(frame)
+
+
+def simulate_live_feed(trial_number, delay=0.01):
+   
+    # Connect to the SQLite database
+    conn = sqlite3.connect(FRAME_DATABASE)
+    cursor = conn.cursor()
+
+    # Prepare the SQL query to select frames by trial number, ordered by timestamp
+    query = '''
+        SELECT frame_id, data, dlc, flags, timestamp
+        FROM frame_data
+        WHERE trial_number = ?
+        ORDER BY timestamp ASC
+    '''
+    cursor.execute(query, (trial_number,))
+
+    # Fetch one frame at a time and simulate delay
+    while True:
+        row = cursor.fetchone()
+        if row is None:
+            break  # No more frames, stop the simulation
+        frame = Frame(row[0], row[1], row[2], MessageFlag(row[3]), row[4])
+        yield frame
+        time.sleep(delay)  # Delay to simulate live feed speed
+
+    # Close the database connection
+    conn.close()
 
 
 if __name__ == "__main__":
