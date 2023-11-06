@@ -3,10 +3,11 @@ import time
 import struct
 from canlib import Frame
 import os
-
+from check_ch import format_can_message
 # Adjust these constants according to your setup
 DATABASE_NAME = "db/can_data.db"
-FRAME_DATABASE = "db/frames_data.db"
+FRAME_DATABASE = "./db/frames_data.db"
+
 
 def fetch_can_data(trial_number, pdo_label):
     conn = sqlite3.connect(DATABASE_NAME)
@@ -48,39 +49,52 @@ def main():
         previous_timestamp = simulated_msg.timestamp
 
 
-
-def sim_frames():
-    for frame in simulate_live_feed(trial_number=1, delay=0.05):
-        print(frame)
-
-
 def simulate_live_feed(trial_number, delay=0.01):
-   
-    # Connect to the SQLite database
     conn = sqlite3.connect(FRAME_DATABASE)
     cursor = conn.cursor()
 
-    # Prepare the SQL query to select frames by trial number, ordered by timestamp
     query = '''
         SELECT frame_id, data, dlc, flags, timestamp
         FROM frame_data
         WHERE trial_number = ?
         ORDER BY timestamp ASC
     '''
+    # cursor.execute(query, (trial_number,))
+
+    # while True:
+    #     row = cursor.fetchone()
+    #     if row is None:
+    #         break  # No more frames, stop the simulation
+    #     frame = Frame(row[0], bytearray(row[1]), row[2],
+    #                   MessageFlag(row[3]), row[4])
+    #     print(f"Yielding frame: {frame}")  # Debug print
+    #     yield frame
+    #     time.sleep(delay)
+
+    # conn.close()
     cursor.execute(query, (trial_number,))
-
-    # Fetch one frame at a time and simulate delay
-    while True:
-        row = cursor.fetchone()
-        if row is None:
-            break  # No more frames, stop the simulation
-        frame = Frame(row[0], row[1], row[2], MessageFlag(row[3]), row[4])
+    # Debug print to check if the query fetched any data
+    all_rows = cursor.fetchall()
+    print(f"Fetched {len(all_rows)} rows for trial number {trial_number}")
+    for row in all_rows:
+        # Recreate the original loop logic with fetched rows for debugging
+        frame = Frame(row[0], bytearray(row[1]), row[2],
+                      "", row[4])
         yield frame
-        time.sleep(delay)  # Delay to simulate live feed speed
+        time.sleep(delay)
 
-    # Close the database connection
-    conn.close()
+
+def sim_frames():
+
+    trial_number = 2  # This needs to be the correct trial number from your database
+    print("simulating trial : ", trial_number,
+          "\n----------------------")
+    for frame in simulate_live_feed(trial_number=trial_number, delay=0.05):
+        # print(f"Simulated frame: {frame}")  # Debug print
+        formatted_msg = format_can_message(frame)
+        print("formatted frame: ", formatted_msg)
 
 
 if __name__ == "__main__":
-    main()
+    print("====================== \n \n simulation starting \n \n======================")
+    sim_frames()

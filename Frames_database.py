@@ -1,4 +1,5 @@
 import sqlite3
+import json as JSON
 
 
 def create_tables(conn):
@@ -48,6 +49,7 @@ def get_next_trial_number(conn):
 def store_frame(conn, trial_number, frame):
     cursor = conn.cursor()
     # Extracting frame attributes
+    print("\n frame looked at: ", frame)
     frame_id = frame.id
     frame_data = frame.data  # Already a bytearray
     dlc = frame.dlc
@@ -55,10 +57,13 @@ def store_frame(conn, trial_number, frame):
     timestamp = frame.timestamp
 
     cursor.execute('''
-        INSERT INTO frame_data (trial_number, frame_id, data, dlc, flags, timestamp) 
-        VALUES (?, ?, ?, ?, ?, ?)
-    ''', (trial_number, frame_id, frame_data, dlc, flags, timestamp))
+    INSERT OR IGNORE INTO frame_data (trial_number, frame_id, data, dlc, flags, timestamp) 
+    VALUES (?, ?, ?, ?, ?, ?)
+''', (trial_number, frame_id, frame_data, dlc, flags, timestamp))
     conn.commit()
+
+
+DATABASE_NAME = "./db/frames_data.db"
 
 
 def store_frames_to_database(frame_objects):
@@ -67,8 +72,10 @@ def store_frames_to_database(frame_objects):
 
     # Get the next trial number for this batch of frames
     trial_number = get_next_trial_number(conn)
-
+    print("frame objects: ", frame_objects)
     for frame in frame_objects:
+        print(
+            f"frame in iteration: ID={frame.id}, data={frame.data}, dlc={frame.dlc}, flags={frame.flags}, timestamp={frame.timestamp}")
         store_frame(conn, trial_number, frame)
 
     conn.close()
