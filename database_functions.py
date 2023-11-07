@@ -1,6 +1,6 @@
 import sqlite3
 
-DATABASE_NAME = 'db/can_data.db'
+DATABASE_NAME = 'db/frames_data.db'
 
 
 def get_next_trial_number():
