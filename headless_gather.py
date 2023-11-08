@@ -5,7 +5,7 @@ from canlib import canlib
 import time
 import struct
 import os
-import tkinter as tk
+
 from database_functions import create_table_for_pdo, store_to_db
 from Frames_database import get_next_trial_number
 import queue
@@ -17,6 +17,11 @@ from Frames_database import store_frames_to_database
 
 #FRAMES_DATABASE = "db/frames_data.db"
 FRAMES_DATABASE = "/home/pi/Manned_PEP/db/frames_data.db"
+
+import datetime
+
+
+
 
 can_queue = queue.Queue()
 running = True
@@ -69,7 +74,6 @@ pdo_map = {
     646: "PDO4",
 }
 
-root = tk.Tk()
 
 
 def decode_data(msg_id, data_bytes):
@@ -175,16 +179,18 @@ def signal_handler(sig, frame):
     running = False
 
 if __name__ == "__main__":
+    print("starting new session")
+
     conn = sqlite3.connect(FRAMES_DATABASE)
     signal.signal(signal.SIGINT, signal_handler)
     trial_num = 0
     try:
         trial_num = get_next_trial_number(conn)
     except Exception as e:
-        print("Error getting next trial number:", e)
+        print(f"Error getting next trial number: {e}")
         trial_num = 0
 
-    print("Running telemetry display for trial number:", trial_num)
+    print(f"Running telemetry display for trial number: {trial_num}")
 
     # Set up the queue and start the CAN reading thread
     can_queue = queue.Queue()
@@ -209,4 +215,5 @@ if __name__ == "__main__":
         running = False
         if can_thread.is_alive():
             can_thread.join()
-        print("Finished telemetry display for trial number:", trial_num)
+        print(f"Finished telemetry display for trial number: {trial_num}")
+    
