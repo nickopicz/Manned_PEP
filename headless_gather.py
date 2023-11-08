@@ -169,82 +169,12 @@ def read_can_messages(trial_number, can_queue):
     # Function to create the UI layout for the variable display
 
 
-def on_closing():
-    global running
-    """ Handle the window closing event. """
-    running = False
-    root.destroy()
-
-
-def check_for_exit():
-    global running
-    """ Check for a flag to exit the application. """
-    if not running:
-        if can_thread.is_alive():
-            can_thread.join()  # Ensure the thread has finished
-        root.destroy()
-    else:
-        root.after(100, check_for_exit)
-
-
 def signal_handler(sig, frame):
     global running
-    print('You pressed Ctrl+C!')
+    print('Exiting, signal received:', sig)
     running = False
-    root.after(1, check_for_exit)
-
-
-def update_values():
-    # Process all messages currently in the queue
-    try:
-        while not can_queue.empty():
-            while not can_queue.empty():
-                msg_data = can_queue.get()
-                for desc, (value, _, _) in msg_data['data_values'].items():
-                    for key, (data_type, description, value_range, units) in value_range_map.items():
-                        if description == desc:
-                            actual_values[key] = value
-                            break
-                # Update the UI with the new values
-                for row_index, ((cob_id, bytes_), _) in enumerate(value_range_map.items(), start=1):
-                    value_label = root.grid_slaves(row=row_index, column=6)[0]
-                    value_label.config(
-                        text=str(actual_values.get((cob_id, bytes_), 'N/A')))
-            # Schedule the next update
-    except queue.Empty:
-        pass  # Handle empty queue here if needed
-    root.after(100, update_values)  # Update every 100 milliseconds
-
-
-def create_ui():
-    root.title("CAN Variable Display")
-
-    # Create the table headers
-    headers = ["COB-ID", "Bytes", "Data Type", "Description",
-               "Value Range", "Units", "Actual Value"]
-    for i, header in enumerate(headers):
-        tk.Label(root, text=header, font=(
-            'Helvetica', 10, 'bold')).grid(row=0, column=i)
-
-    # Fill the grid with the variables and placeholders for actual values
-    for row_index, ((cob_id, bytes_), (data_type, desc, value_range, units)) in enumerate(value_range_map.items(), start=1):
-        tk.Label(root, text=str(cob_id)).grid(row=row_index, column=0)
-        tk.Label(root, text=str(bytes_)).grid(row=row_index, column=1)
-        tk.Label(root, text=data_type).grid(row=row_index, column=2)
-        tk.Label(root, text=desc).grid(row=row_index, column=3)
-        tk.Label(root, text=value_range).grid(row=row_index, column=4)
-        tk.Label(root, text=units).grid(row=row_index, column=5)
-        value_label = tk.Label(root, text=str(actual_values[(cob_id, bytes_)]))
-        value_label.grid(row=row_index, column=6)
-
-    # To handle window 'X' button click
-    root.protocol("WM_DELETE_WINDOW", on_closing)
-    root.bind('<q>', lambda event: on_closing())
-    update_values()
-
 
 if __name__ == "__main__":
-    print("starting new session ")
     conn = sqlite3.connect(FRAMES_DATABASE)
     signal.signal(signal.SIGINT, signal_handler)
     trial_num = 0
@@ -263,13 +193,20 @@ if __name__ == "__main__":
     can_thread.daemon = True
     can_thread.start()
 
-    create_ui()
-    root.after(100, check_for_exit)
-    root.mainloop()  # This will block until the window is closed
-
-    # When the main loop exits, stop the thread
-    running = False
-    if can_thread.is_alive():
-        can_thread.join()
-    print("Finished telemetry display for trial number:", trial_num)
-    print("Finished telemetry display for trial number:", trial_num)
+    # Loop to keep the script running and handle CAN messages
+    try:
+        while running:
+            try:
+                msg_data = can_queue.get(timeout=1)  # Adjust timeout as needed
+                formatted_data = format_can_message(msg_data)
+                # You can process the formatted data here
+                # For example, log it to a file or print to console
+            except queue.Empty:
+                continue  # No message received, loop back and wait again
+    except KeyboardInterrupt:
+        print("Interrupted by user, stopping.")
+    finally:
+        running = False
+        if can_thread.is_alive():
+            can_thread.join()
+        print("Finished telemetry display for trial number:", trial_num)
