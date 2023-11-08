@@ -137,6 +137,15 @@ def format_can_message(msg):
     }
 
 
+def is_device_connected(channel):
+    try:
+        with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
+            status = ch.getBusParams()
+            return status is not None
+    except CanError:
+        return False
+
+
 def read_can_messages(trial_number, can_queue):
     # Initialize and open the channel
     global running
