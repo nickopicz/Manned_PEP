@@ -151,31 +151,9 @@ def read_can_messages(trial_number, can_queue):
                 msg_data = format_can_message(msg)
 
                 can_queue.put(msg_data)
-                # print("raw data: ", msg)
-                # in_memory_data.append({
-                #     'pdo_label': pdo_label,
-                #     'trial_number': trial_number,
-                #     'msg': msg
-                # })
-                # print("msg: ", msg)
+
                 in_memory_data.append(msg)
-                # print("msg_data: ", msg_data)
-                # create_table_for_pdo(pdo_label)
-                # store_to_db(pdo_label, trial_number, msg)
-                # print(f"\n{pdo_label} (COB-ID: {msg.id:X}):")
-                # for desc, (value, value_range, units) in msg_data['data_values'].items():
-                #     # os.system("cls")
-                #     if (desc == "Scaled throttle percent"):
-                #         print("Actual throttle percent: ", value/32767)
-                #     if (desc == "Actual speed"):
-                #         print("Real speed scaled: ", value/100)
-                #     # if (desc == "DC Bus Voltage"):
-                #     #     print("Actual Voltage: ", value*0.01)
-                #     # if (desc == "Actual Torque"):
-                #     #     print("Actual Torque: ", value*0.1, " nm")
-                #     # if (desc == "Internal Speed Reference"):
-                #     #     print("Speed Reference: ", value)
-                #     # print(f"{desc}: {value} {units} (Range: {value_range})")
+
             except canlib.CanNoMsg:
 
                 pass  # No new message yet
