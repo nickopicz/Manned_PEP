@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import datetime
 import sqlite3
 from canlib import canlib
 import time
@@ -15,12 +16,8 @@ import signal
 from Frames_database import store_frames_to_database
 # Mapping from COB-ID to PDO and its information
 
-#FRAMES_DATABASE = "db/frames_data.db"
+# FRAMES_DATABASE = "db/frames_data.db"
 FRAMES_DATABASE = "/home/pi/Manned_PEP/db/frames_data.db"
-
-import datetime
-
-
 
 
 can_queue = queue.Queue()
@@ -73,7 +70,6 @@ pdo_map = {
     390: "PDO3",
     646: "PDO4",
 }
-
 
 
 def decode_data(msg_id, data_bytes):
@@ -145,8 +141,23 @@ def read_can_messages(trial_number, can_queue):
     # Initialize and open the channel
     global running
     channel = 0
-    in_memory_data = []  # Step 1: Initialize in-memory data storage
+    in_memory_data = []
 
+    # Wait for the CAN device to be connected
+    device_connected = False
+    timeout = time.time() + 60*5  # 5 minutes from now
+    while not device_connected and time.time() < timeout:
+        device_connected = is_device_connected(channel)
+        if not device_connected:
+            print("Waiting for CAN device to be connected...")
+            time.sleep(5)  # Wait for 5 seconds before checking again
+
+    if not device_connected:
+        print("CAN device not detected, exiting.")
+        running = False
+        return
+
+    # Now that the device is connected, proceed with the rest of the function
     with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
         ch.setBusOutputControl(canlib.canDRIVER_NORMAL)
         ch.setBusParams(canlib.canBITRATE_500K)
@@ -177,6 +188,7 @@ def signal_handler(sig, frame):
     global running
     print('Exiting, signal received:', sig)
     running = False
+
 
 if __name__ == "__main__":
     print("starting new session")
@@ -216,4 +228,3 @@ if __name__ == "__main__":
         if can_thread.is_alive():
             can_thread.join()
         print(f"Finished telemetry display for trial number: {trial_num}")
-    
