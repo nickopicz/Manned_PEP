@@ -154,7 +154,7 @@ def read_can_messages(trial_number, can_queue):
 
     # Wait for the CAN device to be connected
     device_connected = False
-    timeout = time.time() + 60*5  # 5 minutes from now
+    timeout = time.time() + 60  # 1 minute from now
     while not device_connected and time.time() < timeout:
         device_connected = is_device_connected(channel)
         if not device_connected:
