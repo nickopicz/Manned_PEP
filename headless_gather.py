@@ -2,7 +2,7 @@
 
 import datetime
 import sqlite3
-from canlib import canlib
+from canlib import canlib, CanlibException
 import time
 import struct
 import os
@@ -142,7 +142,7 @@ def is_device_connected(channel):
         with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
             status = ch.getBusParams()
             return status is not None
-    except CanError:
+    except CanlibException:
         return False
 
 
