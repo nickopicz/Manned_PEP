@@ -225,7 +225,7 @@ if __name__ == "__main__":
         while running:
             try:
                 msg_data = can_queue.get(timeout=1)  # Adjust timeout as needed
-                formatted_data = format_can_message(msg_data)
+                print(f"queue message: {msg_data}")
                 # You can process the formatted data here
                 # For example, log it to a file or print to console
             except queue.Empty:
