@@ -8,7 +8,7 @@ import struct
 import os
 
 from database_functions import create_table_for_pdo, store_to_db
-from Frames_database import get_next_trial_number
+from Frames_database import get_next_trial_number, create_tables
 import queue
 import threading
 import signal
@@ -210,6 +210,7 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"Error getting next trial number: {e}")
         trial_num = 0
+        create_tables(conn)
 
     print(f"Running telemetry display for trial number: {trial_num}")
 
