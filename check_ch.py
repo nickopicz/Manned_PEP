@@ -15,8 +15,8 @@ import signal
 from Frames_database import store_frames_to_database
 # Mapping from COB-ID to PDO and its information
 
-#FRAMES_DATABASE = "db/frames_data.db"
-FRAMES_DATABASE = "/home/pi/Manned_PEP/db/frames_data.db"
+# FRAMES_DATABASE = "db/frames_data.db"
+FRAMES_DATABASE = "./db/frames_data.db"
 
 can_queue = queue.Queue()
 running = True

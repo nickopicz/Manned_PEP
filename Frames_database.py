@@ -27,21 +27,16 @@ def create_tables(conn):
 def get_next_trial_number(conn):
     cursor = conn.cursor()
 
-    # Query the latest trial number from the meta table
-    cursor.execute("SELECT value FROM meta WHERE key='trial_number'")
+    # Query the highest trial number from the frame_data table
+    cursor.execute("SELECT MAX(trial_number) FROM frame_data")
     row = cursor.fetchone()
 
-    if row:
+    if row and row[0]:
         # If found, increment the trial number
         trial_number = row[0] + 1
     else:
-        # If not found, initialize with trial number 1
+        # If not found, this means there are no entries yet, so we start with trial number 1
         trial_number = 1
-
-    # Update the meta table with the latest trial number
-    cursor.execute(
-        "INSERT OR REPLACE INTO meta (key, value) VALUES ('trial_number', ?)", (trial_number,))
-    conn.commit()
 
     return trial_number
 
