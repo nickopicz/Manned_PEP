@@ -63,7 +63,7 @@ def store_frame(conn, trial_number, frame):
     conn.commit()
 
 
-DATABASE_NAME = "./db/frames_data.db"
+DATABASE_NAME = "/home/pi/Manned_PEP/db/frames_data.db"
 
 
 def store_frames_to_database(frame_objects):
