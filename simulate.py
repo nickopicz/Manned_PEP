@@ -38,8 +38,8 @@ def create_ui(root):
     root.grid_columnconfigure(1, weight=1)
 
     # Define your descriptors (or get them from your data source)
-    descriptors = ['Actual speed', 'DC Bus Voltage', 'Actual Torque',
-                   'Internal Speed Reference', 'Scaled throttle percent']
+    descriptors = ['Actual speed', 'RMS motor Current', 'DC Bus Voltage', 'Reference Torque', 'Actual Torque',
+                   'Motor voltage control: idLimit', 'Internal Speed Reference', 'Scaled throttle percent', '']
 
     # Create rows for data and separators
     for row_index, desc in enumerate(descriptors, start=1):
@@ -104,7 +104,7 @@ def simulate_live_feed(trial_number, delay=0.01):
 
 
 def sim_frames(root):
-    trial_number = 2  # This needs to be the correct trial number from your database
+    trial_number = 0  # Update this to the correct trial number from your database
     simulator = simulate_live_feed(trial_number=trial_number, delay=0.01)
     fetch_next_frame(simulator, root)
 

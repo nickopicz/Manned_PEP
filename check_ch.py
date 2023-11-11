@@ -7,7 +7,7 @@ import struct
 import os
 import tkinter as tk
 from database_functions import create_table_for_pdo, store_to_db
-from Frames_database import get_next_trial_number
+from Frames_database import get_next_trial_number, create_tables
 import queue
 import threading
 import signal
@@ -18,6 +18,7 @@ from Frames_database import store_frames_to_database
 # FRAMES_DATABASE = "db/frames_data.db"
 FRAMES_DATABASE = "./db/frames_data.db"
 
+db_queue = queue.Queue()
 can_queue = queue.Queue()
 running = True
 
@@ -246,21 +247,51 @@ def create_ui():
     update_values()
 
 
-if __name__ == "__main__":
-    print("starting new session ")
-    conn = sqlite3.connect(FRAMES_DATABASE)
-    signal.signal(signal.SIGINT, signal_handler)
-    trial_num = 0
+def is_device_connected(channel):
     try:
-        trial_num = get_next_trial_number(conn)
+        with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
+            status = ch.getBusParams()
+            return status is not None
+    except CanlibException:
+        return False
+
+
+def database_thread_function(db_queue, trial_number):
+    conn = sqlite3.connect(FRAMES_DATABASE)
+    while True:
+        try:
+            msg_data = db_queue.get(block=True, timeout=1)
+            if msg_data is None:
+                break
+            store_to_db(msg_data['pdo_label'], trial_number, msg_data, conn)
+        except queue.Empty:
+            continue
+
+
+def signal_handler(sig, frame):
+    global running
+    print('Exiting, signal received:', sig)
+    running = False
+
+
+if __name__ == "__main__":
+    print("starting new session")
+
+    conn = sqlite3.connect(FRAMES_DATABASE)
+    try:
+        create_tables(conn)
     except Exception as e:
-        print("Error getting next trial number:", e)
-        trial_num = 0
+        print(f"Error setting up database tables: {e}")
 
-    print("Running telemetry display for trial number:", trial_num)
+    signal.signal(signal.SIGINT, signal_handler)
+    trial_num = get_next_trial_number(conn)
 
-    # Set up the queue and start the CAN reading thread
-    can_queue = queue.Queue()
+    print(f"Running telemetry display for trial number: {trial_num + 1}")
+
+    db_thread = threading.Thread(
+        target=database_thread_function, args=(db_queue, trial_num))
+    db_thread.start()
+
     can_thread = threading.Thread(
         target=read_can_messages, args=(trial_num, can_queue))
     can_thread.daemon = True
@@ -268,11 +299,11 @@ if __name__ == "__main__":
 
     create_ui()
     root.after(100, check_for_exit)
-    root.mainloop()  # This will block until the window is closed
+    root.mainloop()
 
-    # When the main loop exits, stop the thread
     running = False
+    db_queue.put(None)
+    db_thread.join()
     if can_thread.is_alive():
         can_thread.join()
-    print("Finished telemetry display for trial number:", trial_num)
-    print("Finished telemetry display for trial number:", trial_num)
+    print(f"Finished telemetry display for trial number: {trial_num + 1}")

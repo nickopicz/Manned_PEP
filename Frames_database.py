@@ -74,8 +74,6 @@ def store_frames_to_database(frame_objects):
     trial_number = get_next_trial_number(conn)
     print("frame objects: ", frame_objects)
     for frame in frame_objects:
-        print(
-            f"frame in iteration: ID={frame.id}, data={frame.data}, dlc={frame.dlc}, flags={frame.flags}, timestamp={frame.timestamp}")
         store_frame(conn, trial_number, frame)
 
     conn.close()
