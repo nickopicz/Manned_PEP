@@ -178,7 +178,6 @@ def read_can_messages(trial_number, can_queue):
 
                 can_queue.put(msg_data)
 
-                in_memory_data.append(msg)
 
             except canlib.CanNoMsg:
 
@@ -187,7 +186,6 @@ def read_can_messages(trial_number, can_queue):
                 break  # Exit the loop on Ctrl+C
         ch.busOff()
 
-    store_frames_to_database(in_memory_data)
 
     # Function to create the UI layout for the variable display
 
