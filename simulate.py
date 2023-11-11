@@ -104,7 +104,7 @@ def simulate_live_feed(trial_number, delay=0.01):
 
 
 def sim_frames(root):
-    trial_number = 1  # This needs to be the correct trial number from your database
+    trial_number = 0  # This needs to be the correct trial number from your database
     simulator = simulate_live_feed(trial_number=trial_number, delay=0.01)
     fetch_next_frame(simulator, root)
 
