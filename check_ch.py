@@ -203,7 +203,10 @@ def update_values():
                 for desc, (value, _, _) in msg_data['data_values'].items():
                     for key, (data_type, description, value_range, units) in value_range_map.items():
                         if description == desc:
-                            actual_values[key] = value
+                            if (desc == "Actual speed"):
+                                actual_values[key] = value/100
+                            else:
+                                actual_values[key] = value
                             break
                 # Update the UI with the new values
                 for row_index, ((cob_id, bytes_), _) in enumerate(value_range_map.items(), start=1):

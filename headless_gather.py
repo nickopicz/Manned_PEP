@@ -150,7 +150,6 @@ def read_can_messages(trial_number, can_queue):
     # Initialize and open the channel
     global running
     channel = 0
-    in_memory_data = []
 
     # Wait for the CAN device to be connected
     device_connected = False
@@ -199,6 +198,21 @@ def signal_handler(sig, frame):
     running = False
 
 
+def database_thread_function(db_queue, trial_number):
+    while True:
+        try:
+            # Adjust timeout as needed
+            msg_data = db_queue.get(block=True, timeout=1)
+            if msg_data is None:
+                # Break the loop if a sentinel value (like None) is received
+                break
+
+            pdo_label = msg_data['pdo_label']
+            store_to_db(pdo_label, trial_number, msg_data)
+        except queue.Empty:
+            continue  # No message received, loop back and wait again
+
+
 if __name__ == "__main__":
     print("starting new session")
 
@@ -214,6 +228,10 @@ if __name__ == "__main__":
 
     print(f"Running telemetry display for trial number: {trial_num}")
 
+    db_queue = queue.Queue()
+    db_thread = Thread(target=database_thread_function,
+                       args=(db_queue, trial_number))
+    db_thread.start()
     # Set up the queue and start the CAN reading thread
     can_queue = queue.Queue()
     can_thread = threading.Thread(
@@ -226,7 +244,7 @@ if __name__ == "__main__":
         while running:
             try:
                 msg_data = can_queue.get(timeout=1)  # Adjust timeout as needed
-                print(f"queue message: {msg_data}")
+                db_queue.put(msg_data)
                 # You can process the formatted data here
                 # For example, log it to a file or print to console
             except queue.Empty:
@@ -235,6 +253,8 @@ if __name__ == "__main__":
         print("Interrupted by user, stopping.")
     finally:
         running = False
+        db_queue.put(None)
+        db_thread.join()
         if can_thread.is_alive():
             can_thread.join()
         print(f"Finished telemetry display for trial number: {trial_num}")
