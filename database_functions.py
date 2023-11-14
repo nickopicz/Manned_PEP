@@ -1,6 +1,6 @@
 import sqlite3
 
-DATABASE_NAME = 'db/frames_data.db'
+DATABASE_NAME = "/home/pi/Manned_PEP/db/frames_data.db"
 
 
 def get_next_trial_number():
@@ -58,17 +58,29 @@ def create_table_for_pdo(pdo_label):
     conn.close()
 
 
-def store_to_db(pdo_label, trial_number, msg):
+def store_to_db(trial_number, msg):
     # Connect to the SQLite database
     conn = sqlite3.connect(DATABASE_NAME)
     cursor = conn.cursor()
 
     # Insert the CAN message into the specified pdo_label's table
-    cursor.execute(f'''
-    INSERT INTO {pdo_label} (trial_number, timestamp, msg_id, data_bytes)
-    VALUES (?, ?, ?, ?)
-    ''', (trial_number, msg.timestamp, hex(msg.id), ','.join(map(str, msg.data))))
-
-    # Commit and close the connection
-    conn.commit()
-    conn.close()
+    try:
+        cursor = conn.cursor()
+        # Extracting frame attributes
+        frame_id = msg.id
+        frame_data = msg.data  # Already a bytearray
+        dlc = msg.dlc
+        flags = msg.flags.value  # Assuming flags is an Enum
+        timestamp = msg.timestamp
+        print(f"sending: {timestamp} to db")
+        cursor.execute('''
+        INSERT OR IGNORE INTO frame_data (trial_number, frame_id, data, dlc, flags, timestamp) 
+        VALUES (?, ?, ?, ?, ?, ?)
+        ''', (trial_number, frame_id, frame_data, dlc, flags, timestamp))
+        conn.commit()
+         
+        
+        # Commit and close the connection
+        conn.close()
+    except:
+        print("error sending to database, within db funtions")

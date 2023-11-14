@@ -130,7 +130,8 @@ def format_can_message(msg):
 
     return {
         'pdo_label': pdo_label,
-        'data_values': data_values,
+        'id': msg.id,
+        'data': data_values,
         'dlc': msg.dlc,
         'flags': msg.flags,
         'timestamp': msg.timestamp,
@@ -175,10 +176,7 @@ def read_can_messages(trial_number, can_queue):
                 msg = ch.read()
                 pdo_label = pdo_map.get(msg.id, "Unknown_PDO")
                 msg_data = format_can_message(msg)
-
-                can_queue.put(msg_data)
-
-                in_memory_data.append(msg)
+                can_queue.put(msg)
 
             except canlib.CanNoMsg:
 
@@ -187,7 +185,6 @@ def read_can_messages(trial_number, can_queue):
                 break  # Exit the loop on Ctrl+C
         ch.busOff()
 
-    store_frames_to_database(in_memory_data)
 
     # Function to create the UI layout for the variable display
 
@@ -206,9 +203,11 @@ def database_thread_function(db_queue, trial_number):
             if msg_data is None:
                 # Break the loop if a sentinel value (like None) is received
                 break
-
-            pdo_label = msg_data['pdo_label']
-            store_to_db(pdo_label, trial_number, msg_data)
+            print(f"msg_data: {msg_data}")
+            try:
+                store_to_db(trial_number, msg_data)
+            except:
+                print("error in sending do db: ")
         except queue.Empty:
             continue  # No message received, loop back and wait again
 
@@ -229,8 +228,8 @@ if __name__ == "__main__":
     print(f"Running telemetry display for trial number: {trial_num}")
 
     db_queue = queue.Queue()
-    db_thread = Thread(target=database_thread_function,
-                       args=(db_queue, trial_number))
+    db_thread = threading.Thread(target=database_thread_function,
+                       args=(db_queue, trial_num))
     db_thread.start()
     # Set up the queue and start the CAN reading thread
     can_queue = queue.Queue()

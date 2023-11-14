@@ -81,9 +81,8 @@ def fetch_next_frame(simulator, root):
                    root)  # Schedule the next update
     except StopIteration:
         print("No more frames to display")
-        # Optionally reset the simulator here if you want to loop the simulation
-
-
+        # Optionally reset the simulator here if you want to loop the simulate
+        
 def simulate_live_feed(trial_number, delay=0.01):
     conn = sqlite3.connect(FRAME_DATABASE)
     cursor = conn.cursor()
@@ -104,7 +103,7 @@ def simulate_live_feed(trial_number, delay=0.01):
 
 
 def sim_frames(root):
-    trial_number = 0  # Update this to the correct trial number from your database
+    trial_number = 1  # Update this to the correct trial number from your database32767
     simulator = simulate_live_feed(trial_number=trial_number, delay=0.01)
     fetch_next_frame(simulator, root)
 
