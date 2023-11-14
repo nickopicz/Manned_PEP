@@ -9524,3 +9524,891 @@ sending: 8777 to db
 msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8777)
 sending: 8777 to db
 msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8778)
+sending: 8778 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8797)
+sending: 8797 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8798)
+sending: 8798 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8798)
+sending: 8798 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8799)
+sending: 8799 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8817)
+sending: 8817 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8817)
+sending: 8817 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8818)
+sending: 8818 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8819)
+sending: 8819 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8838)
+sending: 8838 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8838)
+sending: 8838 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8838)
+sending: 8838 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8839)
+sending: 8839 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8858)
+sending: 8858 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8858)
+sending: 8858 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8859)
+sending: 8859 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8860)
+sending: 8860 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8878)
+sending: 8878 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8878)
+sending: 8878 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8878)
+sending: 8878 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8880)
+sending: 8880 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8898)
+sending: 8898 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8898)
+sending: 8898 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8898)
+sending: 8898 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8899)
+sending: 8899 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x03\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8918)
+sending: 8918 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8918)
+sending: 8918 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8918)
+sending: 8918 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8920)
+sending: 8920 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8938)
+sending: 8938 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8939)
+sending: 8939 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8939)
+sending: 8939 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8940)
+sending: 8940 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8958)
+sending: 8958 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8958)
+sending: 8958 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8959)
+sending: 8959 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8960)
+sending: 8960 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x05\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8979)
+sending: 8979 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8979)
+sending: 8979 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8979)
+sending: 8979 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8981)
+sending: 8981 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x06\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=8999)
+sending: 8999 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9000)
+sending: 9000 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9000)
+sending: 9000 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9001)
+sending: 9001 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x04\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9020)
+sending: 9020 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9020)
+sending: 9020 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9020)
+sending: 9020 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9022)
+sending: 9022 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9041)
+sending: 9041 to db
+msg_data: Frame(id=646, data=bytearray(b'\x04\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9041)
+sending: 9041 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9042)
+sending: 9042 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9042)
+sending: 9042 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x02\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9062)
+sending: 9062 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9062)
+sending: 9062 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9062)
+sending: 9062 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9063)
+sending: 9063 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9082)
+sending: 9082 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9082)
+sending: 9082 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9082)
+sending: 9082 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9083)
+sending: 9083 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9102)
+sending: 9102 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9102)
+sending: 9102 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9102)
+sending: 9102 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9103)
+sending: 9103 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x03\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9123)
+sending: 9123 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9123)
+sending: 9123 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9123)
+sending: 9123 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9123)
+sending: 9123 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfe\xff\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9142)
+sending: 9142 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9142)
+sending: 9142 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9142)
+sending: 9142 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9143)
+sending: 9143 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9162)
+sending: 9162 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9163)
+sending: 9163 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9163)
+sending: 9163 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9164)
+sending: 9164 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x01\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9183)
+sending: 9183 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9183)
+sending: 9183 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9184)
+sending: 9184 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9185)
+sending: 9185 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9204)
+sending: 9204 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9204)
+sending: 9204 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9204)
+sending: 9204 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9205)
+sending: 9205 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9224)
+sending: 9224 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9224)
+sending: 9224 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9224)
+sending: 9224 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9225)
+sending: 9225 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x02\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9244)
+sending: 9244 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9244)
+sending: 9244 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9244)
+sending: 9244 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9246)
+sending: 9246 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9264)
+sending: 9264 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9264)
+sending: 9264 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9265)
+sending: 9265 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9266)
+sending: 9266 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9284)
+sending: 9284 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9284)
+sending: 9284 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9285)
+sending: 9285 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9286)
+sending: 9286 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfd\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9305)
+sending: 9305 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9305)
+sending: 9305 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9305)
+sending: 9305 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9307)
+sending: 9307 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfe\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9325)
+sending: 9325 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9325)
+sending: 9325 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9325)
+sending: 9325 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9327)
+sending: 9327 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfb\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9345)
+sending: 9345 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9345)
+sending: 9345 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9346)
+sending: 9346 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9347)
+sending: 9347 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x01\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9365)
+sending: 9365 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9365)
+sending: 9365 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9366)
+sending: 9366 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9367)
+sending: 9367 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x02\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9385)
+sending: 9385 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9385)
+sending: 9385 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9386)
+sending: 9386 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9387)
+sending: 9387 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x02\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9405)
+sending: 9405 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9406)
+sending: 9406 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9406)
+sending: 9406 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9407)
+sending: 9407 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x04\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9426)
+sending: 9426 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9426)
+sending: 9426 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9427)
+sending: 9427 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9427)
+sending: 9427 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfe\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9447)
+sending: 9447 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9447)
+sending: 9447 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9447)
+sending: 9447 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9448)
+sending: 9448 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfe\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9467)
+sending: 9467 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfe\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9467)
+sending: 9467 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9467)
+sending: 9467 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9468)
+sending: 9468 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9487)
+sending: 9487 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9487)
+sending: 9487 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9487)
+sending: 9487 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9488)
+sending: 9488 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9507)
+sending: 9507 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9507)
+sending: 9507 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9507)
+sending: 9507 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9508)
+sending: 9508 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x03\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9528)
+sending: 9528 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9528)
+sending: 9528 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9528)
+sending: 9528 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9529)
+sending: 9529 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9548)
+sending: 9548 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9548)
+sending: 9548 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9548)
+sending: 9548 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9549)
+sending: 9549 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9568)
+sending: 9568 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9568)
+sending: 9568 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9569)
+sending: 9569 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9570)
+sending: 9570 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9588)
+sending: 9588 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfd\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9588)
+sending: 9588 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9588)
+sending: 9588 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9590)
+sending: 9590 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9609)
+sending: 9609 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9609)
+sending: 9609 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9609)
+sending: 9609 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9609)
+sending: 9609 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9628)
+sending: 9628 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9629)
+sending: 9629 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9629)
+sending: 9629 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9630)
+sending: 9630 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfc\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9649)
+sending: 9649 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9649)
+sending: 9649 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9649)
+sending: 9649 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9651)
+sending: 9651 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9669)
+sending: 9669 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfe\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9669)
+sending: 9669 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9669)
+sending: 9669 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9671)
+sending: 9671 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9689)
+sending: 9689 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9689)
+sending: 9689 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9689)
+sending: 9689 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9691)
+sending: 9691 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfc\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9709)
+sending: 9709 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfe\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9709)
+sending: 9709 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9710)
+sending: 9710 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9711)
+sending: 9711 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9729)
+sending: 9729 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9729)
+sending: 9729 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9730)
+sending: 9730 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9731)
+sending: 9731 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x01\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9749)
+sending: 9749 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9749)
+sending: 9749 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9750)
+sending: 9750 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9751)
+sending: 9751 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x03\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9769)
+sending: 9769 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9769)
+sending: 9769 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9770)
+sending: 9770 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9771)
+sending: 9771 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9790)
+sending: 9790 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9790)
+sending: 9790 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9790)
+sending: 9790 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9791)
+sending: 9791 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9810)
+sending: 9810 to db
+msg_data: Frame(id=646, data=bytearray(b'\x03\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9810)
+sending: 9810 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9810)
+sending: 9810 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9812)
+sending: 9812 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9831)
+sending: 9831 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9831)
+sending: 9831 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9831)
+sending: 9831 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9832)
+sending: 9832 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9850)
+sending: 9850 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9850)
+sending: 9850 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9851)
+sending: 9851 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9852)
+sending: 9852 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x03\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9871)
+sending: 9871 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9871)
+sending: 9871 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9871)
+sending: 9871 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9872)
+sending: 9872 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x02\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9891)
+sending: 9891 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfd\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9891)
+sending: 9891 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9891)
+sending: 9891 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9893)
+sending: 9893 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9911)
+sending: 9911 to db
+msg_data: Frame(id=646, data=bytearray(b'\x03\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9911)
+sending: 9911 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9911)
+sending: 9911 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9912)
+sending: 9912 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfd\xff\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9931)
+sending: 9931 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfe\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9931)
+sending: 9931 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9931)
+sending: 9931 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9932)
+sending: 9932 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9951)
+sending: 9951 to db
+msg_data: Frame(id=646, data=bytearray(b'\x06\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9951)
+sending: 9951 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9952)
+sending: 9952 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9953)
+sending: 9953 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9971)
+sending: 9971 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9972)
+sending: 9972 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9972)
+sending: 9972 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9973)
+sending: 9973 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x01\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9991)
+sending: 9991 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9992)
+sending: 9992 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9992)
+sending: 9992 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=9993)
+sending: 9993 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10011)
+sending: 10011 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfe\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10011)
+sending: 10011 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10011)
+sending: 10011 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10013)
+sending: 10013 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x03\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10032)
+sending: 10032 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10032)
+sending: 10032 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10032)
+sending: 10032 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10033)
+sending: 10033 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x03\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10052)
+sending: 10052 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10052)
+sending: 10052 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10052)
+sending: 10052 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10053)
+sending: 10053 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10072)
+sending: 10072 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10072)
+sending: 10072 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10072)
+sending: 10072 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10074)
+sending: 10074 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfd\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10093)
+sending: 10093 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10093)
+sending: 10093 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10093)
+sending: 10093 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10095)
+sending: 10095 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfd\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10113)
+sending: 10113 to db
+msg_data: Frame(id=646, data=bytearray(b'\x02\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10113)
+sending: 10113 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10113)
+sending: 10113 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10114)
+sending: 10114 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x01\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10133)
+sending: 10133 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10133)
+sending: 10133 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10133)
+sending: 10133 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10135)
+sending: 10135 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10153)
+sending: 10153 to db
+msg_data: Frame(id=646, data=bytearray(b'\x03\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10153)
+sending: 10153 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10154)
+sending: 10154 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10155)
+sending: 10155 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x01\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10173)
+sending: 10173 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10173)
+sending: 10173 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10174)
+sending: 10174 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10175)
+sending: 10175 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x01\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10193)
+sending: 10193 to db
+msg_data: Frame(id=646, data=bytearray(b'\x03\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10194)
+sending: 10194 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10194)
+sending: 10194 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10195)
+sending: 10195 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfe\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10214)
+sending: 10214 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10214)
+sending: 10214 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10214)
+sending: 10214 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10216)
+sending: 10216 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfe\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10235)
+sending: 10235 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10235)
+sending: 10235 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10235)
+sending: 10235 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10236)
+sending: 10236 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10255)
+sending: 10255 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfe\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10256)
+sending: 10256 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10256)
+sending: 10256 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10256)
+sending: 10256 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10275)
+sending: 10275 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10276)
+sending: 10276 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10276)
+sending: 10276 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10277)
+sending: 10277 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfd\xff\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10296)
+sending: 10296 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfc\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10296)
+sending: 10296 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10296)
+sending: 10296 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10296)
+sending: 10296 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10316)
+sending: 10316 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10316)
+sending: 10316 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10316)
+sending: 10316 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10317)
+sending: 10317 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10336)
+sending: 10336 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10337)
+sending: 10337 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10337)
+sending: 10337 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10338)
+sending: 10338 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x02\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10357)
+sending: 10357 to db
+msg_data: Frame(id=646, data=bytearray(b'\x03\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10357)
+sending: 10357 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10357)
+sending: 10357 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10358)
+sending: 10358 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfd\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10377)
+sending: 10377 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfe\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10377)
+sending: 10377 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10377)
+sending: 10377 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10378)
+sending: 10378 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10397)
+sending: 10397 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10397)
+sending: 10397 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10397)
+sending: 10397 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10398)
+sending: 10398 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfe\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10417)
+sending: 10417 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10417)
+sending: 10417 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10417)
+sending: 10417 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10419)
+sending: 10419 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x01\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10437)
+sending: 10437 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10437)
+sending: 10437 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10437)
+sending: 10437 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10439)
+sending: 10439 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10457)
+sending: 10457 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10457)
+sending: 10457 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10458)
+sending: 10458 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10459)
+sending: 10459 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10477)
+sending: 10477 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10478)
+sending: 10478 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10478)
+sending: 10478 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10479)
+sending: 10479 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x01\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10497)
+sending: 10497 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10498)
+sending: 10498 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10498)
+sending: 10498 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10499)
+sending: 10499 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x03\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10518)
+sending: 10518 to db
+msg_data: Frame(id=646, data=bytearray(b'\x03\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10518)
+sending: 10518 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10519)
+sending: 10519 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10519)
+sending: 10519 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x02\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10538)
+sending: 10538 to db
+msg_data: Frame(id=646, data=bytearray(b'\x03\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10538)
+sending: 10538 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10538)
+sending: 10538 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10538)
+sending: 10538 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x03\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10558)
+sending: 10558 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10558)
+sending: 10558 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10558)
+sending: 10558 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10559)
+sending: 10559 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x01\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10578)
+sending: 10578 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10578)
+sending: 10578 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10578)
+sending: 10578 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10580)
+sending: 10580 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfc\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10598)
+sending: 10598 to db
+msg_data: Frame(id=646, data=bytearray(b'\x04\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10598)
+sending: 10598 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10598)
+sending: 10598 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10600)
+sending: 10600 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfe\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10618)
+sending: 10618 to db
+msg_data: Frame(id=646, data=bytearray(b'\x02\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10619)
+sending: 10619 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10619)
+sending: 10619 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10620)
+sending: 10620 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10639)
+sending: 10639 to db
+msg_data: Frame(id=646, data=bytearray(b'\x04\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10639)
+sending: 10639 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10639)
+sending: 10639 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10641)
+sending: 10641 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10660)
+sending: 10660 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10660)
+sending: 10660 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10660)
+sending: 10660 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10661)
+sending: 10661 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10679)
+sending: 10679 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10680)
+sending: 10680 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10680)
+sending: 10680 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10680)
+sending: 10680 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfc\xff\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10700)
+sending: 10700 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfe\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10700)
+sending: 10700 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10700)
+sending: 10700 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10701)
+sending: 10701 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x02\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10721)
+sending: 10721 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10721)
+sending: 10721 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10721)
+sending: 10721 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10722)
+sending: 10722 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfe\xff\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10741)
+sending: 10741 to db
+msg_data: Frame(id=646, data=bytearray(b'\x03\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10741)
+sending: 10741 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10742)
+sending: 10742 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10742)
+sending: 10742 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x01\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10761)
+sending: 10761 to db
+msg_data: Frame(id=646, data=bytearray(b'\xff\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10761)
+sending: 10761 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10762)
+sending: 10762 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10763)
+sending: 10763 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x03\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10782)
+sending: 10782 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10782)
+sending: 10782 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10782)
+sending: 10782 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10782)
+sending: 10782 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x03\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10802)
+sending: 10802 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfe\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10803)
+sending: 10803 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10803)
+sending: 10803 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10803)
+sending: 10803 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10822)
+sending: 10822 to db
+msg_data: Frame(id=646, data=bytearray(b'\x04\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10822)
+sending: 10822 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10822)
+sending: 10822 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10824)
+sending: 10824 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10842)
+sending: 10842 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10842)
+sending: 10842 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10843)
+sending: 10843 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10844)
+sending: 10844 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x02\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10863)
+sending: 10863 to db
+msg_data: Frame(id=646, data=bytearray(b'\x04\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10863)
+sending: 10863 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10863)
+sending: 10863 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10864)
+sending: 10864 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfe\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10883)
+sending: 10883 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10883)
+sending: 10883 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10883)
+sending: 10883 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10883)
+sending: 10883 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10903)
+sending: 10903 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfe\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10903)
+sending: 10903 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10903)
+sending: 10903 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10904)
+sending: 10904 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10923)
+sending: 10923 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10923)
+sending: 10923 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10923)
+sending: 10923 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10925)
+sending: 10925 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xff\xff\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10943)
+sending: 10943 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10943)
+sending: 10943 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10944)
+sending: 10944 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10945)
+sending: 10945 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x00\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10963)
+sending: 10963 to db
+msg_data: Frame(id=646, data=bytearray(b'\xfe\xff\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10963)
+sending: 10963 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10964)
+sending: 10964 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10965)
+sending: 10965 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x02\x00\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10983)
+sending: 10983 to db
+msg_data: Frame(id=646, data=bytearray(b'\x01\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10983)
+sending: 10983 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10984)
+sending: 10984 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=10985)
+sending: 10985 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\x03\x00\x00\x00\xd3\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=11003)
+sending: 11003 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=11003)
+sending: 11003 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=11004)
+sending: 11004 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=11005)
+sending: 11005 to db
+msg_data: Frame(id=390, data=bytearray(b'\x83\x10\xfe\xff\x00\x00\xd1\x14'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=11023)
+sending: 11023 to db
+msg_data: Frame(id=646, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=11023)
+sending: 11023 to db
+msg_data: Frame(id=902, data=bytearray(b'\x00\x00\x00\x00@\xf8\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=11024)
+sending: 11024 to db
+msg_data: Frame(id=1158, data=bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00'), dlc=8, flags=<MessageFlag.STD: 2>, timestamp=11025)
