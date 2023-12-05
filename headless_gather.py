@@ -176,13 +176,8 @@ def read_can_messages(trial_number, can_queue):
                 msg = ch.read()
                 pdo_label = pdo_map.get(msg.id, "Unknown_PDO")
                 msg_data = format_can_message(msg)
-<<<<<<< HEAD
 
                 can_queue.put(msg_data)
-
-=======
-                can_queue.put(msg)
->>>>>>> 0d521dbf01713974ac3dfcd478d5860c6fd1a8d9
 
             except canlib.CanNoMsg:
 
@@ -190,7 +185,6 @@ def read_can_messages(trial_number, can_queue):
             except KeyboardInterrupt:
                 break  # Exit the loop on Ctrl+C
         ch.busOff()
-
 
     # Function to create the UI layout for the variable display
 
@@ -235,7 +229,7 @@ if __name__ == "__main__":
 
     db_queue = queue.Queue()
     db_thread = threading.Thread(target=database_thread_function,
-                       args=(db_queue, trial_num))
+                                 args=(db_queue, trial_num))
     db_thread.start()
     # Set up the queue and start the CAN reading thread
     can_queue = queue.Queue()
