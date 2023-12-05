@@ -64,11 +64,11 @@ def create_ui(root):
 
 def update_ui(frame_data):
     for desc, (value, _, _) in frame_data['data_values'].items():
+        if (desc == "Actual speed"):
+            value = value/10
+        if (desc == "Scaled throttle percent"):
+            value = value/32767
         if desc in labels:
-            if (desc == "Actual speed"):
-                value = value/10
-            if (desc == "Scaled throttle percent"):
-                value = value/32767
             labels[desc].config(text=f"{desc}: {value}")
 
 
@@ -81,7 +81,7 @@ def fetch_next_frame(simulator, root):
                    root)  # Schedule the next update
     except StopIteration:
         print("No more frames to display")
-        # Optionally reset the simulator here if you want to loop the simulation
+        # Optionally reset the simulator here if you want to loop the simulate
 
 
 def simulate_live_feed(trial_number, delay=0.01):
@@ -104,7 +104,7 @@ def simulate_live_feed(trial_number, delay=0.01):
 
 
 def sim_frames(root):
-    trial_number = 0  # Update this to the correct trial number from your database
+    trial_number = 17  # Update this to the correct trial number from your database32767
     simulator = simulate_live_feed(trial_number=trial_number, delay=0.01)
     fetch_next_frame(simulator, root)
 
