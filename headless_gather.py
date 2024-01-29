@@ -169,7 +169,7 @@ def read_can_messages(trial_number, can_queue):
     # Now that the device is connected, proceed with the rest of the function
     with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
         ch.setBusOutputControl(canlib.canDRIVER_NORMAL)
-        ch.setBusParams(canlib.canBITRATE_500K)
+        ch.setBusParams(canlib.canBITRATE_100K)
         ch.busOn()
         while running:
             try:

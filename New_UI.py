@@ -14,8 +14,8 @@ class CANVariableDisplay:
         self.labels = {}
         self.descriptors = [
             'Actual speed', 'RMS motor Current', 'DC Bus Voltage',
-            'Reference Torque', 'Actual Torque', 'Motor voltage control: idLimit',
-            'Internal Speed Reference', 'Scaled throttle percent', ''
+            'Actual Torque', 'Motor voltage control: idLimit', 'RMS motor Current',
+            'Current limit: actual limit', 'Motor measurements: DC bus current'
         ]
         self.create_labels(master)
 
@@ -27,7 +27,7 @@ class CANVariableDisplay:
                                              2, column=0, sticky='w', padx=10, pady=5)
             value_label = tk.Label(master, text="N/A", font=('Helvetica', 10))
             value_label.grid(row=row_index * 2, column=1,
-                             sticky='e', padx=10, pady=5)
+                             sticky='e', padx=10)
             self.labels[desc] = value_label
 
     def update_display(self, frame_data):
@@ -38,19 +38,72 @@ class CANVariableDisplay:
         for desc, value_tuple in data_values.items():
             # Extract the first element of the tuple, which is the actual value
             value = value_tuple[0]
+            if desc == 'Actual currents: iq':
+                value = abs(value)
             if desc in self.labels:
                 self.labels[desc].config(text=f"{value}")
             else:
                 print(f"Label for {desc} not found in UI")
 
 
+class CurrentMeter:
+    def __init__(self, master):
+        self.canvas = tk.Canvas(master, width=300, height=300)
+        self.canvas.grid(row=5, column=2, rowspan=4, padx=20)
+        self.center_x, self.center_y = 150, 150
+        self.max_value = 15000
+        self.needle = self.create_current_dial()
+        self.label = tk.Label(master, text="Current Meter",
+                              font=('Helvetica', 12))
+        self.label.grid(row=5, column=2)
+
+    def create_current_dial(self):
+        radius = 90
+        self.canvas.create_arc(
+            self.center_x - radius, self.center_y - radius,
+            self.center_x + radius, self.center_y + radius,
+            start=-30, extent=240, outline="black", style=tk.ARC
+        )
+        major_ticks = 10
+        for i in range(major_ticks + 1):
+            angle = math.radians(-30 + (240 * i / major_ticks))
+            start_x = self.center_x + (80 * math.cos(angle))
+            start_y = self.center_y + (80 * math.sin(angle))
+            end_x = self.center_x + (90 * math.cos(angle))
+            end_y = self.center_y + (90 * math.sin(angle))
+            self.canvas.create_line(
+                start_x, start_y, end_x, end_y, fill="black")
+
+            label_angle = math.radians(-30 + (240 * i / major_ticks))
+            label_x = self.center_x + (70 * math.cos(label_angle))
+            label_y = self.center_y + (70 * math.sin(label_angle))
+            label_value = int((self.max_value / major_ticks) * i)
+            self.canvas.create_text(label_x, label_y, text=str(label_value))
+
+        angle = math.radians(-30)  # Initial angle pointing at 0
+        x1, y1 = self.center_x + 80 * \
+            math.cos(angle), self.center_y + 80 * math.sin(angle)
+        return self.canvas.create_line(self.center_x, self.center_y, x1, y1, fill="red", width=2)
+
+    def update_dial(self, current):
+        self.canvas.delete(self.needle)
+        angle = math.radians(-30 + (240 * current / self.max_value))
+        x1, y1 = self.center_x + 80 * \
+            math.cos(angle), self.center_y + 80 * math.sin(angle)
+        self.needle = self.canvas.create_line(
+            self.center_x, self.center_y, x1, y1, fill="red", width=2)
+
+
 class Speedometer:
     def __init__(self, master):
         self.canvas = tk.Canvas(master, width=300, height=300)
-        self.canvas.grid(row=1, column=2, rowspan=4, padx=20, pady=20)
+        self.canvas.grid(row=1, column=2, rowspan=4, padx=20)
         self.center_x, self.center_y = 150, 150
         self.max_value = 3500
         self.needle = self.create_speedometer_dial()
+        self.label = tk.Label(master, text="Speedometer",
+                              font=('Helvetica', 12))
+        self.label.grid(row=1, column=2)
 
     def create_speedometer_dial(self):
         radius = 90
@@ -96,7 +149,7 @@ class Graph:
         self.canvas_widget = self.canvas.get_tk_widget()
         # Adjust the line below to use grid instead of pack
         # Adjust the row, column, and rowspan as needed
-        self.canvas_widget.grid(row=0, column=3, rowspan=10, sticky="nsew")
+        self.canvas_widget.grid(row=0, column=3, rowspan=5, sticky="nsew")
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Actual Torque')
         self.ax.set_title('Time Series of Actual Torque')
@@ -113,37 +166,25 @@ class Graph:
         self.canvas.draw()
 
 
-class App(tk.Frame):
+class VoltageGraph:
     def __init__(self, master):
-        super().__init__(master)
-        self.master = master
-        self.pack()
-        self.master.title("CAN Variable Display")
-        self.master.geometry('1600x800')
-        self.master.resizable(False, False)
+        self.fig, self.ax = plt.subplots()
+        self.canvas = FigureCanvasTkAgg(self.fig, master=master)
+        self.canvas_widget = self.canvas.get_tk_widget()
+        # Adjust the line below to use grid instead of pack
+        # Adjust the row, column, and rowspan as needed
+        self.canvas_widget.grid(row=5, column=3, rowspan=5, sticky="nsew")
+        self.ax.set_xlabel('Time')
+        self.ax.set_ylabel('Motor Voltage')
+        self.ax.set_title('Time Series of Motor Voltage')
+        self.voltage_data = {'time': [], 'value': []}
 
-        self.can_display = CANVariableDisplay(self)
-        self.speedometer = Speedometer(self)
-        self.graph = Graph(self)
-
-        # Add the simulator logic and update loop here
-        # self.simulator = YourSimulator()  # Assuming you have a simulator class
-        # self.update_ui()
-
-    def update_ui(self):
-        try:
-            frame_data = next(self.simulator)  # Get data from your simulator
-            formatted_msg = format_can_message(frame_data)
-
-            # Update components
-            self.can_display.update_display(formatted_msg)
-            speed = formatted_msg.get('Actual speed', 0)
-            self.speedometer.update_dial(speed)
-            torque = formatted_msg.get('Actual Torque', 0)
-            self.graph.update_graph(torque)
-
-            # Schedule next update
-            self.master.after(10, self.update_ui)
-        except StopIteration:
-            print("No more frames to display")
-            # Handle end of data stream
+    def update_graph(self, new_data):
+        current_time = datetime.datetime.now()
+        self.voltage_data['time'].append(current_time)
+        self.voltage_data['value'].append(new_data)
+        self.ax.clear()
+        self.ax.plot(self.voltage_data['time'], self.voltage_data['value'])
+        self.ax.set_xlabel('Time')
+        self.ax.set_ylabel('Motor Voltage')
+        self.canvas.draw()

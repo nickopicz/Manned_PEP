@@ -3,13 +3,20 @@ import time
 import tkinter as tk
 from check_ch import format_can_message
 from collections import namedtuple
-from New_UI import Graph, CANVariableDisplay, Speedometer
+from New_UI import Graph, CANVariableDisplay, Speedometer, CurrentMeter, VoltageGraph
 import threading
+import sys
 print("Script started")
 # Constants for database access
 DATABASE_NAME = "db/can_data.db"
 FRAME_DATABASE = "./db/frames_data.db"
 frametype = namedtuple('Frame', ['id', 'data', 'dlc', 'flags', 'timestamp'])
+
+# Meters: RPM, Speed, Current
+# Torque
+# Pitch/Yaw/Roll
+# G-Force/Accel
+# Voltage
 
 
 def simulate_live_feed(trial_number):
@@ -36,18 +43,26 @@ def simulate_live_feed(trial_number):
     return messages
 
 
+def on_closing():
+    # Add any cleanup here
+    root.destroy()
+    sys.exit()
+
+
 class App(tk.Frame):
     def __init__(self, master, trial_number):
         super().__init__(master)
         self.master = master
         self.pack()
         self.master.title("CAN Variable Display")
-        self.master.geometry('1600x800')
+        self.master.geometry('1600x1000')
         self.master.resizable(False, False)
         self.data = simulate_live_feed(trial_number=trial_number)
         self.can_display = CANVariableDisplay(self)
         self.speedometer = Speedometer(self)
+        self.currentmeter = CurrentMeter(self)
         self.graph = Graph(self)
+        self.voltagegraph = VoltageGraph(self)
 
         self.simulation_thread = threading.Thread(
             target=self.run_simulation, args=(trial_number,))
@@ -71,12 +86,20 @@ class App(tk.Frame):
 
             speed = data_values.get('Actual speed', (0,))[0]
             torque = data_values.get('Actual Torque', (0,))[0]  # Ass
+            current = formatted_msg.get('RMS motor Current', (0,))[0]
+
+            voltage = data_values.get(
+                'Motor voltage control: Idfiltered', (0,))[0]
+
             # print("\n ============= \n obj: ", formatted_msg)
             # print("Speed:", speed, "Torque:", torque)  # Debugging print
             speed = abs(speed*0.1)
             torque = abs(torque*0.01)
             self.speedometer.update_dial(speed)
             self.graph.update_graph(torque)
+            self.currentmeter.update_dial(current)
+            self.voltagegraph.update_graph(voltage)
+            print("current is: ", current)
             if speed > 3500:
                 print("speed very big: ", speed)
         except Exception as e:
@@ -87,6 +110,7 @@ if __name__ == "__main__":
     print("====================== \n \n simulation starting \n \n======================")
     try:
         root = tk.Tk()
+        root.protocol("WM_DELETE_WINDOW", on_closing)
         trial_number = 17  # Update this to the correct trial number from your database
         myapp = App(root, trial_number)
         root.mainloop()
