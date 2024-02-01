@@ -11,7 +11,7 @@ from Frames_database import get_next_trial_number, create_tables
 import queue
 import threading
 import signal
-
+from New_UI import Graph, CANVariableDisplay, Speedometer, CurrentMeter, VoltageGraph
 from Frames_database import store_frames_to_database
 # Mapping from COB-ID to PDO and its information
 
@@ -71,6 +71,63 @@ pdo_map = {
 }
 
 root = tk.Tk()
+root.title("CAN Bus Monitoring")
+root.geometry('1600x1000')
+root.resizable(False, False)
+
+can_display = CANVariableDisplay(root)
+speedometer = Speedometer(root)
+currentmeter = CurrentMeter(root)
+graph = Graph(root)
+voltagegraph = VoltageGraph(root)
+
+
+def update_values():
+    # Process all messages currently in the queue
+    while not can_queue.empty():
+        msg_data = can_queue.get()
+        can_display.update_display(msg_data)  # Update CANVariableDisplay
+        data_values = msg_data.get('data_values', {})
+
+        speed = data_values.get('Actual speed', (0,))[0]
+        current = data_values.get('RMS motor Current', (0,))[0]
+        torque = data_values.get('Actual Torque', (0,))[0]
+        voltage = data_values.get('DC Bus Voltage', (0,))[0]
+
+        # Update the UI components
+        speedometer.update_dial(speed)
+        currentmeter.update_dial(current)
+        graph.update_graph(torque)
+        voltagegraph.update_graph(voltage)
+
+    root.after(100, update_values)
+
+
+def create_ui():
+    root.title("CAN Variable Display")
+
+    # Create the table headers
+    headers = ["COB-ID", "Bytes", "Data Type", "Description",
+               "Value Range", "Units", "Actual Value"]
+    for i, header in enumerate(headers):
+        tk.Label(root, text=header, font=(
+            'Helvetica', 10, 'bold')).grid(row=0, column=i)
+
+    # Fill the grid with the variables and placeholders for actual values
+    for row_index, ((cob_id, bytes_), (data_type, desc, value_range, units)) in enumerate(value_range_map.items(), start=1):
+        tk.Label(root, text=str(cob_id)).grid(row=row_index, column=0)
+        tk.Label(root, text=str(bytes_)).grid(row=row_index, column=1)
+        tk.Label(root, text=data_type).grid(row=row_index, column=2)
+        tk.Label(root, text=desc).grid(row=row_index, column=3)
+        tk.Label(root, text=value_range).grid(row=row_index, column=4)
+        tk.Label(root, text=units).grid(row=row_index, column=5)
+        value_label = tk.Label(root, text=str(actual_values[(cob_id, bytes_)]))
+        value_label.grid(row=row_index, column=6)
+
+    # To handle window 'X' button click
+    root.protocol("WM_DELETE_WINDOW", on_closing)
+    root.bind('<q>', lambda event: on_closing())
+    update_values()
 
 
 def decode_data(msg_id, data_bytes):
@@ -193,58 +250,6 @@ def signal_handler(sig, frame):
     print('You pressed Ctrl+C!')
     running = False
     root.after(1, check_for_exit)
-
-
-def update_values():
-    # Process all messages currently in the queue
-    try:
-        while not can_queue.empty():
-            while not can_queue.empty():
-                msg_data = can_queue.get()
-                for desc, (value, _, _) in msg_data['data_values'].items():
-                    for key, (data_type, description, value_range, units) in value_range_map.items():
-                        if description == desc:
-                            if (desc == "Actual speed"):
-                                actual_values[key] = value/100
-                            else:
-                                actual_values[key] = value
-                            break
-                # Update the UI with the new values
-                for row_index, ((cob_id, bytes_), _) in enumerate(value_range_map.items(), start=1):
-                    value_label = root.grid_slaves(row=row_index, column=6)[0]
-                    value_label.config(
-                        text=str(actual_values.get((cob_id, bytes_), 'N/A')))
-            # Schedule the next update
-    except queue.Empty:
-        pass  # Handle empty queue here if needed
-    root.after(100, update_values)  # Update every 100 milliseconds
-
-
-def create_ui():
-    root.title("CAN Variable Display")
-
-    # Create the table headers
-    headers = ["COB-ID", "Bytes", "Data Type", "Description",
-               "Value Range", "Units", "Actual Value"]
-    for i, header in enumerate(headers):
-        tk.Label(root, text=header, font=(
-            'Helvetica', 10, 'bold')).grid(row=0, column=i)
-
-    # Fill the grid with the variables and placeholders for actual values
-    for row_index, ((cob_id, bytes_), (data_type, desc, value_range, units)) in enumerate(value_range_map.items(), start=1):
-        tk.Label(root, text=str(cob_id)).grid(row=row_index, column=0)
-        tk.Label(root, text=str(bytes_)).grid(row=row_index, column=1)
-        tk.Label(root, text=data_type).grid(row=row_index, column=2)
-        tk.Label(root, text=desc).grid(row=row_index, column=3)
-        tk.Label(root, text=value_range).grid(row=row_index, column=4)
-        tk.Label(root, text=units).grid(row=row_index, column=5)
-        value_label = tk.Label(root, text=str(actual_values[(cob_id, bytes_)]))
-        value_label.grid(row=row_index, column=6)
-
-    # To handle window 'X' button click
-    root.protocol("WM_DELETE_WINDOW", on_closing)
-    root.bind('<q>', lambda event: on_closing())
-    update_values()
 
 
 def is_device_connected(channel):

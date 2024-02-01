@@ -14,8 +14,7 @@ class CANVariableDisplay:
         self.labels = {}
         self.descriptors = [
             'Actual speed', 'RMS motor Current', 'DC Bus Voltage',
-            'Actual Torque', 'Motor voltage control: idLimit', 'RMS motor Current',
-            'Current limit: actual limit', 'Motor measurements: DC bus current'
+            'Actual Torque', 'Motor measurements: DC bus current'
         ]
         self.create_labels(master)
 
@@ -51,9 +50,9 @@ class CurrentMeter:
         self.canvas = tk.Canvas(master, width=300, height=300)
         self.canvas.grid(row=5, column=2, rowspan=4, padx=20)
         self.center_x, self.center_y = 150, 150
-        self.max_value = 15000
+        self.max_value = 500
         self.needle = self.create_current_dial()
-        self.label = tk.Label(master, text="Current Meter",
+        self.label = tk.Label(master, text="DC Current Supply (Amps)",
                               font=('Helvetica', 12))
         self.label.grid(row=5, column=2)
 
@@ -101,7 +100,7 @@ class Speedometer:
         self.center_x, self.center_y = 150, 150
         self.max_value = 3500
         self.needle = self.create_speedometer_dial()
-        self.label = tk.Label(master, text="Speedometer",
+        self.label = tk.Label(master, text="RPM",
                               font=('Helvetica', 12))
         self.label.grid(row=1, column=2)
 

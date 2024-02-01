@@ -73,7 +73,7 @@ class App(tk.Frame):
         for formatted_msg in self.data:
             self.master.after_idle(
                 lambda msg=formatted_msg: self.update_ui(msg))
-            time.sleep(0.001)
+            time.sleep(0.0001)
 
     def update_ui(self, formatted_msg):
         try:
@@ -86,7 +86,11 @@ class App(tk.Frame):
 
             speed = data_values.get('Actual speed', (0,))[0]
             torque = data_values.get('Actual Torque', (0,))[0]  # Ass
-            current = formatted_msg.get('RMS motor Current', (0,))[0]
+            current = data_values.get(
+                'Motor measurements: DC bus current', (0,))[0]*0.1
+
+    # 'Motor measurements: DC bus current'
+    # 'RMS motor Current'
 
             voltage = data_values.get(
                 'Motor voltage control: Idfiltered', (0,))[0]
