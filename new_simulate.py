@@ -1,11 +1,11 @@
 import sqlite3
 import time
 import tkinter as tk
-from check_ch import format_can_message
 from collections import namedtuple
 from New_UI import Graph, CANVariableDisplay, Speedometer, CurrentMeter, VoltageGraph
 import threading
 import sys
+from maps import format_can_message
 print("Script started")
 # Constants for database access
 DATABASE_NAME = "db/can_data.db"
@@ -54,8 +54,14 @@ class App(tk.Frame):
         super().__init__(master)
         self.master = master
         self.pack()
+        # Maximizes the window keeping taskbar accessible
+
+        screen_width = self.master.winfo_screenwidth()
+        screen_height = self.master.winfo_screenheight()
+        # self.master.geometry(f'{screen_width}x{screen_height}')
+        self.master.state('zoomed')
+
         self.master.title("CAN Variable Display")
-        self.master.geometry('1600x1000')
         self.master.resizable(False, False)
         self.data = simulate_live_feed(trial_number=trial_number)
         self.can_display = CANVariableDisplay(self)
@@ -73,7 +79,7 @@ class App(tk.Frame):
         for formatted_msg in self.data:
             self.master.after_idle(
                 lambda msg=formatted_msg: self.update_ui(msg))
-            time.sleep(0.0001)
+            time.sleep(0.01)
 
     def update_ui(self, formatted_msg):
         try:

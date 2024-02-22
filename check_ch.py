@@ -13,6 +13,7 @@ import threading
 import signal
 from New_UI import Graph, CANVariableDisplay, Speedometer, CurrentMeter, VoltageGraph
 from Frames_database import store_frames_to_database
+from maps import format_can_message
 # Mapping from COB-ID to PDO and its information
 
 # FRAMES_DATABASE = "db/frames_data.db"

@@ -5,9 +5,6 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import datetime
 
-# Assuming format_can_message is a function you have defined elsewhere
-from check_ch import format_can_message
-
 
 class CANVariableDisplay:
     def __init__(self, master):
