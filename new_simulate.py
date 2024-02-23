@@ -8,8 +8,7 @@ import sys
 from maps import format_can_message
 print("Script started")
 # Constants for database access
-DATABASE_NAME = "db/can_data.db"
-FRAME_DATABASE = "./db/frames_data.db"
+FRAME_DATABASE = "frames_data.db"
 frametype = namedtuple('Frame', ['id', 'data', 'dlc', 'flags', 'timestamp'])
 
 # Meters: RPM, Speed, Current
@@ -121,7 +120,7 @@ if __name__ == "__main__":
     try:
         root = tk.Tk()
         root.protocol("WM_DELETE_WINDOW", on_closing)
-        trial_number = 17  # Update this to the correct trial number from your database
+        trial_number = 3  # Update this to the correct trial number from your database
         myapp = App(root, trial_number)
         root.mainloop()
     except Exception as e:

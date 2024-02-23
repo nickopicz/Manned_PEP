@@ -1,4 +1,5 @@
 import struct
+
 value_range_map = {
     # COB-ID, Bytes : (Data Type, Description, Value Range, Units)
     (390, (0, 1)): ("U16", "Status word", "0-65535", ""),
@@ -105,6 +106,7 @@ def format_can_message(msg):
     data_values = decode_data(msg.id, msg.data)
 
     return {
+        'frame_id': msg.id,
         'pdo_label': pdo_label,
         'data_values': data_values,
         'dlc': msg.dlc,

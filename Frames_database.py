@@ -63,11 +63,14 @@ def store_frame(conn, trial_number, frame):
     conn.commit()
 
 
-DATABASE_NAME = "/home/pi/Manned_PEP/db/frames_data.db"
+DATABASE_NAME = "/home/pi/Manned_PEP/frames_data.db"
+
+
+FRAMES_DATABASE = "frames_data.db"
 
 
 def store_frames_to_database(frame_objects):
-    conn = sqlite3.connect(DATABASE_NAME)
+    conn = sqlite3.connect(FRAMES_DATABASE)
     create_tables(conn)
 
     # Get the next trial number for this batch of frames

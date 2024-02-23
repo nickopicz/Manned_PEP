@@ -39,7 +39,8 @@ class CANVariableDisplay:
             if desc in self.labels:
                 self.labels[desc].config(text=f"{value}")
             else:
-                print(f"Label for {desc} not found in UI")
+                continue
+                # print(f"Label for {desc} not found in UI")
 
 
 class CurrentMeter:
@@ -179,6 +180,7 @@ class VoltageGraph:
         current_time = datetime.datetime.now()
         self.voltage_data['time'].append(current_time)
         self.voltage_data['value'].append(new_data)
+
         self.ax.clear()
         self.ax.plot(self.voltage_data['time'], self.voltage_data['value'])
         self.ax.set_xlabel('Time')

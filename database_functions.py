@@ -1,6 +1,8 @@
 import sqlite3
 
-DATABASE_NAME = "/home/pi/Manned_PEP/db/frames_data.db"
+DATABASE_NAME = "/home/pi/Manned_PEP/frames_data.db"
+
+NAME = "frames_data.db"
 
 
 def get_next_trial_number():
@@ -58,29 +60,28 @@ def create_table_for_pdo(pdo_label):
     conn.close()
 
 
-def store_to_db(trial_number, msg):
+def store_to_db(msgs, trial_num):
     # Connect to the SQLite database
-    conn = sqlite3.connect(DATABASE_NAME)
-    cursor = conn.cursor()
-
-    # Insert the CAN message into the specified pdo_label's table
-    try:
+    with sqlite3.connect(NAME) as conn:
         cursor = conn.cursor()
-        # Extracting frame attributes
-        frame_id = msg.id
-        frame_data = msg.data  # Already a bytearray
-        dlc = msg.dlc
-        flags = msg.flags.value  # Assuming flags is an Enum
-        timestamp = msg.timestamp
-        print(f"sending: {timestamp} to db")
-        cursor.execute('''
-        INSERT OR IGNORE INTO frame_data (trial_number, frame_id, data, dlc, flags, timestamp) 
+        # Prepare batch insert query
+
+        keys_order = ['timestamp', 'frame_id', 'data', 'dlc', 'flags']
+
+        # Convert list of dictionaries to list of tuples
+        tuples_list = []
+        for msg in msgs:
+            print("message: ", msg)
+            # Start the tuple with 'trial_num', then extract other values in the correct order
+            tuple_values = (trial_num,) + tuple(msg[key] for key in keys_order)
+            tuples_list.append(tuple_values)
+
+        insert_query = '''
+        INSERT INTO frame_data (trial_number, timestamp, frame_id, data, dlc, flags) 
         VALUES (?, ?, ?, ?, ?, ?)
-        ''', (trial_number, frame_id, frame_data, dlc, flags, timestamp))
-        conn.commit()
-         
-        
-        # Commit and close the connection
-        conn.close()
-    except:
-        print("error sending to database, within db funtions")
+        '''
+        try:
+            cursor.executemany(insert_query, msgs)
+            conn.commit()
+        except Exception as e:
+            print(f"Error sending to database, within db functions: {e}")

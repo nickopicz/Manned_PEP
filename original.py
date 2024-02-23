@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
-import datetime
 import sqlite3
-from canlib import canlib, CanlibException
+from canlib import canlib
 import time
 import struct
 import os
-
+import tkinter as tk
 from database_functions import create_table_for_pdo, store_to_db
 from Frames_database import get_next_trial_number, create_tables
 import queue
@@ -17,9 +16,9 @@ from Frames_database import store_frames_to_database
 # Mapping from COB-ID to PDO and its information
 
 # FRAMES_DATABASE = "db/frames_data.db"
-FRAMES_DATABASE = "/home/pi/Manned_PEP/frames_data.db"
+FRAMES_DATABASE = "frames_data.db"
 
-
+db_queue = queue.Queue()
 can_queue = queue.Queue()
 running = True
 
@@ -70,6 +69,8 @@ pdo_map = {
     390: "PDO3",
     646: "PDO4",
 }
+
+root = tk.Tk()
 
 
 def decode_data(msg_id, data_bytes):
@@ -130,43 +131,19 @@ def format_can_message(msg):
 
     return {
         'pdo_label': pdo_label,
-        'id': msg.id,
-        'data': data_values,
+        'data_values': data_values,
         'dlc': msg.dlc,
         'flags': msg.flags,
         'timestamp': msg.timestamp,
     }
 
 
-def is_device_connected(channel):
-    try:
-        with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
-            status = ch.getBusParams()
-            return status is not None
-    except CanlibException:
-        return False
-
-
 def read_can_messages(trial_number, can_queue):
     # Initialize and open the channel
     global running
     channel = 0
+    in_memory_data = []  # Step 1: Initialize in-memory data storage
 
-    # Wait for the CAN device to be connected
-    device_connected = False
-    timeout = time.time() + 60  # 1 minute from now
-    while not device_connected and time.time() < timeout:
-        device_connected = is_device_connected(channel)
-        if not device_connected:
-            print("Waiting for CAN device to be connected...")
-            time.sleep(5)  # Wait for 5 seconds before checking again
-
-    if not device_connected:
-        print("CAN device not detected, exiting.")
-        running = False
-        return
-
-    # Now that the device is connected, proceed with the rest of the function
     with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
         ch.setBusOutputControl(canlib.canDRIVER_NORMAL)
         ch.setBusParams(canlib.canBITRATE_100K)
@@ -179,6 +156,8 @@ def read_can_messages(trial_number, can_queue):
 
                 can_queue.put(msg_data)
 
+                in_memory_data.append(msg)
+
             except canlib.CanNoMsg:
 
                 pass  # No new message yet
@@ -186,7 +165,107 @@ def read_can_messages(trial_number, can_queue):
                 break  # Exit the loop on Ctrl+C
         ch.busOff()
 
+    # store_frames_to_database(in_memory_data)
+
     # Function to create the UI layout for the variable display
+
+
+def on_closing():
+    global running
+    """ Handle the window closing event. """
+    running = False
+    root.destroy()
+
+
+def check_for_exit():
+    global running
+    """ Check for a flag to exit the application. """
+    if not running:
+        if can_thread.is_alive():
+            can_thread.join()  # Ensure the thread has finished
+        root.destroy()
+    else:
+        root.after(100, check_for_exit)
+
+
+def signal_handler(sig, frame):
+    global running
+    print('You pressed Ctrl+C!')
+    running = False
+    root.after(1, check_for_exit)
+
+
+def update_values():
+    # Process all messages currently in the queue
+    try:
+        while not can_queue.empty():
+            while not can_queue.empty():
+                msg_data = can_queue.get()
+                for desc, (value, _, _) in msg_data['data_values'].items():
+                    for key, (data_type, description, value_range, units) in value_range_map.items():
+                        if description == desc:
+                            if (desc == "Actual speed"):
+                                actual_values[key] = value/100
+                            else:
+                                actual_values[key] = value
+                            break
+                # Update the UI with the new values
+                for row_index, ((cob_id, bytes_), _) in enumerate(value_range_map.items(), start=1):
+                    value_label = root.grid_slaves(row=row_index, column=6)[0]
+                    value_label.config(
+                        text=str(actual_values.get((cob_id, bytes_), 'N/A')))
+            # Schedule the next update
+    except queue.Empty:
+        pass  # Handle empty queue here if needed
+    root.after(100, update_values)  # Update every 100 milliseconds
+
+
+def create_ui():
+    root.title("CAN Variable Display")
+
+    # Create the table headers
+    headers = ["COB-ID", "Bytes", "Data Type", "Description",
+               "Value Range", "Units", "Actual Value"]
+    for i, header in enumerate(headers):
+        tk.Label(root, text=header, font=(
+            'Helvetica', 10, 'bold')).grid(row=0, column=i)
+
+    # Fill the grid with the variables and placeholders for actual values
+    for row_index, ((cob_id, bytes_), (data_type, desc, value_range, units)) in enumerate(value_range_map.items(), start=1):
+        tk.Label(root, text=str(cob_id)).grid(row=row_index, column=0)
+        tk.Label(root, text=str(bytes_)).grid(row=row_index, column=1)
+        tk.Label(root, text=data_type).grid(row=row_index, column=2)
+        tk.Label(root, text=desc).grid(row=row_index, column=3)
+        tk.Label(root, text=value_range).grid(row=row_index, column=4)
+        tk.Label(root, text=units).grid(row=row_index, column=5)
+        value_label = tk.Label(root, text=str(actual_values[(cob_id, bytes_)]))
+        value_label.grid(row=row_index, column=6)
+
+    # To handle window 'X' button click
+    root.protocol("WM_DELETE_WINDOW", on_closing)
+    root.bind('<q>', lambda event: on_closing())
+    update_values()
+
+
+def is_device_connected(channel):
+    try:
+        with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
+            status = ch.getBusParams()
+            return status is not None
+    except CanlibException:
+        return False
+
+
+def database_thread_function(db_queue, trial_number):
+    conn = sqlite3.connect(FRAMES_DATABASE)
+    while True:
+        try:
+            msg_data = db_queue.get(block=True, timeout=1)
+            if msg_data is None:
+                break
+            store_to_db(msg_data['pdo_label'], trial_number, msg_data, conn)
+        except queue.Empty:
+            continue
 
 
 def signal_handler(sig, frame):
@@ -195,77 +274,36 @@ def signal_handler(sig, frame):
     running = False
 
 
-def database_thread_function(db_queue, trial_number, batch_size=100):
-    batch = []
-    while True:
-        try:
-            msg_data = db_queue.get(block=True, timeout=1)
-
-            # Check for sentinel value to break the loop
-            if msg_data is None:
-                # If there are any messages left in the batch, store them before breaking
-                if batch:
-                    store_to_db(trial_number, batch)
-                break
-
-            # Add the message data to the batch
-            batch.append(msg_data)
-
-            # When the batch size is reached, store the batch and clear it
-            if len(batch) >= batch_size:
-                store_to_db(trial_number, batch)
-                batch = []  # Reset the batch list
-        except queue.Empty:
-            # If the queue is empty but there are messages in the batch, store them
-            if batch:
-                store_to_db(trial_number, batch)
-                batch = []  # Reset the batch list
-        except Exception as e:
-            print(f"Error in sending to db: {e}")
-
-
 if __name__ == "__main__":
     print("starting new session")
 
     conn = sqlite3.connect(FRAMES_DATABASE)
-    signal.signal(signal.SIGINT, signal_handler)
-    trial_num = 0
     try:
-        trial_num = get_next_trial_number(conn)
-    except Exception as e:
-        print(f"Error getting next trial number: {e}")
-        trial_num = 0
         create_tables(conn)
+    except Exception as e:
+        print(f"Error setting up database tables: {e}")
 
-    print(f"Running telemetry display for trial number: {trial_num}")
+    signal.signal(signal.SIGINT, signal_handler)
+    trial_num = get_next_trial_number(conn)
 
-    db_queue = queue.Queue()
-    db_thread = threading.Thread(target=database_thread_function,
-                                 args=(db_queue, trial_num))
+    print(f"Running telemetry display for trial number: {trial_num + 1}")
+
+    db_thread = threading.Thread(
+        target=database_thread_function, args=(db_queue, trial_num))
     db_thread.start()
-    # Set up the queue and start the CAN reading thread
-    can_queue = queue.Queue()
+
     can_thread = threading.Thread(
         target=read_can_messages, args=(trial_num, can_queue))
     can_thread.daemon = True
     can_thread.start()
 
-    # Loop to keep the script running and handle CAN messages
-    try:
-        while running:
-            try:
-                msg_data = can_queue.get(timeout=1)  # Adjust timeout as needed
-                db_queue.put(msg_data)
-                # You can process the formatted data here
-                # For example, log it to a file or print to console
-            except queue.Empty:
-                continue  # No message received, loop back and wait again
-    except KeyboardInterrupt:
-        print("Interrupted by user, stopping.")
-    finally:
-        running = False
-        db_queue.put(None)
-        db_thread.join()
-        if can_thread.is_alive():
-            can_thread.join()
-        print(f"Finished telemetry display for trial number: {trial_num}")
+    create_ui()
+    root.after(100, check_for_exit)
+    root.mainloop()
+
+    running = False
+    db_queue.put(None)
+    db_thread.join()
+    if can_thread.is_alive():
+        can_thread.join()
+    print(f"Finished telemetry display for trial number: {trial_num + 1}")
