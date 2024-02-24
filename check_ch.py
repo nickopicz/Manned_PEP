@@ -10,20 +10,39 @@ from maps import format_can_message
 from New_UI import CANVariableDisplay, CurrentMeter, Speedometer, Graph, VoltageGraph
 from database_functions import store_to_db
 import sqlite3
+import time
+from database_functions import create_table_for_pdo
 # Constants
+
 FRAMES_DATABASE = "frames_data.db"
 
 
+def create_tables(conn):
+    # Ensure this function creates all necessary tables, including the 'meta' table
+    cursor = conn.cursor()
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS meta (
+        key TEXT PRIMARY KEY,
+        value INTEGER
+    )
+    ''')
+    # Add creation of other necessary tables here
+    # e.g., frame_data, any PDO-specific tables, etc.
+    conn.commit()
+
+
 def get_trial_num():
-    trial_num = 0
-    conn = sqlite3.connect(FRAMES_DATABASE)
-    try:
-        trial_num = get_next_trial_number(conn)
-    except Exception as e:
-        print(f"Error getting next trial number: {e}")
+    with sqlite3.connect(FRAMES_DATABASE) as conn:
+        # Ensure all necessary tables are created before fetching the trial number
+        create_tables(conn)  # This ensures the 'meta' table exists
         trial_num = 0
-        create_tables(conn)
-    return trial_num
+        try:
+            trial_num = get_next_trial_number(conn)
+        except Exception as e:
+            print(f"Error getting next trial number: {e}")
+            trial_num = 1  # Default to 1 if unable to fetch next trial number
+        print("trial number: ", trial_num)
+        return trial_num
 
 
 class CANApplication(tk.Tk):
@@ -33,14 +52,15 @@ class CANApplication(tk.Tk):
         self.geometry('1600x1000')
         self.resizable(False, False)
         self.trial_num = get_trial_num()
-        self.can_queue = stac
+        self.can_queue = queue.Queue()
+        self.last_update_time = 0
+        self.last_speed = 0
         self.db_queue = queue.Queue()
         self.running_event = Event()
         self.running_event.set()
-
         self.init_ui()
         self.init_threads()
-        self.after(100, self.update_ui)
+        # self.check_queue()
 
     def init_ui(self):
         # Initialize the provided module components here
@@ -59,6 +79,12 @@ class CANApplication(tk.Tk):
         self.can_thread.start()
         self.db_thread.start()
 
+    def on_closing(self):
+        self.running_event.clear()  # Signal threads to terminate
+        self.can_thread.join()  # Wait for the CAN reading thread to finish
+        self.db_thread.join()  # Wait for the database thread to finish
+        self.destroy()  # Destroy the tkinter window
+
     def read_can_messages(self):
         channel = 0
         with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
@@ -74,7 +100,7 @@ class CANApplication(tk.Tk):
                     else:
                         formatted_message = format_can_message(msg)
                         # Add to CAN queue for UI update
-                        self.can_queue.put(formatted_message)
+                        self.update_ui(formatted_message)
                         # Also add to DB queue for database storage
                         self.db_queue.put(msg)
                 except canlib.CanNoMsg:
@@ -85,14 +111,14 @@ class CANApplication(tk.Tk):
 
     # investigate if there is a faster way to do this, with csv perhaps, or one single operation instead of many
     def database_thread_function(self):
-        batch_size = 100  # Define the size of each batch
+        batch_size = 1000  # Define the size of each batch
         while self.running_event.is_set() or not self.db_queue.empty():
             print("batch running")
             batch = []  # Initialize the batch list
             while len(batch) < batch_size:
                 try:
                     # Try to get a message without blocking indefinitely
-                    msg_data = self.db_queue.get(timeout=1)
+                    msg_data = self.db_queue.get(timeout=0.1)
                     batch.append(msg_data)
                 except queue.Empty:
                     # If the queue is empty and we have collected some messages, break the loop to process them
@@ -104,22 +130,9 @@ class CANApplication(tk.Tk):
             if batch:
                 print("storing to db : ", len(batch))
                 # If we have messages in the batch, store them to the database
-                # store_to_db(batch, self.trial_num)
+                store_to_db(batch, self.trial_num)
 
-    def on_closing(self):
-        self.running_event.clear()  # Signal threads to terminate
-        self.can_thread.join()  # Wait for the CAN reading thread to finish
-        self.db_thread.join()  # Wait for the database thread to finish
-        self.destroy()  # Destroy the tkinter window
-
-    def update_ui(self):
-        # Periodic UI update logic goes here
-        # Example of updating the CANVariableDisplay with a dummy message
-        # This should be called periodically, e.g., using self.after(...)
-
-        # value_range_map = {
-        #     # COB-ID, Bytes : (Data Type, Description, Value Range, Units)
-        #     (390, (0, 1)): ("U16", "Status word", "0-65535", ""),
+    def update_ui(self, data):
         #     (390, (2, 3)): ("S16", "Actual speed", "-32768 to 32767", "Rpm"),
         #     (390, (4, 5)): ("U16", "RMS motor Current", "0-65535", "Arms"),
         #     (390, (6, 7)): ("S16", "DC Bus Voltage", "-32768 to 32767", "Adc"),
@@ -136,34 +149,31 @@ class CANApplication(tk.Tk):
         #     (1158, (2, 3)): ("S16", "Motor voltage control: Idfiltered", "-32768 to 32767", "Arms"),
         #     (1158, (4, 5)): ("S16", "Actual currents: iq", "-32768 to 32767", "Apk"),
         #     (1158, (6, 7)): ("S16", "Motor measurements: DC bus current", "-32768 to 32767", "Adc"),
-        # }
-
-        if not self.can_queue.empty():
-            frame_data = self.can_queue.get()
-            # print("getting can data: ", frame_data)
-
-            self.can_variable_display.update_display(frame_data)
+        current_time = time.time()
+        if (current_time - self.last_update_time) >= 0.05:  # Check if 50 ms have passed
+            self.last_update_time = current_time  # Update the last update time
+            self.can_variable_display.update_display(data)
             # Add updates for other UI components as needed
-            data_values = frame_data.get('data_values', {})
+            data_values = data.get('data_values', {})
 
-            speed = data_values.get('Actual Speed', (0,))[0]
+            speed = abs(data_values.get('Actual speed', (0,))[0]/10)
+            if (speed < 10):
+                speed = self.last_speed
+            else:
+                self.last_speed = speed
             torque = data_values.get('Actual Torque', (0,))[0]  # Ass
             current = data_values.get(
-                'Actual currents: iq', (0,))[0]
-            print("speed: ", speed)
-    # 'Motor measurements: DC bus current'
-    # 'RMS motor Current'
+                'RMS motor Current', (0,))[0]
 
             voltage = data_values.get(
                 "DC bus voltage", (0,))[0]
 
             self.speedometer.update_dial(speed)
-            self.graph.update_graph(torque)
+            # self.graph.update_graph(torque)
             self.current_meter.update_dial(current)
-            self.voltage_graph.update_graph(speed)
+            # self.voltage_graph.update_graph(voltage)
 
             # this is UI bottleneck
-            self.after(1, self.update_ui)  # Adjust the delay as needed
 
 
 if __name__ == "__main__":

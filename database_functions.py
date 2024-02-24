@@ -7,7 +7,7 @@ NAME = "frames_data.db"
 
 def get_next_trial_number():
     # Connect to the SQLite database
-    conn = sqlite3.connect(DATABASE_NAME)
+    conn = sqlite3.connect(NAME)
     cursor = conn.cursor()
 
     # Create a meta table to store the latest trial number if it doesn't exist
@@ -42,7 +42,7 @@ def get_next_trial_number():
 
 def create_table_for_pdo(pdo_label):
     # Connect to the SQLite database
-    conn = sqlite3.connect(DATABASE_NAME)
+    conn = sqlite3.connect(NAME)
     cursor = conn.cursor()
 
     # Dynamically create a table for the given pdo_label if it doesn't exist
@@ -61,27 +61,28 @@ def create_table_for_pdo(pdo_label):
 
 
 def store_to_db(msgs, trial_num):
-    # Connect to the SQLite database
+    tuples_list = []
+    for msg in msgs:
+        # Example of extracting data from a canlib Frame object, adjust according to actual Frame structure
+        frame_id = msg.id
+        timestamp = msg.timestamp
+        data = msg.data  # This might need conversion from bytes to a desired format
+        dlc = len(msg.data)  # DLC could be the length of the data field
+        flags = msg.flags  # Assuming there's a flags attribute or similar
+
+        # Construct the tuple for this message, adjust based on actual requirements
+        msg_tuple = (trial_num, timestamp, frame_id, data, dlc, flags)
+        tuples_list.append(msg_tuple)
+
+    # Continue with database insertion as before
     with sqlite3.connect(NAME) as conn:
         cursor = conn.cursor()
-        # Prepare batch insert query
-
-        keys_order = ['timestamp', 'frame_id', 'data', 'dlc', 'flags']
-
-        # Convert list of dictionaries to list of tuples
-        tuples_list = []
-        for msg in msgs:
-            print("message: ", msg)
-            # Start the tuple with 'trial_num', then extract other values in the correct order
-            tuple_values = (trial_num,) + tuple(msg[key] for key in keys_order)
-            tuples_list.append(tuple_values)
-
         insert_query = '''
         INSERT INTO frame_data (trial_number, timestamp, frame_id, data, dlc, flags) 
         VALUES (?, ?, ?, ?, ?, ?)
         '''
         try:
-            cursor.executemany(insert_query, msgs)
+            cursor.executemany(insert_query, tuples_list)
             conn.commit()
         except Exception as e:
-            print(f"Error sending to database, within db functions: {e}")
+            print(f"Error sending to database: {e}")
