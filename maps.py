@@ -113,3 +113,18 @@ def format_can_message(msg):
         'flags': msg.flags,
         'timestamp': msg.timestamp,
     }
+
+
+def format_can_message_csv(msg):
+    # Corrected to use dictionary key access
+    pdo_label = pdo_map.get(msg['id'], "Unknown PDO")
+    data_values = decode_data(msg['id'], msg['data'])
+
+    return {
+        'frame_id': msg['id'],
+        'pdo_label': pdo_label,
+        'data_values': data_values,
+        'dlc': msg['dlc'],
+        'flags': msg['flags'],
+        'timestamp': msg['timestamp'],
+    }

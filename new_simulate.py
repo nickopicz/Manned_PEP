@@ -127,7 +127,7 @@ if __name__ == "__main__":
     try:
         root = tk.Tk()
         root.protocol("WM_DELETE_WINDOW", on_closing)
-        trial_number = 21  # Update this to the correct trial number from your database
+        trial_number = 15  # Update this to the correct trial number from your database
         myapp = App(root, trial_number)
         root.mainloop()
     except Exception as e:
