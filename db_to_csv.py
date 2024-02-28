@@ -3,8 +3,7 @@ import struct
 import sqlite3
 import csv
 
-DATABASE_NAME = "frames_data.db"  # Update with the correct path
-# Update with the desired output CSV file path
+DATABASE_NAME = "frames_data.db"
 
 
 value_range_map = {
@@ -36,19 +35,16 @@ def export_trial_data_to_csv(trial_number):
     conn = sqlite3.connect(DATABASE_NAME)
     cursor = conn.cursor()
 
-    # Fetch all messages for the given trial number
     cursor.execute(
         "SELECT trial_number, timestamp, frame_id, data FROM frame_data WHERE trial_number=?", (trial_number,))
     messages = cursor.fetchall()
 
-    # Close the database connection
     conn.close()
 
-    # Define the CSV headers
     headers = ['Trial Number', 'Timestamp',
                'Message ID', 'PDO Label', 'DLC', 'Flags']
     descriptions = [desc for _, desc, _, _ in value_range_map.values()]
-    # Extend headers with descriptions from value_range_map
+
     headers.extend(descriptions)
 
     # Open the CSV file and start writing
@@ -56,17 +52,14 @@ def export_trial_data_to_csv(trial_number):
         writer = csv.DictWriter(file, fieldnames=headers)
         writer.writeheader()
 
-        # Process each message
-
         for trial_num, timestamp, frame_id, data in messages:
             # Decode the message
 
             message = {
                 'id': frame_id,
                 'data': data,
-                # Assuming 'dlc' and 'flags' need to be provided; adjust if necessary
                 'dlc': len(data),
-                'flags': 0,  # Placeholder for 'flags'
+                'flags': 0,
                 'timestamp': timestamp
             }
 
@@ -86,7 +79,7 @@ def export_trial_data_to_csv(trial_number):
             # Add decoded data values to the row
             for desc in descriptions:
                 row[desc] = decoded_message['data_values'].get(
-                    desc, ('', '', ''))[0]  # Get the value part of the tuple
+                    desc, ('', '', ''))[0]
 
             writer.writerow(row)
 
