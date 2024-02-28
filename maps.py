@@ -44,8 +44,8 @@ actual_values = {
 pdo_map = {
     390: "PDO1",
     646: "PDO2",
-    390: "PDO3",
-    646: "PDO4",
+    902: "PDO3",
+    1158: "PDO4",
 }
 
 

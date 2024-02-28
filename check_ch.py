@@ -157,7 +157,7 @@ class CANApplication(tk.Tk):
             data_values = data.get('data_values', {})
 
             speed = abs(data_values.get('Actual speed', (0,))[0]/10)
-            if (speed < 10):
+            if speed < 10 or speed == 1024 or speed == 256:
                 speed = self.last_speed
             else:
                 self.last_speed = speed

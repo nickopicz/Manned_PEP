@@ -152,9 +152,9 @@ class Graph:
         self.ax.set_title('Time Series of Actual Torque')
         self.torque_data = {'time': [], 'value': []}
 
-    def update_graph(self, new_data):
-        current_time = datetime.datetime.now()
-        self.torque_data['time'].append(current_time)
+    def update_graph(self, new_data, timestamp):
+        # current_time = datetime.datetime.now()
+        self.torque_data['time'].append(timestamp)
         self.torque_data['value'].append(new_data)
         self.ax.clear()
         self.ax.plot(self.torque_data['time'], self.torque_data['value'])
@@ -176,9 +176,9 @@ class VoltageGraph:
         self.ax.set_title('Time Series of Motor Voltage')
         self.voltage_data = {'time': [], 'value': []}
 
-    def update_graph(self, new_data):
+    def update_graph(self, new_data, timestamp):
         current_time = datetime.datetime.now()
-        self.voltage_data['time'].append(current_time)
+        self.voltage_data['time'].append(timestamp)
         self.voltage_data['value'].append(new_data)
 
         self.ax.clear()

@@ -68,6 +68,7 @@ class App(tk.Frame):
         self.currentmeter = CurrentMeter(self)
         self.graph = Graph(self)
         self.voltagegraph = VoltageGraph(self)
+        self.speeds = []
 
         self.simulation_thread = threading.Thread(
             target=self.run_simulation, args=(trial_number,))
@@ -78,7 +79,7 @@ class App(tk.Frame):
         for formatted_msg in self.data:
             self.master.after_idle(
                 lambda msg=formatted_msg: self.update_ui(msg))
-            time.sleep(0.01)
+            time.sleep(0.001)
 
     def update_ui(self, formatted_msg):
         try:
@@ -87,30 +88,36 @@ class App(tk.Frame):
 
             self.can_display.update_display(formatted_msg)
             data_values = formatted_msg.get('data_values', {})
-            print("message: ", formatted_msg)
-
-            speed = data_values.get('Actual speed', (0,))[0]
+            timestamp = formatted_msg.get('timestamp', {})
+            speed = data_values.get('Actual speed', (None,))[0]
             torque = data_values.get('Actual Torque', (0,))[0]  # Ass
             current = data_values.get(
-                'Motor measurements: DC bus current', (0,))[0]*0.1
+                'Motor measurements: DC bus current', (0,))[0]*0.004
 
     # 'Motor measurements: DC bus current'
     # 'RMS motor Current'
-
+            # timestamp = data_values.get('timestamp')
             voltage = data_values.get(
                 'Motor voltage control: Idfiltered', (0,))[0]
 
             # print("\n ============= \n obj: ", formatted_msg)
             # print("Speed:", speed, "Torque:", torque)  # Debugging print
-            speed = abs(speed*0.1)
             torque = abs(torque*0.01)
-            self.speedometer.update_dial(speed)
-            self.graph.update_graph(torque)
+
+            # if len(self.speeds) == 500:
+            #     self.graph.update_graph(self.speeds)
+            #     self.speeds.clear()
+            # else:
+            #     self.speeds.append((timestamp, speed))
+            if current != 0:
+                self.graph.update_graph(current, timestamp)
             self.currentmeter.update_dial(current)
-            self.voltagegraph.update_graph(voltage)
-            print("current is: ", current)
-            if speed > 3500:
-                print("speed very big: ", speed)
+            if speed != None:
+                speed = abs(speed*0.2)
+                self.speedometer.update_dial(speed)
+
+                self.voltagegraph.update_graph(speed, timestamp)
+
         except Exception as e:
             print("Error in update_ui:", e)
 
@@ -120,7 +127,7 @@ if __name__ == "__main__":
     try:
         root = tk.Tk()
         root.protocol("WM_DELETE_WINDOW", on_closing)
-        trial_number = 8  # Update this to the correct trial number from your database
+        trial_number = 21  # Update this to the correct trial number from your database
         myapp = App(root, trial_number)
         root.mainloop()
     except Exception as e:
