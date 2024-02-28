@@ -1,10 +1,11 @@
+# Adjust this import based on your actual function
 from maps import format_can_message_csv
-import struct
 import sqlite3
 import csv
 
-DATABASE_NAME = "frames_data.db"
+DATABASE_NAME = "frames_data.db"  # Update with the correct path
 
+# Assuming value_range_map is defined as shown previously
 
 value_range_map = {
     # COB-ID, Bytes : (Data Type, Description, Value Range, Units)
@@ -29,60 +30,70 @@ value_range_map = {
 
 
 def export_trial_data_to_csv(trial_number):
-    # Connect to the SQLite database
-
-    CSV_FILE_PATH = "./csv_data/_data_" + str(trial_number) + ".csv"
+    CSV_FILE_PATH = f"./csv_data/_data_{trial_number}.csv"
     conn = sqlite3.connect(DATABASE_NAME)
     cursor = conn.cursor()
 
+    # Fetch all messages for the given trial number, sorted by timestamp
     cursor.execute(
-        "SELECT trial_number, timestamp, frame_id, data FROM frame_data WHERE trial_number=?", (trial_number,))
+        "SELECT trial_number, timestamp, frame_id, data FROM frame_data WHERE trial_number=? ORDER BY timestamp ASC",
+        (trial_number,))
     messages = cursor.fetchall()
 
     conn.close()
 
+    # Prepare headers for CSV based on value_range_map
     headers = ['Trial Number', 'Timestamp',
                'Message ID', 'PDO Label', 'DLC', 'Flags']
-    descriptions = [desc for _, desc, _, _ in value_range_map.values()]
+    for _, description, _, _ in value_range_map.values():
+        if description not in headers:
+            headers.append(description)
 
-    headers.extend(descriptions)
+    # Initialize a structure to hold decoded data by timestamp
+    decoded_data_by_timestamp = {}
+
+    for trial_num, timestamp, frame_id, data in messages:
+        # Decode each message
+        decoded_message = format_can_message_csv({
+            'id': frame_id,
+            'data': data,  # Ensure this data is in the correct format for your decoding function
+            'timestamp': timestamp,
+            'flags': 0,
+            'dlc': len(data)
+        })
+
+        # If the timestamp is not already a key in the dictionary, add it
+        if timestamp not in decoded_data_by_timestamp:
+            decoded_data_by_timestamp[timestamp] = []
+
+        # Append decoded data for this timestamp
+        decoded_data_by_timestamp[timestamp].append(decoded_message)
 
     # Open the CSV file and start writing
     with open(CSV_FILE_PATH, mode='w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=headers)
         writer.writeheader()
 
-        for trial_num, timestamp, frame_id, data in messages:
-            # Decode the message
+        for timestamp, messages in decoded_data_by_timestamp.items():
+            for message in messages:
+                row = {
+                    'Trial Number': trial_number,
+                    'Timestamp': timestamp,
+                    'Message ID': message['frame_id'],
+                    'PDO Label': message['pdo_label'],
+                    'DLC': message['dlc'],
+                    'Flags': message['flags']
+                }
 
-            message = {
-                'id': frame_id,
-                'data': data,
-                'dlc': len(data),
-                'flags': 0,
-                'timestamp': timestamp
-            }
+                # Add decoded data values to the row
+                for desc in value_range_map.values():
+                    if desc[1] in message['data_values']:
+                        row[desc[1]] = message['data_values'][desc[1]][0]
+                    else:
+                        row[desc[1]] = ''
 
-            print("message: ", message)
-            decoded_message = format_can_message_csv(message)
-
-            # Prepare the row for the CSV
-            row = {
-                'Trial Number': trial_num,
-                'Timestamp': timestamp,
-                'Message ID': decoded_message['frame_id'],
-                'PDO Label': decoded_message['pdo_label'],
-                'DLC': decoded_message['dlc'],
-                'Flags': decoded_message['flags']
-            }
-
-            # Add decoded data values to the row
-            for desc in descriptions:
-                row[desc] = decoded_message['data_values'].get(
-                    desc, ('', '', ''))[0]
-
-            writer.writerow(row)
+                writer.writerow(row)
 
 
 # Example usage
-export_trial_data_to_csv(14)
+export_trial_data_to_csv(21)
