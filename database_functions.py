@@ -60,7 +60,30 @@ def create_table_for_pdo(pdo_label):
     conn.close()
 
 
+def create_frame_data_table():
+    # Connect to the SQLite database
+    conn = sqlite3.connect(NAME)
+    cursor = conn.cursor()
+
+    # Create the frame_data table if it doesn't exist
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS frame_data (
+        trial_number INTEGER,
+        timestamp REAL,
+        frame_id TEXT,
+        data TEXT,
+        dlc INTEGER,
+        flags TEXT
+    )
+    ''')
+
+    # Commit and close the connection
+    conn.commit()
+    conn.close()
+
+
 def store_to_db(msgs, trial_num):
+    # create_frame_data_table()
     tuples_list = []
     for msg in msgs:
         # Example of extracting data from a canlib Frame object, adjust according to actual Frame structure

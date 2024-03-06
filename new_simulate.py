@@ -6,6 +6,7 @@ from New_UI import Graph, CANVariableDisplay, Speedometer, CurrentMeter, Voltage
 import threading
 import sys
 from maps import format_can_message
+import math
 print("Script started")
 # Constants for database access
 FRAME_DATABASE = "frames_data.db"
@@ -69,6 +70,7 @@ class App(tk.Frame):
         self.graph = Graph(self)
         self.voltagegraph = VoltageGraph(self)
         self.speeds = []
+        self.torques = []
 
         self.simulation_thread = threading.Thread(
             target=self.run_simulation, args=(trial_number,))
@@ -90,7 +92,7 @@ class App(tk.Frame):
             data_values = formatted_msg.get('data_values', {})
             timestamp = formatted_msg.get('timestamp', {})
             speed = data_values.get('Actual speed', (None,))[0]
-            torque = data_values.get('Actual Torque', (0,))[0]  # Ass
+            torque = data_values.get('Actual Torque', (None,))[0]  # Ass
             current = data_values.get(
                 'Motor measurements: DC bus current', (0,))[0]*0.004
 
@@ -102,21 +104,30 @@ class App(tk.Frame):
 
             # print("\n ============= \n obj: ", formatted_msg)
             # print("Speed:", speed, "Torque:", torque)  # Debugging print
-            torque = abs(torque*0.01)
-
+            # print("torque")
             # if len(self.speeds) == 500:
             #     self.graph.update_graph(self.speeds)
             #     self.speeds.clear()
             # else:
             #     self.speeds.append((timestamp, speed))
-            if current != 0:
-                self.graph.update_graph(current, timestamp)
+            if torque != None:
+                torque = abs(torque*0.0025)
+                print("torque: ", torque)
+                self.torques.append(torque)
+                if len(self.torques) == 15:
+                    torque = sum(self.torques)/len(self.torques)
+                    self.graph.update_graph(torque, timestamp)
+                    self.torques.clear()
             self.currentmeter.update_dial(current)
-            if speed != None:
-                speed = abs(speed*0.2)
-                self.speedometer.update_dial(speed)
 
-                self.voltagegraph.update_graph(speed, timestamp)
+            if speed != None:
+                speed = abs(speed*0.03)
+                self.speedometer.update_dial(speed)
+                self.speeds.append(speed)
+                if len(self.speeds) == 15:
+                    speed = sum(self.speeds)/len(self.speeds)
+                    self.voltagegraph.update_graph(speed, timestamp)
+                    self.speeds.clear()
 
         except Exception as e:
             print("Error in update_ui:", e)
@@ -127,7 +138,7 @@ if __name__ == "__main__":
     try:
         root = tk.Tk()
         root.protocol("WM_DELETE_WINDOW", on_closing)
-        trial_number = 14  # Update this to the correct trial number from your database
+        trial_number = 24  # Update this to the correct trial number from your database
         myapp = App(root, trial_number)
         root.mainloop()
     except Exception as e:
