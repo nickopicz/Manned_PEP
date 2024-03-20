@@ -1,9 +1,9 @@
-2024-03-19 13:54:56,136 - loaded kvaser's CAN library
-2024-03-19 13:54:56,140 - CAN Filters: None
-2024-03-19 13:54:56,140 - Got configuration of: {}
-2024-03-19 13:54:56,140 - Found 3 available channels
-2024-03-19 13:54:56,140 - 0: Kvaser U100, S/N 1002607 (#1)
-2024-03-19 13:54:56,140 - 1: Kvaser Virtual CAN Driver, S/N 0 (#1)
-2024-03-19 13:54:56,140 - 2: Kvaser Virtual CAN Driver, S/N 0 (#2)
-2024-03-19 13:54:56,170 - Hardware filtering has been disabled
-2024-03-19 13:54:56,170 - Connected to 'Kvaser U100, S/N 1002607 (#1)'
+2024-03-20 17:42:07,238 - loaded kvaser's CAN library
+2024-03-20 17:42:07,248 - CAN Filters: None
+2024-03-20 17:42:07,248 - Got configuration of: {}
+2024-03-20 17:42:07,248 - Found 3 available channels
+2024-03-20 17:42:07,248 - 0: Kvaser U100, S/N 1002607 (#1)
+2024-03-20 17:42:07,248 - 1: Kvaser Virtual CAN Driver, S/N 0 (#1)
+2024-03-20 17:42:07,248 - 2: Kvaser Virtual CAN Driver, S/N 0 (#2)
+2024-03-20 17:42:07,279 - Hardware filtering has been disabled
+2024-03-20 17:42:07,279 - Connected to 'Kvaser U100, S/N 1002607 (#1)'

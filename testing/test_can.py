@@ -67,29 +67,15 @@ network.add_node(node)
 
 
 def read_and_log_sdo(node, index, subindex):
-    # try:
-    #     # value = data = b'\x01\x00'  # Represents 256 in big-endian format
-    #     value = node.sdo.upload(index, subindex)
-    #     # value = node.sdo[index][subindex].raw
-    #     # value = canopen.sdo.SdoVariable(
-    #     #     node, node.object_dictionary).get_data()
-    #     print(value)
-    #     print(
-    #         f"Successfully read SDO [{hex(index)}:{subindex}]. Value: {int.from_bytes(value, 'little')} raw value: {value}")
-    # except canopen.SdoCommunicationError as e:
-    #     logger.error(
-    #         f"Communication error while reading SDO [{hex(index)}:{subindex}]: {e}")
-    # except canopen.SdoAbortedError as e:
-    #     logger.error(
-    #         f"SDO read aborted for [{hex(index)}:{subindex}]: Code {e.code}, Reason: {e}")
-    # except Exception as e:
-    #     logger.error(f"Error reading SDO [{hex(index)}:{subindex}]: {e}")
 
     try:
         value = node.sdo[index][subindex].raw
+
         print(f"SDO [{hex(index)}:{subindex}] Value: {value}")
+        return value
     except Exception as e:
         print(f"Error reading SDO [{hex(index)}:{subindex}]: {e}")
+        return 0
 
 # Read and log each SDO
 # read_and_log_sdo(node, 0x2A06, 1)
@@ -97,11 +83,38 @@ def read_and_log_sdo(node, index, subindex):
 # read_and_log_sdo(node, 0x2030, 2)
 
 
+def get_sdo_obj() -> {}:
+    # voltage = read_and_log_sdo(node, 0x2A06, 1)
+    throttle_mv = read_and_log_sdo(node, 0x2013, 1)
+    # throttle_percent = read_and_log_sdo(node, 0x2013, 7)
+    # rpm
+    # rpm = read_and_log_sdo(node, 0x2001, 2)
+    # # torque
+    # torque = read_and_log_sdo(node, 0x2076, 2)
+    # # current
+    # current = read_and_log_sdo(node, 0x2073, 1)
+    # # temperature
+    # temperature = read_and_log_sdo(node, 0x2A0D, 1)
+
+    # timestamp = read_and_log_sdo(node, 0x2A03, 1)
+    #
+    return {
+        # 'timestamp': timestamp,
+        # 'voltage': voltage,
+        'throttle_mv': throttle_mv,
+        # 'throttle_percentage': throttle_percent,
+        # 'RPM': rpm,
+        # 'torque': torque,
+        # 'motor temp': temperature,
+        # 'current': current
+    }
+
+
 if __name__ == "__main__":
     for i in range(100):
         # read_and_log_sdo(node, 0x2A06, 1)
         # read_and_log_sdo(node, 0x2013, 1)
-        read_and_log_sdo(node, 0x2013, 1)
+        get_sdo_obj()
         # node.sdo.read_response()
 
         # read_and_log_sdo(node, 0x2030, 2)

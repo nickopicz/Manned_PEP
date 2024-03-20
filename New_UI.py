@@ -43,6 +43,53 @@ class CANVariableDisplay:
                 # print(f"Label for {desc} not found in UI")
 
 
+class ThrottleGauge:
+    def __init__(self, master):
+        # Existing initialization code
+        self.master = master
+        self.canvas = tk.Canvas(master, width=100, height=300)
+        self.canvas.grid(row=2, column=4, padx=20, pady=10)
+        self.min_real_value = 165  # Minimum real throttle value
+        self.max_real_value = 2800  # Maximum real throttle value
+        self.gauge_height = 250
+        self.gauge_width = 50
+        self.gauge_x = 25
+        self.gauge_y = 25
+        self.current_value = 0  # This will now store the real value, not the percentage
+        self.draw_gauge_background()
+        self.value_label = tk.Label(master, text="0", font=('Helvetica', 10))
+        self.value_label.grid(row=3, column=4)
+        # Draw the initial oval
+        self.temp_oval = self.canvas.create_oval(self.gauge_x, self.gauge_y + self.gauge_height - self.gauge_width,
+                                                 self.gauge_x + self.gauge_width, self.gauge_y + self.gauge_height, fill="blue", outline="black")
+
+    def draw_gauge_background(self):
+        # Draw the outer rectangle
+        self.canvas.create_rectangle(self.gauge_x, self.gauge_y, self.gauge_x +
+                                     self.gauge_width, self.gauge_y + self.gauge_height, outline="black")
+
+    def update_gauge(self, real_value):
+        # Ensure value is within the real bounds
+        self.current_value = max(self.min_real_value, min(
+            self.max_real_value, real_value))
+        # Convert the real value to a percentage of the gauge scale
+        percentage = ((self.current_value - self.min_real_value) /
+                      (self.max_real_value - self.min_real_value)) * 100
+        # Update the label with the real value
+        self.value_label.config(text=f"{self.current_value}")
+        # Calculate the oval's new vertical position based on the percentage
+        oval_bottom_y = self.gauge_y + self.gauge_height - \
+            ((percentage / 100) * self.gauge_height)
+        oval_top_y = oval_bottom_y - self.gauge_width
+        # Move the oval to the new position
+        self.canvas.coords(self.temp_oval, self.gauge_x, oval_top_y,
+                           self.gauge_x + self.gauge_width, oval_bottom_y)
+        # Ensure the fill rectangle and oval are redrawn to reflect the new value
+        self.canvas.delete("fill")
+        self.canvas.create_rectangle(self.gauge_x + 1, self.gauge_y + self.gauge_height,
+                                     self.gauge_x + self.gauge_width - 1, oval_bottom_y, fill="green", tags="fill")
+
+
 class CurrentMeter:
     def __init__(self, master):
         self.canvas = tk.Canvas(master, width=300, height=300)
