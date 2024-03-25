@@ -16,6 +16,7 @@ import signal
 import canopen
 import logging
 import time
+from requests import post
 # Set up logging
 logging.basicConfig(level=logging.INFO, filename='canbus_log.txt', filemode='w',
                     format='%(asctime)s - %(message)s')
@@ -73,7 +74,6 @@ def get_sdo_obj() -> {}:
     # print("timestamp: ", timestamp)
     #
     return {
-        # 'timestamp': timestamp,
         'voltage': voltage,
         'throttle_mv': throttle_mv,
         'throttle_percentage': throttle_percent,
@@ -113,6 +113,7 @@ class CANApplication(tk.Tk):
         self.running_event.set()
         self.start_time = 0
         self.timestamp = self
+        self.current_data = {}
 
         self.init_ui()
         self.init_threads()
@@ -149,13 +150,18 @@ class CANApplication(tk.Tk):
         self.db_thread = Thread(
             target=self.database_thread_function, daemon=True
         )
+        self.server_thread = Thread(
+            target=self.send_to_shore, daemon=True
+        )
         self.can_thread.start()
         self.db_thread.start()
+        self.server_thread.start()
 
     def on_closing(self):
         self.running_event.clear()
         self.can_thread.join()
         self.db_thread.join()
+        self.server_thread.join()
         self.destroy()
         network.disconnect()
 
@@ -170,6 +176,7 @@ class CANApplication(tk.Tk):
                 msg['timestamp'] = current_time
                 # Add to CAN queue for UI update
                 # Also add to DB queue for database storage
+                self.current_data = msg
                 self.update_queue.put(msg)
                 self.db_queue.put(msg)
                 time.sleep(0.5)
@@ -200,6 +207,18 @@ class CANApplication(tk.Tk):
                 print("storing to db : ", len(batch))
                 # If we have messages in the batch, store them to the database
                 store_data_for_trial(batch, self.trial_num)
+
+    def send_to_shore(self):
+
+        response = post(url, json=data_to_send)
+
+# Check response from the server
+        if response.ok:
+            print("Data sent successfully!")
+        else:
+            print("Failed to send data.")
+
+        self.after(250, self.send_to_shore)
 
     def update_ui(self, data):
         #     (390, (2, 3)): ("S16", "Actual speed", "-32768 to 32767", "Rpm"),
