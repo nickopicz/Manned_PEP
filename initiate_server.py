@@ -5,26 +5,20 @@ from models import db, DataEntry
 
 app = Flask(__name__)
 
-# Example GET method
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///live_data.db'
 db.init_app(app)
 
-
-@app.route('/get_example', methods=['GET'])
-def get_example():
-    return jsonify(message="This is a GET response!")
-
-# Example POST method
+# POST method
 
 
-@app.route('/post_method', methods=['POST'])
-def post_example():
+@app.route('/put_method', methods=['PUT'])
+def put_data():
     # Extract data from the incoming request
     data = request.get_json()
 
     # Create a new DataEntry object with the received data
     new_entry = DataEntry(
-        relative_timestamp=data['timestamp'],
+        timestamp=data['timestamp'],
         voltage=data['voltage'],
         throttle_mv=data['throttle_mv'],
         throttle_percentage=data['throttle_percentage'],
@@ -43,8 +37,7 @@ def post_example():
 
 @app.route('/get_data', methods=['GET'])
 def get_data():
-    # Assuming 'relative_timestamp' stores your timestamp in milliseconds
-    # and you want the entry with the largest (most recent) value.
+    # most recent timestamp value.
     entry = DataEntry.query.order_by(
         DataEntry.timestamp.desc()).first()
     if entry:

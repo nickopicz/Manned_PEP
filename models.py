@@ -5,7 +5,7 @@ db = SQLAlchemy()
 
 class DataEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    relative_timestamp = db.Column(
+    timestamp = db.Column(
         db.BigInteger, nullable=False)  # For tracking time
     voltage = db.Column(db.Float)
     throttle_mv = db.Column(db.Integer)
