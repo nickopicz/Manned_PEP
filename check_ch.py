@@ -107,7 +107,9 @@ class CANApplication(tk.Tk):
         self.title("CAN Bus Monitoring")
         self.geometry('1600x1000')
         self.resizable(False, False)
-        self.trial_num = get_trial_num()
+        self.trial_num_initialized = Event()
+        self.trial_num = 0
+        self.init_trial_num()
         self.last_update_time = 0
         self.last_speed = 0
         self.db_queue = queue.Queue()
@@ -123,6 +125,11 @@ class CANApplication(tk.Tk):
         self.update_queue = queue.Queue()
         self.after(100, self.process_ui_updates)
         # self.check_queue()
+
+    def init_trial_num(self):
+        self.trial_num = get_next_trial_number()
+        print(f"Initialized trial number: {self.trial_num}")
+        self.trial_num_initialized.set()
 
     def init_ui(self):
         # Initialize the provided module components here
@@ -147,6 +154,7 @@ class CANApplication(tk.Tk):
     def init_threads(self):
         self.running_event = Event()
         self.running_event.set()
+        self.trial_num_initialized.wait()
         self.can_thread = Thread(
             target=self.read_can_messages, daemon=True)
         self.db_thread = Thread(
@@ -177,23 +185,22 @@ class CANApplication(tk.Tk):
     def read_can_messages(self):
         # Start with creating a new network representing one CAN bus
         self.start_time = round(time.time() * 1000)
+        print("finished waiting: ", self.trial_num)
         while self.running_event.is_set():
             try:
-                current_time = round(time.time()*1000) - self.start_time
+                current_time = round(time.time()*1000 - self.start_time)
                 msg = get_sdo_obj()
 
                 msg['timestamp'] = current_time
+                msg['trial_num'] = self.trial_num
                 # Add to CAN queue for UI update
-                # Also add to DB queue for database storage
                 self.current_data = msg
                 self.update_queue.put(msg)
                 self.db_queue.put(msg)
-                time.sleep(0.5)
+                time.sleep(1)
             except Exception as e:
                 time.sleep(1)
                 # print(f"Error reading CAN message: {e}")
-
-    # investigate if there is a faster way to do this, with csv perhaps, or one single operation instead of many
 
     def database_thread_function(self):
         batch_size = 50  # Define the size of each batch
@@ -202,7 +209,6 @@ class CANApplication(tk.Tk):
             batch = []  # Initialize the batch list
             while len(batch) < batch_size:
                 try:
-                    # Try to get a message without blocking indefinitely
                     msg_data = self.db_queue.get(timeout=1)
                     batch.append(msg_data)
                 except queue.Empty:
@@ -234,7 +240,7 @@ class CANApplication(tk.Tk):
                             f"Failed to send data. Status code: {response.status_code}")
                 except Exception as e:
                     print(f"Failed to send data: {e}")
-            time.sleep(0.5)  # Adjust the sleep time as needed
+            time.sleep(0.25)  # Adjust the sleep time as needed
 
 
 # Check response from the server

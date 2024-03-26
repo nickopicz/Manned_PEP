@@ -35,7 +35,8 @@ def put_data():
         rpm=data['RPM'],
         torque=data['torque'],
         motor_temp=data['motor_temp'],
-        current=data['current']
+        current=data['current'],
+        trial_num=data['trial_num']
     )
 
     # Insert the new entry into the database
@@ -48,10 +49,15 @@ def put_data():
 @app.route('/get_data', methods=['GET'])
 def get_data():
     # most recent timestamp value.
-    entry = DataEntry.query.order_by(DataEntry.timestamp.desc()).first()
+    max_trial_number = db.session.query(
+        db.func.max(DataEntry.trial_num)).scalar()
+    entry = DataEntry.query.filter_by(trial_num=max_trial_number).order_by(
+        DataEntry.timestamp.desc()).first()
     if entry:
+        print("trial num before sending back: ", entry.trial_num)
         entry_data = {
             # Assuming timestamp is a datetime object
+            'trial_num': entry.trial_num,
             'timestamp': entry.timestamp,
             'voltage': entry.voltage,
             'throttle_mv': entry.throttle_mv,

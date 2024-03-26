@@ -14,7 +14,7 @@ from New_UI import CANVariableDisplay, ThrottleGauge, Speedometer, Graph, Voltag
 class Application:
     def __init__(self, root):
         self.root = root
-        self.update_interval = 1000  # Update interval in milliseconds
+        self.update_interval = 250  # Update interval in milliseconds
 
         self.init_ui()
 
