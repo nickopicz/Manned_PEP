@@ -12,11 +12,13 @@ import sqlite3
 import time
 import signal
 # Constants
+import sys
 
 import canopen
 import logging
 import time
-from requests import post
+from requests import put
+import json
 # Set up logging
 logging.basicConfig(level=logging.INFO, filename='canbus_log.txt', filemode='w',
                     format='%(asctime)s - %(message)s')
@@ -51,7 +53,7 @@ def read_and_log_sdo(node, index, subindex):
         value = node.sdo[index][subindex].raw
         return value
     except Exception as e:
-        print(f"Error reading SDO [{hex(index)}:{subindex}]: {e}")
+        # print(f"Error reading SDO [{hex(index)}:{subindex}]: {e}")
         return 0
 
 
@@ -114,7 +116,7 @@ class CANApplication(tk.Tk):
         self.start_time = 0
         self.timestamp = self
         self.current_data = {}
-
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.init_ui()
         self.init_threads()
 
@@ -158,12 +160,19 @@ class CANApplication(tk.Tk):
         self.server_thread.start()
 
     def on_closing(self):
+        print("Closing application...")
         self.running_event.clear()
-        self.can_thread.join()
-        self.db_thread.join()
-        self.server_thread.join()
-        self.destroy()
+
+    # Wait for the threads to finish if you have non-daemon threads or if they need to do cleanup
+        self.can_thread.join(timeout=1)
+        self.db_thread.join(timeout=1)
+        self.server_thread.join(timeout=1)
+
+        # Clean up other resources
         network.disconnect()
+
+        # Destroy the Tkinter app window
+        self.destroy()
 
     def read_can_messages(self):
         # Start with creating a new network representing one CAN bus
@@ -182,13 +191,13 @@ class CANApplication(tk.Tk):
                 time.sleep(0.5)
             except Exception as e:
                 time.sleep(1)
-                print(f"Error reading CAN message: {e}")
+                # print(f"Error reading CAN message: {e}")
 
     # investigate if there is a faster way to do this, with csv perhaps, or one single operation instead of many
 
     def database_thread_function(self):
         batch_size = 50  # Define the size of each batch
-        while self.running_event.is_set() or not self.db_queue.empty():
+        while self.running_event.is_set() and not self.db_queue.empty():
             print("batch running")
             batch = []  # Initialize the batch list
             while len(batch) < batch_size:
@@ -203,14 +212,30 @@ class CANApplication(tk.Tk):
                     # If the queue is empty and no messages are collected, continue checking
                     continue
 
-            if batch:
+            if len(batch) == 50:
                 print("storing to db : ", len(batch))
                 # If we have messages in the batch, store them to the database
                 store_data_for_trial(batch, self.trial_num)
 
     def send_to_shore(self):
+        # Replace with your actual URL
+        url = 'https://hugely-dashing-lemming.ngrok-free.app/put_method'
+        while self.running_event.is_set():
+            if self.current_data:  # Check if there is data to send
+                try:
+                    # Directly pass the dictionary to the json parameter of the post method
 
-        response = post(url, json=data_to_send)
+                    print("current data: ", self.current_data)
+                    response = put(url, json=self.current_data)
+                    if response.ok:
+                        print("Data sent successfully!")
+                    else:
+                        print(
+                            f"Failed to send data. Status code: {response.status_code}")
+                except Exception as e:
+                    print(f"Failed to send data: {e}")
+            time.sleep(0.5)  # Adjust the sleep time as needed
+
 
 # Check response from the server
         if response.ok:
@@ -277,5 +302,15 @@ class CANApplication(tk.Tk):
 
 if __name__ == "__main__":
     app = CANApplication()
-    # Bind Ctrl+C signal to handler
-    app.mainloop()
+
+    def handle_sigint(signal, frame):
+        print("CTRL+C detected. Closing application...")
+        app.on_closing()
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, handle_sigint)
+
+    try:
+        app.mainloop()
+    except KeyboardInterrupt:
+        app.on_closing()

@@ -2,20 +2,30 @@ from flask import Flask, request, jsonify
 from pyngrok import ngrok
 from datetime import time
 from models import db, DataEntry
-
+import os
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///live_data.db'
-db.init_app(app)
+
+def create_app():
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
+        os.path.join(os.path.abspath(
+            os.path.dirname(__file__)), 'live_data.db')
+    db.init_app(app)
+    with app.app_context():
+        print("Creating database tables...")
+        db.create_all()
+        print("Database tables created.")
+
 
 # POST method
+create_app()
 
 
 @app.route('/put_method', methods=['PUT'])
 def put_data():
     # Extract data from the incoming request
     data = request.get_json()
-
+    print("data received: ", data)
     # Create a new DataEntry object with the received data
     new_entry = DataEntry(
         timestamp=data['timestamp'],
@@ -38,26 +48,26 @@ def put_data():
 @app.route('/get_data', methods=['GET'])
 def get_data():
     # most recent timestamp value.
-    entry = DataEntry.query.order_by(
-        DataEntry.timestamp.desc()).first()
+    entry = DataEntry.query.order_by(DataEntry.timestamp.desc()).first()
     if entry:
-        return jsonify({
+        entry_data = {
+            # Assuming timestamp is a datetime object
             'timestamp': entry.timestamp,
             'voltage': entry.voltage,
             'throttle_mv': entry.throttle_mv,
-            'throttle_percentage': entry.throttle_percent,
+            'throttle_percentage': entry.throttle_percentage,
             'RPM': entry.rpm,
             'torque': entry.torque,
             'motor_temp': entry.motor_temp,
             'current': entry.current
-        })
+        }
+        return jsonify(entry_data)
     else:
         return jsonify(message="No data available."), 404
 
 
-@app.before_first_request
-def create_tables():
-    db.create_all()
+# @app.before_first_request
+# def create_tables():
 
 
 if __name__ == '__main__':
