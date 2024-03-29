@@ -48,7 +48,7 @@ class ThrottleGauge:
         # Existing initialization code
         self.master = master
         self.canvas = tk.Canvas(master, width=100, height=300)
-        self.canvas.grid(row=2, column=4, padx=20, pady=10)
+        self.canvas.grid(row=4, column=8, padx=20, pady=10)
         self.min_real_value = 165  # Minimum real throttle value
         self.max_real_value = 2800  # Maximum real throttle value
         self.gauge_height = 250
@@ -58,7 +58,7 @@ class ThrottleGauge:
         self.current_value = 0  # This will now store the real value, not the percentage
         self.draw_gauge_background()
         self.value_label = tk.Label(master, text="0", font=('Helvetica', 10))
-        self.value_label.grid(row=3, column=4)
+        self.value_label.grid(row=4, column=8)
         # Draw the initial oval
         self.temp_oval = self.canvas.create_oval(self.gauge_x, self.gauge_y + self.gauge_height - self.gauge_width,
                                                  self.gauge_x + self.gauge_width, self.gauge_y + self.gauge_height, fill="blue", outline="black")
@@ -93,13 +93,13 @@ class ThrottleGauge:
 class CurrentMeter:
     def __init__(self, master):
         self.canvas = tk.Canvas(master, width=300, height=300)
-        self.canvas.grid(row=5, column=2, rowspan=4, padx=20)
+        self.canvas.grid(row=0, column=6, rowspan=2, padx=20)
         self.center_x, self.center_y = 150, 150
         self.max_value = 500
         self.needle = self.create_current_dial()
         self.label = tk.Label(master, text="DC Current Supply (Amps)",
                               font=('Helvetica', 12))
-        self.label.grid(row=5, column=2)
+        self.label.grid(row=0, column=6)
 
     def create_current_dial(self):
         radius = 90
@@ -141,13 +141,13 @@ class CurrentMeter:
 class Speedometer:
     def __init__(self, master):
         self.canvas = tk.Canvas(master, width=300, height=300)
-        self.canvas.grid(row=1, column=2, rowspan=4, padx=20)
+        self.canvas.grid(row=0, column=3, rowspan=2, padx=20)
         self.center_x, self.center_y = 150, 150
         self.max_value = 3500
         self.needle = self.create_speedometer_dial()
         self.label = tk.Label(master, text="RPM",
                               font=('Helvetica', 12))
-        self.label.grid(row=1, column=2)
+        self.label.grid(row=0, column=3)
 
     def create_speedometer_dial(self):
         radius = 90
@@ -188,12 +188,13 @@ class Speedometer:
 
 class Graph:
     def __init__(self, master):
-        self.fig, self.ax = plt.subplots()
+        self.fig, self.ax = plt.subplots(
+            figsize=(5, 4))  # Adjust the figsize here
         self.canvas = FigureCanvasTkAgg(self.fig, master=master)
         self.canvas_widget = self.canvas.get_tk_widget()
         # Adjust the line below to use grid instead of pack
         # Adjust the row, column, and rowspan as needed
-        self.canvas_widget.grid(row=0, column=3, rowspan=5, sticky="nsew")
+        self.canvas_widget.grid(row=2, column=3, rowspan=4, sticky="nsew")
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Actual Torque')
         self.ax.set_title('Time Series of Actual Torque')
@@ -212,15 +213,16 @@ class Graph:
 
 class VoltageGraph:
     def __init__(self, master):
-        self.fig, self.ax = plt.subplots()
+        self.fig, self.ax = plt.subplots(
+            figsize=(5, 3))  # Adjust the figsize here
         self.canvas = FigureCanvasTkAgg(self.fig, master=master)
         self.canvas_widget = self.canvas.get_tk_widget()
         # Adjust the line below to use grid instead of pack
         # Adjust the row, column, and rowspan as needed
-        self.canvas_widget.grid(row=5, column=3, rowspan=5, sticky="nsew")
+        self.canvas_widget.grid(row=2, column=6, rowspan=4, sticky="nsew")
         self.ax.set_xlabel('Time')
-        self.ax.set_ylabel('Motor Voltage')
-        self.ax.set_title('Time Series of Motor Voltage')
+        self.ax.set_ylabel('Motor Current')
+        self.ax.set_title('Time Series of Motor Current')
         self.voltage_data = {'time': [], 'value': []}
 
     def update_graph(self, new_data, timestamp):
@@ -233,3 +235,59 @@ class VoltageGraph:
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Motor Voltage')
         self.canvas.draw()
+
+
+class ThermometerGauge:
+    def __init__(self, master):
+        self.master = master
+        self.canvas = tk.Canvas(master, width=90, height=310)
+        # Adjust grid placement as needed
+        self.canvas.grid(row=1, column=8, padx=20, pady=5)
+        self.value_label = tk.Label(master, text="0", font=('Helvetica', 10))
+        self.value_label.grid(row=2, column=8)
+        self.min_temp = 0  # Minimum temperature value
+        self.max_temp = 140  # Maximum temperature value
+        self.gauge_height = 320
+        self.gauge_width = 40
+        self.gauge_x = 20
+        self.gauge_y = 5
+        self.draw_gauge_background()
+
+    def draw_gauge_background(self):
+        # Draw the outer rectangle
+        self.canvas.create_rectangle(self.gauge_x, self.gauge_y,
+                                     self.gauge_x + self.gauge_width, self.gauge_y + self.gauge_height,
+                                     outline="black")
+
+        # Draw ticks and labels
+        # Adjust step for fewer or more ticks
+        for temp in range(self.min_temp, self.max_temp + 1, 25):
+            percentage = (temp - self.min_temp) / \
+                (self.max_temp - self.min_temp)
+            y = self.gauge_y + self.gauge_height - \
+                (percentage * self.gauge_height)
+
+            # Ticks
+            self.canvas.create_line(
+                self.gauge_x, y, self.gauge_x + 10, y, fill="black")
+            self.canvas.create_line(self.gauge_x + self.gauge_width -
+                                    10, y, self.gauge_x + self.gauge_width, y, fill="black")
+
+            # Labels
+            self.canvas.create_text(
+                self.gauge_x + self.gauge_width + 10, y, text=f"{temp}°C", anchor="w")
+
+    def update_gauge(self, current_temp):
+        # Validate current temperature
+        current_temp = max(self.min_temp, min(self.max_temp, current_temp))
+        percentage = (current_temp - self.min_temp) / \
+            (self.max_temp - self.min_temp)
+        fill_height = percentage * self.gauge_height
+
+        self.value_label.config(text=f"{current_temp} C")
+        # Clear previous fill
+        self.canvas.delete("temp_fill")
+        # Draw new fill
+        self.canvas.create_rectangle(self.gauge_x + 1, self.gauge_y + self.gauge_height - fill_height,
+                                     self.gauge_x + self.gauge_width - 1, self.gauge_y + self.gauge_height,
+                                     fill="red", tags="temp_fill")

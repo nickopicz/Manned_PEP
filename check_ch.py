@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
-
 import tkinter as tk
 from threading import Thread, Event
 import queue
 from canlib import canlib
 from Frames_database import get_next_trial_number, create_table_for_trial, store_data_for_trial
 # Import the provided module components
-from New_UI import CANVariableDisplay, CurrentMeter, Speedometer, Graph, VoltageGraph, ThrottleGauge
+from New_UI import CANVariableDisplay, CurrentMeter, Speedometer, Graph, VoltageGraph, ThrottleGauge, ThermometerGauge
 # from database_functions import store_data_for_trial
 import sqlite3
 import time
 import signal
-# Constants
 import sys
-
 import canopen
 import logging
 import time
@@ -105,8 +102,14 @@ class CANApplication(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("CAN Bus Monitoring")
-        self.geometry('1600x1000')
-        self.resizable(False, False)
+
+        self.state('zoomed')
+        # screenWidth = self.winfo_screenwidth()
+        # screenHeight = self.winfo_screenheight()
+        # # Set window size to screen dimensions
+        # self.geometry(f"{screenWidth}x{screenHeight}+0+0")
+        # self.geometry('1600x1280')
+        # self.resizable(False, False)
         self.trial_num_initialized = Event()
         self.trial_num = 0
         self.init_trial_num()
@@ -136,6 +139,7 @@ class CANApplication(tk.Tk):
         # self.can_variable_display = CANVariableDisplay(self)
         self.current_meter = CurrentMeter(self)
         self.speedometer = Speedometer(self)
+        self.thermometer = ThermometerGauge(self)
         self.graph = Graph(self)
         self.voltage_graph = VoltageGraph(self)
         self.throttle_gauge = ThrottleGauge(self)
@@ -197,7 +201,7 @@ class CANApplication(tk.Tk):
                 self.current_data = msg
                 self.update_queue.put(msg)
                 self.db_queue.put(msg)
-                time.sleep(1)
+                time.sleep(0.25)
             except Exception as e:
                 time.sleep(1)
                 # print(f"Error reading CAN message: {e}")
@@ -292,6 +296,8 @@ class CANApplication(tk.Tk):
 
             # self.can_variable_display.update_display(data)
             # Add updates for other UI components as needed
+            if motor_temp:
+                self.thermometer.update_gauge(motor_temp)
             if throttle_mv:
                 self.throttle_gauge.update_gauge(throttle_mv)
             if speed:
