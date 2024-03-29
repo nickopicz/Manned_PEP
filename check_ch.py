@@ -1,309 +1,322 @@
 #!/usr/bin/env python3
 
-import sqlite3
-from canlib import canlib
-import time
-import struct
-import os
 import tkinter as tk
-from database_functions import create_table_for_pdo, store_to_db
-from Frames_database import get_next_trial_number, create_tables
+from threading import Thread, Event
 import queue
-import threading
+from canlib import canlib
+from Frames_database import get_next_trial_number, create_table_for_trial, store_data_for_trial
+# Import the provided module components
+from New_UI import CANVariableDisplay, CurrentMeter, Speedometer, Graph, VoltageGraph, ThrottleGauge
+# from database_functions import store_data_for_trial
+import sqlite3
+import time
 import signal
+# Constants
+import sys
 
-from Frames_database import store_frames_to_database
-# Mapping from COB-ID to PDO and its information
+import canopen
+import logging
+import time
+from requests import put
+import json
+# Set up logging
+logging.basicConfig(level=logging.INFO, filename='canbus_log.txt', filemode='w',
+                    format='%(asctime)s - %(message)s')
+logger = logging.getLogger(__name__)
 
-# FRAMES_DATABASE = "db/frames_data.db"
-FRAMES_DATABASE = "./db/frames_data.db"
-
-db_queue = queue.Queue()
-can_queue = queue.Queue()
-running = True
-
-value_range_map = {
-    # COB-ID, Bytes : (Data Type, Description, Value Range, Units)
-    (390, (0, 1)): ("U16", "Status word", "0-65535", ""),
-    (390, (2, 3)): ("S16", "Actual speed", "-32768 to 32767", "Rpm"),
-    (390, (4, 5)): ("U16", "RMS motor Current", "0-65535", "Arms"),
-    (390, (6, 7)): ("S16", "DC Bus Voltage", "-32768 to 32767", "Adc"),
-    (646, (0, 1)): ("S16", "Internal Speed Reference", "-32768 to 32767", "Rpm"),
-    (646, (2, 3)): ("S16", "Reference Torque", "-32768 to 32767", "Nm"),
-    (646, (4, 5)): ("S16", "Actual Torque", "-32768 to 32767", "Nm"),
-    (646, (6, 7)): ("S16", "Field weakening control: voltage angle", "-32768 to 32767", "Deg"),
-    (902, 0): ("U8", "Field weakening control: regulator status", "0-255", ""),
-    (902, 1): ("U8", "Current limit: actual limit type", "0-15", ""),
-    (902, (2, 3)): ("S16", "Motor voltage control: U peak normalized", "-32768 to 32767", ""),
-    (902, (4, 5)): ("U16", "Digital status word", "0-65535", ""),
-    (902, (6, 7)): ("S16", "Scaled throttle percent", "-32768 to 32767", ""),
-    (1158, (0, 1)): ("S16", "Motor voltage control: idLimit", "-32768 to 32767", ""),
-    (1158, (2, 3)): ("S16", "Motor voltage control: Idfiltered", "-32768 to 32767", "Arms"),
-    (1158, (4, 5)): ("S16", "Actual currents: iq", "-32768 to 32767", "Apk"),
-    (1158, (6, 7)): ("S16", "Motor measurements: DC bus current", "-32768 to 32767", "Adc"),
-}
-
-actual_values = {
-    # COB-ID, Bytes : (Data Type, Description, Value Range, Units)
-    (390, (0, 1)): 0,
-    (390, (2, 3)): 0,
-    (390, (4, 5)): 0,
-    (390, (6, 7)): 0,
-    (646, (0, 1)): 0,
-    (646, (2, 3)): 0,
-    (646, (4, 5)): 0,
-    (646, (6, 7)): 0,
-    (902, 0): 0,
-    (902, 1): 0,
-    (902, (2, 3)): 0,
-    (902, (4, 5)): 0,
-    (902, (6, 7)): 0,
-    (1158, (0, 1)): 0,
-    (1158, (2, 3)): 0,
-    (1158, (4, 5)): 0,
-    (1158, (6, 7)): 0,
-}
-pdo_map = {
-    390: "PDO1",
-    646: "PDO2",
-    390: "PDO3",
-    646: "PDO4",
-}
-
-root = tk.Tk()
+# Function to log messages
 
 
-def decode_data(msg_id, data_bytes):
-    # print(f"Decoding data for msg_id: {msg_id} with data_bytes: {data_bytes}")
-    data_values = {}
-
-    for key, (data_type, description, value_range, units) in value_range_map.items():
-        cob_id, byte_indices = key
-
-        # Check if the msg_id matches the cob_id. If not, skip this iteration
-        if msg_id != cob_id:
-            continue
-
-        if isinstance(byte_indices, tuple):
-            start, end = key[1]
-            # print(f"For msg_id {msg_id}, data_bytes length: {len(data_bytes)}")
-            if end is None and start >= len(data_bytes):
-                # print("Index out of range for single-byte key:", key)
-                continue
-            elif end is not None and (start >= len(data_bytes) or end >= len(data_bytes)):
-                # print("Index out of range for multi-byte key:", key)
-                continue
-        else:
-            start = key[1]
-            if start >= len(data_bytes):
-                continue  # Skip this iteration if index is out of range
-            end = start  # Use start index as end index for single-byte data
-
-        if data_type == "U16":
-            value = (data_bytes[start] << 8) + data_bytes[end]
-            # print("value U16: ", value)
-
-        elif data_type == "S16":
-            value = struct.unpack('>h', bytes(data_bytes[start:end+1]))[0]
-            # print("value S16: ", value)
-
-        elif data_type == "U8":
-            value = data_bytes[start]
-            # print("value U8: ", value)
-
-        elif data_type == "0-15":
-            value = data_bytes[start] & 0x0F
-            # print("value 0-15: ", value)
-
-        else:
-            value = "Unsupported data type"
-            # print("unsupported: ", value)
-
-        data_values[description] = (value, value_range, units)
-        # print("data values: ", data_values)
-
-    return data_values
+def log_message(message):
+    logger.info(f"Message: {message}")
 
 
-def format_can_message(msg):
-    pdo_label = pdo_map.get(msg.id, "Unknown PDO")
-    data_values = decode_data(msg.id, msg.data)
+# Start with creating a new network representing one CAN bus
+network = canopen.Network()
 
+# Connect to the CAN bus
+network.connect(channel='0', bustype='kvaser')
+
+# Subscribe to messages
+network.subscribe(0, log_message)
+
+# You can create a node with a known node-ID
+node_id = 6  # Replace with your node ID
+node = canopen.BaseNode402(node_id, canopen.import_od('testing/69GUS222C00x03.epf')
+                           )  # Use a dummy EDS here
+network.add_node(node)
+
+
+def read_and_log_sdo(node, index, subindex):
+
+    try:
+        value = node.sdo[index][subindex].raw
+        return value
+    except Exception as e:
+        print(f"Error reading SDO [{hex(index)}:{subindex}]: {e}")
+        return 0
+
+
+def get_sdo_obj() -> {}:
+    voltage = read_and_log_sdo(node, 0x2A06, 1)
+    throttle_mv = read_and_log_sdo(node, 0x2013, 1)
+    # print("throttle value: ", throttle_mv)
+    throttle_percent = read_and_log_sdo(node, 0x2013, 7)
+
+    rpm = read_and_log_sdo(node, 0x2001, 2)
+    # print("rpm: ", rpm)
+    # torque
+    torque = read_and_log_sdo(node, 0x2076, 2)
+    # current
+    current = read_and_log_sdo(node, 0x2073, 1)
+    # temperature
+    temperature = read_and_log_sdo(node, 0x2A0D, 1)
+
+    # timestamp = read_and_log_sdo(node, 0x2002, 1)
+    # print("timestamp: ", timestamp)
+    #
     return {
-        'pdo_label': pdo_label,
-        'data_values': data_values,
-        'dlc': msg.dlc,
-        'flags': msg.flags,
-        'timestamp': msg.timestamp,
+        'voltage': voltage,
+        'throttle_mv': throttle_mv,
+        'throttle_percentage': throttle_percent,
+        'RPM': rpm,
+        'torque': torque,
+        'motor_temp': temperature,
+        'current': current
     }
 
 
-def read_can_messages(trial_number, can_queue):
-    # Initialize and open the channel
-    global running
-    channel = 0
-    in_memory_data = []  # Step 1: Initialize in-memory data storage
-
-    with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
-        ch.setBusOutputControl(canlib.canDRIVER_NORMAL)
-        ch.setBusParams(canlib.canBITRATE_500K)
-        ch.busOn()
-        while running:
-            try:
-                msg = ch.read()
-                pdo_label = pdo_map.get(msg.id, "Unknown_PDO")
-                msg_data = format_can_message(msg)
-
-                can_queue.put(msg_data)
-
-                in_memory_data.append(msg)
-
-            except canlib.CanNoMsg:
-
-                pass  # No new message yet
-            except KeyboardInterrupt:
-                break  # Exit the loop on Ctrl+C
-        ch.busOff()
-
-    store_frames_to_database(in_memory_data)
-
-    # Function to create the UI layout for the variable display
+FRAMES_DATABASE = "frames_data.db"
 
 
-def on_closing():
-    global running
-    """ Handle the window closing event. """
-    running = False
-    root.destroy()
-
-
-def check_for_exit():
-    global running
-    """ Check for a flag to exit the application. """
-    if not running:
-        if can_thread.is_alive():
-            can_thread.join()  # Ensure the thread has finished
-        root.destroy()
-    else:
-        root.after(100, check_for_exit)
-
-
-def signal_handler(sig, frame):
-    global running
-    print('You pressed Ctrl+C!')
-    running = False
-    root.after(1, check_for_exit)
-
-
-def update_values():
-    # Process all messages currently in the queue
+def get_trial_num():
+    # Ensure all necessary tables are created before fetching the trial number
+    trial_num = 1
     try:
-        while not can_queue.empty():
-            while not can_queue.empty():
-                msg_data = can_queue.get()
-                for desc, (value, _, _) in msg_data['data_values'].items():
-                    for key, (data_type, description, value_range, units) in value_range_map.items():
-                        if description == desc:
-                            if (desc == "Actual speed"):
-                                actual_values[key] = value/100
-                            else:
-                                actual_values[key] = value
-                            break
-                # Update the UI with the new values
-                for row_index, ((cob_id, bytes_), _) in enumerate(value_range_map.items(), start=1):
-                    value_label = root.grid_slaves(row=row_index, column=6)[0]
-                    value_label.config(
-                        text=str(actual_values.get((cob_id, bytes_), 'N/A')))
-            # Schedule the next update
-    except queue.Empty:
-        pass  # Handle empty queue here if needed
-    root.after(100, update_values)  # Update every 100 milliseconds
+        trial_num = get_next_trial_number()
+    except Exception as e:
+        print(f"Error getting next trial number: {e}")
+        trial_num = 1  # Default to 1 if unable to fetch next trial number
+    print("trial number: ", trial_num)
+    return trial_num
 
 
-def create_ui():
-    root.title("CAN Variable Display")
+class CANApplication(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("CAN Bus Monitoring")
+        self.geometry('1600x1000')
+        self.resizable(False, False)
+        self.trial_num_initialized = Event()
+        self.trial_num = 0
+        self.init_trial_num()
+        self.last_update_time = 0
+        self.last_speed = 0
+        self.db_queue = queue.Queue()
+        self.running_event = Event()
+        self.running_event.set()
+        self.start_time = 0
+        self.timestamp = self
+        self.current_data = {}
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.init_ui()
+        self.init_threads()
 
-    # Create the table headers
-    headers = ["COB-ID", "Bytes", "Data Type", "Description",
-               "Value Range", "Units", "Actual Value"]
-    for i, header in enumerate(headers):
-        tk.Label(root, text=header, font=(
-            'Helvetica', 10, 'bold')).grid(row=0, column=i)
+        self.update_queue = queue.Queue()
+        self.after(100, self.process_ui_updates)
+        # self.check_queue()
 
-    # Fill the grid with the variables and placeholders for actual values
-    for row_index, ((cob_id, bytes_), (data_type, desc, value_range, units)) in enumerate(value_range_map.items(), start=1):
-        tk.Label(root, text=str(cob_id)).grid(row=row_index, column=0)
-        tk.Label(root, text=str(bytes_)).grid(row=row_index, column=1)
-        tk.Label(root, text=data_type).grid(row=row_index, column=2)
-        tk.Label(root, text=desc).grid(row=row_index, column=3)
-        tk.Label(root, text=value_range).grid(row=row_index, column=4)
-        tk.Label(root, text=units).grid(row=row_index, column=5)
-        value_label = tk.Label(root, text=str(actual_values[(cob_id, bytes_)]))
-        value_label.grid(row=row_index, column=6)
+    def init_trial_num(self):
+        self.trial_num = get_next_trial_number()
+        print(f"Initialized trial number: {self.trial_num}")
+        self.trial_num_initialized.set()
 
-    # To handle window 'X' button click
-    root.protocol("WM_DELETE_WINDOW", on_closing)
-    root.bind('<q>', lambda event: on_closing())
-    update_values()
+    def init_ui(self):
+        # Initialize the provided module components here
+        # self.can_variable_display = CANVariableDisplay(self)
+        self.current_meter = CurrentMeter(self)
+        self.speedometer = Speedometer(self)
+        self.graph = Graph(self)
+        self.voltage_graph = VoltageGraph(self)
+        self.throttle_gauge = ThrottleGauge(self)
 
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
-def is_device_connected(channel):
-    try:
-        with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
-            status = ch.getBusParams()
-            return status is not None
-    except CanlibException:
-        return False
-
-
-def database_thread_function(db_queue, trial_number):
-    conn = sqlite3.connect(FRAMES_DATABASE)
-    while True:
+    def process_ui_updates(self):
         try:
-            msg_data = db_queue.get(block=True, timeout=1)
-            if msg_data is None:
-                break
-            store_to_db(msg_data['pdo_label'], trial_number, msg_data, conn)
-        except queue.Empty:
-            continue
+            while not self.update_queue.empty():
+                data = self.update_queue.get_nowait()
+                # Update the UI with data
+                self.update_ui(data)
+        finally:
+            self.after(100, self.process_ui_updates)
+
+    def init_threads(self):
+        self.running_event = Event()
+        self.running_event.set()
+        self.trial_num_initialized.wait()
+        self.can_thread = Thread(
+            target=self.read_can_messages, daemon=True)
+        self.db_thread = Thread(
+            target=self.database_thread_function, daemon=True
+        )
+        self.server_thread = Thread(
+            target=self.send_to_shore, daemon=True
+        )
+        self.can_thread.start()
+        self.db_thread.start()
+        self.server_thread.start()
+
+    def on_closing(self):
+        print("Closing application...")
+        self.running_event.clear()
+
+    # Wait for the threads to finish if you have non-daemon threads or if they need to do cleanup
+        self.can_thread.join(timeout=1)
+        self.db_thread.join(timeout=1)
+        self.server_thread.join(timeout=1)
+
+        # Clean up other resources
+        network.disconnect()
+
+        # Destroy the Tkinter app window
+        self.destroy()
+
+    def read_can_messages(self):
+        # Start with creating a new network representing one CAN bus
+        self.start_time = round(time.time() * 1000)
+        print("finished waiting: ", self.trial_num)
+        while self.running_event.is_set():
+            try:
+                current_time = round(time.time()*1000 - self.start_time)
+                msg = get_sdo_obj()
+
+                msg['timestamp'] = current_time
+                msg['trial_num'] = self.trial_num
+                # Add to CAN queue for UI update
+                self.current_data = msg
+                self.update_queue.put(msg)
+                self.db_queue.put(msg)
+                time.sleep(1)
+            except Exception as e:
+                time.sleep(1)
+                # print(f"Error reading CAN message: {e}")
+
+    def database_thread_function(self):
+        batch_size = 50  # Define the size of each batch
+        while self.running_event.is_set() and not self.db_queue.empty():
+            print("batch running")
+            batch = []  # Initialize the batch list
+            while len(batch) < batch_size:
+                try:
+                    msg_data = self.db_queue.get(timeout=1)
+                    batch.append(msg_data)
+                except queue.Empty:
+                    # If the queue is empty and we have collected some messages, break the loop to process them
+                    if batch:
+                        break
+                    # If the queue is empty and no messages are collected, continue checking
+                    continue
+
+            if len(batch) == 50:
+                print("storing to db : ", len(batch))
+                # If we have messages in the batch, store them to the database
+                store_data_for_trial(batch, self.trial_num)
+
+    def send_to_shore(self):
+        # Replace with your actual URL
+        url = 'https://hugely-dashing-lemming.ngrok-free.app/put_method'
+        while self.running_event.is_set():
+            if self.current_data:  # Check if there is data to send
+                try:
+                    # Directly pass the dictionary to the json parameter of the post method
+
+                    print("current data: ", self.current_data)
+                    response = put(url, json=self.current_data)
+                    if response.ok:
+                        print("Data sent successfully!")
+                    else:
+                        print(
+                            f"Failed to send data. Status code: {response.status_code}")
+                except Exception as e:
+                    print(f"Failed to send data: {e}")
+            time.sleep(0.25)  # Adjust the sleep time as needed
 
 
-def signal_handler(sig, frame):
-    global running
-    print('Exiting, signal received:', sig)
-    running = False
+# Check response from the server
+        if response.ok:
+            print("Data sent successfully!")
+        else:
+            print("Failed to send data.")
+
+        self.after(250, self.send_to_shore)
+
+    def update_ui(self, data):
+        #     (390, (2, 3)): ("S16", "Actual speed", "-32768 to 32767", "Rpm"),
+        #     (390, (4, 5)): ("U16", "RMS motor Current", "0-65535", "Arms"),
+        #     (390, (6, 7)): ("S16", "DC Bus Voltage", "-32768 to 32767", "Adc"),
+        #     (646, (0, 1)): ("S16", "Internal Speed Reference", "-32768 to 32767", "Rpm"),
+        #     (646, (2, 3)): ("S16", "Reference Torque", "-32768 to 32767", "Nm"),
+        #     (646, (4, 5)): ("S16", "Actual Torque", "-32768 to 32767", "Nm"),
+        #     (646, (6, 7)): ("S16", "Field weakening control: voltage angle", "-32768 to 32767", "Deg"),
+        #     (902, 0): ("U8", "Field weakening control: regulator status", "0-255", ""),
+        #     (902, 1): ("U8", "Current limit: actual limit type", "0-15", ""),
+        #     (902, (2, 3)): ("S16", "Motor voltage control: U peak normalized", "-32768 to 32767", ""),
+        #     (902, (4, 5)): ("U16", "Digital status word", "0-65535", ""),
+        #     (902, (6, 7)): ("S16", "Scaled throttle percent", "-32768 to 32767", ""),
+        #     (1158, (0, 1)): ("S16", "Motor voltage control: idLimit", "-32768 to 32767", ""),
+        #     (1158, (2, 3)): ("S16", "Motor voltage control: Idfiltered", "-32768 to 32767", "Arms"),
+        #     (1158, (4, 5)): ("S16", "Actual currents: iq", "-32768 to 32767", "Apk"),
+        #     (1158, (6, 7)): ("S16", "Motor measurements: DC bus current", "-32768 to 32767", "Adc"),
+
+        #     'voltage': voltage,
+        # 'throttle_mv': throttle_mv,
+        # 'throttle_percentage': throttle_percent,
+        # 'RPM': rpm,
+        # 'torque': torque,
+        # 'motor temp': temperature,
+        # 'current': current
+        # voltage = data['voltage']
+        try:
+            speed = data['RPM']
+            torque = data['torque']
+            motor_temp = data['motor_temp']
+            current = data['current']
+            throttle_prct = data['throttle_percentage']
+            throttle_mv = data['throttle_mv']
+            # print("data: ", throttle_mv)
+
+            timestamp = data['timestamp']
+
+            voltage = data['voltage']
+
+            # self.can_variable_display.update_display(data)
+            # Add updates for other UI components as needed
+            if throttle_mv:
+                self.throttle_gauge.update_gauge(throttle_mv)
+            if speed:
+                self.speedometer.update_dial(speed)
+            if torque:
+                self.graph.update_graph(torque, timestamp)
+            if current:
+                self.current_meter.update_dial(current)
+            if voltage:
+                self.voltage_graph.update_graph(voltage, timestamp)
+        except Exception as e:
+            print("error updating UI: ", e)
 
 
 if __name__ == "__main__":
-    print("starting new session")
+    app = CANApplication()
 
-    conn = sqlite3.connect(FRAMES_DATABASE)
+    def handle_sigint(signal, frame):
+        print("CTRL+C detected. Closing application...")
+        app.on_closing()
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, handle_sigint)
+
     try:
-        create_tables(conn)
-    except Exception as e:
-        print(f"Error setting up database tables: {e}")
-
-    signal.signal(signal.SIGINT, signal_handler)
-    trial_num = get_next_trial_number(conn)
-
-    print(f"Running telemetry display for trial number: {trial_num + 1}")
-
-    db_thread = threading.Thread(
-        target=database_thread_function, args=(db_queue, trial_num))
-    db_thread.start()
-
-    can_thread = threading.Thread(
-        target=read_can_messages, args=(trial_num, can_queue))
-    can_thread.daemon = True
-    can_thread.start()
-
-    create_ui()
-    root.after(100, check_for_exit)
-    root.mainloop()
-
-    running = False
-    db_queue.put(None)
-    db_thread.join()
-    if can_thread.is_alive():
-        can_thread.join()
-    print(f"Finished telemetry display for trial number: {trial_num + 1}")
+        app.mainloop()
+    except KeyboardInterrupt:
+        app.on_closing()

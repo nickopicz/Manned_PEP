@@ -17,7 +17,7 @@ from Frames_database import store_frames_to_database
 # Mapping from COB-ID to PDO and its information
 
 # FRAMES_DATABASE = "db/frames_data.db"
-FRAMES_DATABASE = "/home/pi/Manned_PEP/db/frames_data.db"
+FRAMES_DATABASE = "/home/pi/Manned_PEP/frames_data.db"
 
 
 can_queue = queue.Queue()
@@ -169,14 +169,15 @@ def read_can_messages(trial_number, can_queue):
     # Now that the device is connected, proceed with the rest of the function
     with canlib.openChannel(channel, canlib.canOPEN_ACCEPT_VIRTUAL) as ch:
         ch.setBusOutputControl(canlib.canDRIVER_NORMAL)
-        ch.setBusParams(canlib.canBITRATE_500K)
+        ch.setBusParams(canlib.canBITRATE_100K)
         ch.busOn()
         while running:
             try:
                 msg = ch.read()
                 pdo_label = pdo_map.get(msg.id, "Unknown_PDO")
                 msg_data = format_can_message(msg)
-                can_queue.put(msg)
+
+                can_queue.put(msg_data)
 
             except canlib.CanNoMsg:
 
@@ -184,7 +185,6 @@ def read_can_messages(trial_number, can_queue):
             except KeyboardInterrupt:
                 break  # Exit the loop on Ctrl+C
         ch.busOff()
-
 
     # Function to create the UI layout for the variable display
 
@@ -195,21 +195,33 @@ def signal_handler(sig, frame):
     running = False
 
 
-def database_thread_function(db_queue, trial_number):
+def database_thread_function(db_queue, trial_number, batch_size=100):
+    batch = []
     while True:
         try:
-            # Adjust timeout as needed
             msg_data = db_queue.get(block=True, timeout=1)
+
+            # Check for sentinel value to break the loop
             if msg_data is None:
-                # Break the loop if a sentinel value (like None) is received
+                # If there are any messages left in the batch, store them before breaking
+                if batch:
+                    store_to_db(trial_number, batch)
                 break
-            print(f"msg_data: {msg_data}")
-            try:
-                store_to_db(trial_number, msg_data)
-            except:
-                print("error in sending do db: ")
+
+            # Add the message data to the batch
+            batch.append(msg_data)
+
+            # When the batch size is reached, store the batch and clear it
+            if len(batch) >= batch_size:
+                store_to_db(trial_number, batch)
+                batch = []  # Reset the batch list
         except queue.Empty:
-            continue  # No message received, loop back and wait again
+            # If the queue is empty but there are messages in the batch, store them
+            if batch:
+                store_to_db(trial_number, batch)
+                batch = []  # Reset the batch list
+        except Exception as e:
+            print(f"Error in sending to db: {e}")
 
 
 if __name__ == "__main__":
@@ -229,7 +241,7 @@ if __name__ == "__main__":
 
     db_queue = queue.Queue()
     db_thread = threading.Thread(target=database_thread_function,
-                       args=(db_queue, trial_num))
+                                 args=(db_queue, trial_num))
     db_thread.start()
     # Set up the queue and start the CAN reading thread
     can_queue = queue.Queue()

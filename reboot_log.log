@@ -11944,3 +11944,11 @@ Waiting for CAN device to be connected...
 Waiting for CAN device to be connected...
 CAN device not detected, exiting.
 Finished telemetry display for trial number: 37
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)

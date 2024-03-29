@@ -1,86 +1,56 @@
 import sqlite3
 
-DATABASE_NAME = "/home/pi/Manned_PEP/db/frames_data.db"
+DATABASE_NAME = "/home/pi/Manned_PEP/frames_data.db"
+
+NAME = "frames_data.db"
 
 
 def get_next_trial_number():
-    # Connect to the SQLite database
-    conn = sqlite3.connect(DATABASE_NAME)
-    cursor = conn.cursor()
-
-    # Create a meta table to store the latest trial number if it doesn't exist
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS meta (
-        key TEXT PRIMARY KEY,
-        value INTEGER
-    )
-    ''')
-
-    # Query the latest trial number from the meta table
-    cursor.execute("SELECT value FROM meta WHERE key='trial_number'")
-    row = cursor.fetchone()
-
-    if row:
-        # If found, increment the trial number
-        trial_number = row[0] + 1
-    else:
-        # If not found, initialize with trial number 1
-        trial_number = 1
-
-    # Update the meta table with the latest trial number
-    cursor.execute(
-        "INSERT OR REPLACE INTO meta (key, value) VALUES ('trial_number', ?)", (trial_number,))
-
-    # Commit and close the connection
-    conn.commit()
-    conn.close()
-
+    with sqlite3.connect(DATABASE_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS meta (
+            key TEXT PRIMARY KEY,
+            value INTEGER
+        )
+        ''')
+        cursor.execute("SELECT value FROM meta WHERE key='trial_number'")
+        row = cursor.fetchone()
+        trial_number = (row[0] + 1) if row else 1
+        cursor.execute(
+            "INSERT OR REPLACE INTO meta (key, value) VALUES ('trial_number', ?)", (trial_number,))
     return trial_number
 
 
-def create_table_for_pdo(pdo_label):
-    # Connect to the SQLite database
-    conn = sqlite3.connect(DATABASE_NAME)
+def create_table_for_trial(conn, trial_number):
+    # This function now creates a table specifically for a given trial number
+    # Each table will store data dictionaries as rows
     cursor = conn.cursor()
-
-    # Dynamically create a table for the given pdo_label if it doesn't exist
+    table_name = trial_number
     cursor.execute(f'''
-    CREATE TABLE IF NOT EXISTS {pdo_label} (
-        trial_number INTEGER,
-        timestamp REAL,
-        msg_id TEXT,
-        data_bytes TEXT
+    CREATE TABLE IF NOT EXISTS {table_name} (
+        timestamp REAL PRIMARY KEY,
+        voltage REAL,
+        throttle_mv REAL,
+        throttle_percentage INTEGER,
+        RPM INTEGER,
+        torque REAL,
+        motor_temp REAL,
+        current REAL
     )
     ''')
 
-    # Commit and close the connection
-    conn.commit()
-    conn.close()
 
-
-def store_to_db(trial_number, msg):
-    # Connect to the SQLite database
-    conn = sqlite3.connect(DATABASE_NAME)
-    cursor = conn.cursor()
-
-    # Insert the CAN message into the specified pdo_label's table
-    try:
+def store_data_for_trial(data_dicts, trial_number):
+    with sqlite3.connect(DATABASE_NAME) as conn:
+        # Create a table for this specific trial
+        create_table_for_trial(conn, trial_number)
         cursor = conn.cursor()
-        # Extracting frame attributes
-        frame_id = msg.id
-        frame_data = msg.data  # Already a bytearray
-        dlc = msg.dlc
-        flags = msg.flags.value  # Assuming flags is an Enum
-        timestamp = msg.timestamp
-        print(f"sending: {timestamp} to db")
-        cursor.execute('''
-        INSERT OR IGNORE INTO frame_data (trial_number, frame_id, data, dlc, flags, timestamp) 
-        VALUES (?, ?, ?, ?, ?, ?)
-        ''', (trial_number, frame_id, frame_data, dlc, flags, timestamp))
+        table_name = trial_number
+        for data_dict in data_dicts:
+            placeholders = ', '.join(['?'] * len(data_dict))
+            columns = ', '.join(data_dict.keys())
+            values = tuple(data_dict.values())
+            cursor.execute(
+                f'INSERT INTO {table_name} ({columns}) VALUES ({placeholders})', values)
         conn.commit()
-         
-        
-        # Commit and close the connection
-        conn.close()
-    except:
-        print("error sending to database, within db funtions")

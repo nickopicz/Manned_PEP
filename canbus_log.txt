@@ -1,0 +1,1 @@
+2024-03-28 18:43:30,920 - KvaserBus was not properly shut down
