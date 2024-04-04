@@ -6,7 +6,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import datetime
 import requests
 import threading
-from New_UI import CANVariableDisplay, ThrottleGauge, Speedometer, Graph, VoltageGraph, CurrentMeter
+from New_UI import CANVariableDisplay, ThrottleGauge, Speedometer, Graph, VoltageGraph, CurrentMeter, ThermometerGauge
 
 # Your previously defined classes (CANVariableDisplay, ThrottleGauge, etc.) go here
 
@@ -25,6 +25,7 @@ class Application:
         self.speedometer = Speedometer(self.root)
         self.graph = Graph(self.root)
         self.voltage_graph = VoltageGraph(self.root)
+        self.thermometer = ThermometerGauge(self.root)
 
         # Start the data update loop
         self.update_data_loop()
@@ -56,6 +57,7 @@ class Application:
             self.voltage_graph.update_graph(data['voltage'], current_time)
             self.current_meter.update_dial(data['current'])
             self.speedometer.update_dial(data['RPM'])
+            self.thermometer.update_gauge(data['motor_temp'])
             # And so on for other UI components as necessary
 
     def update_data_loop(self):
