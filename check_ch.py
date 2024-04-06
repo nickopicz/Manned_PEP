@@ -16,6 +16,11 @@ import logging
 import time
 from requests import put
 import json
+
+from OpenGL.GL import *
+from OpenGL.GLU import *
+from OpenGL.GLUT import *
+import sys
 # Set up logging
 logging.basicConfig(level=logging.INFO, filename='canbus_log.txt', filemode='w',
                     format='%(asctime)s - %(message)s')

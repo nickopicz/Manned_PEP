@@ -1,43 +1,9 @@
-2024-03-29 19:16:13,231 - loaded kvaser's CAN library
-2024-03-29 19:16:13,231 - CAN Filters: None
-2024-03-29 19:16:13,231 - Got configuration of: {}
-2024-03-29 19:16:13,231 - Found 2 available channels
-2024-03-29 19:16:13,231 - 0: Kvaser Virtual CAN Driver, S/N 0 (#1)
-2024-03-29 19:16:13,231 - 1: Kvaser Virtual CAN Driver, S/N 0 (#2)
-2024-03-29 19:16:13,264 - Hardware filtering has been disabled
-2024-03-29 19:16:13,264 - Connected to 'Kvaser Virtual CAN Driver, S/N 0 (#1)'
-2024-03-29 19:16:13,922 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:14,235 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:14,546 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:14,856 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:15,176 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:15,489 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:15,803 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:16,361 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:16,670 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:16,983 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:17,308 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:17,623 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:17,941 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:18,251 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:18,813 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:19,126 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:19,437 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:19,750 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:20,063 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:20,376 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:20,689 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:21,248 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:21,565 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:21,879 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:22,191 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:22,505 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:22,816 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:23,131 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:23,688 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:24,000 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:24,311 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:24,632 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:24,942 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:25,256 - Transfer aborted by client with code 0x05040000
-2024-03-29 19:16:25,569 - Transfer aborted by client with code 0x05040000
+2024-04-04 21:58:51,728 - loaded kvaser's CAN library
+2024-04-04 21:58:51,738 - CAN Filters: None
+2024-04-04 21:58:51,738 - Got configuration of: {}
+2024-04-04 21:58:51,738 - Found 3 available channels
+2024-04-04 21:58:51,738 - 0: Kvaser U100, S/N 1002607 (#1)
+2024-04-04 21:58:51,738 - 1: Kvaser Virtual CAN Driver, S/N 0 (#1)
+2024-04-04 21:58:51,738 - 2: Kvaser Virtual CAN Driver, S/N 0 (#2)
+2024-04-04 21:58:51,768 - Hardware filtering has been disabled
+2024-04-04 21:58:51,768 - Connected to 'Kvaser U100, S/N 1002607 (#1)'

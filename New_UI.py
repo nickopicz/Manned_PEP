@@ -4,6 +4,10 @@ import math
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import datetime
+import numpy as np
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.figure import Figure
 
 
 class CANVariableDisplay:
@@ -49,8 +53,8 @@ class ThrottleGauge:
         self.master = master
         self.canvas = tk.Canvas(master, width=100, height=300)
         self.canvas.grid(row=4, column=8, padx=20, pady=10)
-        self.min_real_value = 165  # Minimum real throttle value
-        self.max_real_value = 2800  # Maximum real throttle value
+        self.min_real_value = 170  # Minimum real throttle value
+        self.max_real_value = 2810  # Maximum real throttle value
         self.gauge_height = 250
         self.gauge_width = 50
         self.gauge_x = 25
@@ -60,8 +64,8 @@ class ThrottleGauge:
         self.value_label = tk.Label(master, text="0", font=('Helvetica', 10))
         self.value_label.grid(row=4, column=8)
         # Draw the initial oval
-        # self.temp_oval = self.canvas.create_oval(self.gauge_x, self.gauge_y + self.gauge_height - self.gauge_width,
-        #                                          self.gauge_x + self.gauge_width, self.gauge_y + self.gauge_height, fill="blue", outline="black")
+        # self.temp_oval = self.canvas.create_oval(
+        #     5, 5, 5, 5, fill="blue", outline="black")
 
     def draw_gauge_background(self):
         # Draw the outer rectangle
@@ -76,12 +80,15 @@ class ThrottleGauge:
         percentage = ((self.current_value - self.min_real_value) /
                       (self.max_real_value - self.min_real_value)) * 100
         # Update the label with the real value
-        self.value_label.config(text=f"{self.current_value}")
+        self.value_label.config(
+            text=f"{round(((self.current_value-165)/2800)*100)} %")
         # Calculate the oval's new vertical position based on the percentage
-
+        oval_bottom_y = self.gauge_y + self.gauge_height - \
+            ((percentage / 100) * self.gauge_height)
+        oval_top_y = oval_bottom_y - self.gauge_width
         # Move the oval to the new position
-        self.canvas.coords(self.temp_oval, self.gauge_x, oval_top_y,
-                           self.gauge_x + self.gauge_width, oval_bottom_y)
+        # self.canvas.coords(self.temp_oval, self.gauge_x, oval_top_y,
+        #                    self.gauge_x + self.gauge_width, oval_bottom_y)
         # Ensure the fill rectangle and oval are redrawn to reflect the new value
         self.canvas.delete("fill")
         self.canvas.create_rectangle(self.gauge_x + 1, self.gauge_y + self.gauge_height,
@@ -222,15 +229,15 @@ class Graph:
 class VoltageGraph:
     def __init__(self, master):
         self.fig, self.ax = plt.subplots(
-            figsize=(5, 3))  # Adjust the figsize here
+            figsize=(5, 4))  # Adjust the figsize here
         self.canvas = FigureCanvasTkAgg(self.fig, master=master)
         self.canvas_widget = self.canvas.get_tk_widget()
         # Adjust the line below to use grid instead of pack
         # Adjust the row, column, and rowspan as needed
         self.canvas_widget.grid(row=3, column=6, rowspan=4, sticky="nsew")
         self.ax.set_xlabel('Time')
-        self.ax.set_ylabel('Motor Current')
-        self.ax.set_title('Time Series of Motor Current')
+        self.ax.set_ylabel('Motor Voltage')
+        self.ax.set_title('Time Series of Motor Voltage')
         self.voltage_data = {'time': [], 'value': []}
 
     def update_graph(self, new_data, timestamp):
@@ -264,6 +271,7 @@ class ThermometerGauge:
 
     def draw_gauge_background(self):
         # Draw the outer rectangle
+
         self.canvas.create_rectangle(self.gauge_x, self.gauge_y,
                                      self.gauge_x + self.gauge_width, self.gauge_y + self.gauge_height,
                                      outline="black")
@@ -297,6 +305,56 @@ class ThermometerGauge:
         # Clear previous fill
         self.canvas.delete("temp_fill")
         # Draw new fill
-        self.canvas.create_rectangle(self.gauge_x + 1, self.gauge_y + self.gauge_height - fill_height,
-                                     self.gauge_x + self.gauge_width - 1, self.gauge_y + self.gauge_height,
-                                     fill="red", tags="temp_fill")
+        if current_temp > 60:
+            self.canvas.create_rectangle(self.gauge_x + 1, self.gauge_y + self.gauge_height - fill_height,
+                                         self.gauge_x + self.gauge_width - 1, self.gauge_y + self.gauge_height,
+                                         fill="red", tags="temp_fill")
+        else:
+            self.canvas.create_rectangle(self.gauge_x + 1, self.gauge_y + self.gauge_height - fill_height,
+                                         self.gauge_x + self.gauge_width - 1, self.gauge_y + self.gauge_height,
+                                         fill="green", tags="temp_fill")
+
+
+class AccelerationDisplay:
+    def __init__(self, master):
+        # Creating the figure and 3D axes
+        self.fig = Figure(figsize=(4, 4))
+        self.ax = self.fig.add_subplot(111, projection='3d')
+
+        # Setting the limits of the 3D axes
+        self.ax.set_xlim([-10, 10])
+        self.ax.set_ylim([-10, 10])
+        self.ax.set_zlim([-10, 10])
+
+        # Labeling the axes
+        self.ax.set_xlabel('X acceleration')
+        self.ax.set_ylabel('Y acceleration')
+        self.ax.set_zlabel('Z acceleration')
+
+        # Creating a canvas and adding it to the Tkinter window
+        self.canvas = FigureCanvasTkAgg(self.fig, master=master)
+        self.canvas_widget = self.canvas.get_tk_widget()
+        self.canvas_widget.grid(row=0, column=7)
+
+        # This will store the arrow objects
+        self.arrows = None
+
+    def update_vectors(self, acc_x, acc_y, acc_z):
+        # Clear existing arrows
+        if self.arrows:
+            for arrow in self.arrows:
+                arrow.remove()
+
+        # Redefine arrows based on the current data
+        self.arrows = []
+        origin = np.array([0, 0, 0])
+        vectors = np.array(
+            [[acc_x, 0, 0], [0, acc_y, 0], [0, 0, acc_z]])
+
+        # Colors for each vector
+        colors = ['r', 'g', 'b']
+        for vec, color in zip(vectors, colors):
+            self.arrows.append(self.ax.quiver(
+                *origin, *vec, color=color, length=np.linalg.norm(vec), pivot='tail'))
+
+        self.canvas.draw()

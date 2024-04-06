@@ -36,7 +36,13 @@ def put_data():
         torque=data['torque'],
         motor_temp=data['motor_temp'],
         current=data['current'],
-        trial_num=data['trial_num']
+        trial_num=data['trial_num'],
+        pitch=data['pitch'],
+        roll=data['roll'],
+        yaw=data['yaw'],
+        ax=data['ax'],
+        ay=data['ay'],
+        az=data['az']
     )
 
     # Insert the new entry into the database
@@ -65,7 +71,13 @@ def get_data():
             'RPM': entry.rpm,
             'torque': entry.torque,
             'motor_temp': entry.motor_temp,
-            'current': entry.current
+            'current': entry.current,
+            'pitch': entry.pitch,
+            'roll': entry.roll,
+            'yaw': entry.yaw,
+            'ax': entry.ax,
+            'ay': entry.ay,
+            'az': entry.az
         }
         return jsonify(entry_data)
     else:
