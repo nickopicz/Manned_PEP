@@ -11952,3 +11952,191 @@ Traceback (most recent call last):
   File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
     from database_functions import create_table_for_pdo, store_to_db
 ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+                                                                                                                                                                                                                                                                                                           Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/headless_gather.py", line 10, in <module>
+    from database_functions import create_table_for_pdo, store_to_db
+ImportError: cannot import name 'create_table_for_pdo' from 'database_functions' (/home/pi/Manned_PEP/database_functions.py)
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/check_ch.py", line 35, in <module>
+    network.connect(channel='0', bustype='kvaser')
+  File "/home/pi/.local/lib/python3.7/site-packages/canopen/network.py", line 113, in connect
+    self.bus = can.interface.Bus(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/util.py", line 369, in wrapper
+    return f(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interface.py", line 138, in __new__
+    bus = cls(channel, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 453, in __init__
+    self._read_handle = canOpenChannel(channel, flags)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 131, in __check_bus_handle_validity
+    raise CANLIBInitializationError(function, result, arguments)
+can.interfaces.kvaser.canlib.CANLIBInitializationError: Function canOpenChannel failed - Specified device not found [Error Code -3]
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/check_ch.py", line 35, in <module>
+    network.connect(channel='0', bustype='kvaser')
+  File "/home/pi/.local/lib/python3.7/site-packages/canopen/network.py", line 113, in connect
+    self.bus = can.interface.Bus(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/util.py", line 369, in wrapper
+    return f(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interface.py", line 138, in __new__
+    bus = cls(channel, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 453, in __init__
+    self._read_handle = canOpenChannel(channel, flags)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 131, in __check_bus_handle_validity
+    raise CANLIBInitializationError(function, result, arguments)
+can.interfaces.kvaser.canlib.CANLIBInitializationError: Function canOpenChannel failed - Specified device not found [Error Code -3]
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/check_ch.py", line 35, in <module>
+    network.connect(channel='0', bustype='kvaser')
+  File "/home/pi/.local/lib/python3.7/site-packages/canopen/network.py", line 113, in connect
+    self.bus = can.interface.Bus(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/util.py", line 369, in wrapper
+    return f(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interface.py", line 138, in __new__
+    bus = cls(channel, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 453, in __init__
+    self._read_handle = canOpenChannel(channel, flags)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 131, in __check_bus_handle_validity
+    raise CANLIBInitializationError(function, result, arguments)
+can.interfaces.kvaser.canlib.CANLIBInitializationError: Function canOpenChannel failed - Specified device not found [Error Code -3]
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/check_ch.py", line 35, in <module>
+    network.connect(channel='0', bustype='kvaser')
+  File "/home/pi/.local/lib/python3.7/site-packages/canopen/network.py", line 113, in connect
+    self.bus = can.interface.Bus(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/util.py", line 369, in wrapper
+    return f(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interface.py", line 138, in __new__
+    bus = cls(channel, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 453, in __init__
+    self._read_handle = canOpenChannel(channel, flags)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 131, in __check_bus_handle_validity
+    raise CANLIBInitializationError(function, result, arguments)
+can.interfaces.kvaser.canlib.CANLIBInitializationError: Function canOpenChannel failed - Specified device not found [Error Code -3]
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/check_ch.py", line 35, in <module>
+    network.connect(channel='0', bustype='kvaser')
+  File "/home/pi/.local/lib/python3.7/site-packages/canopen/network.py", line 113, in connect
+    self.bus = can.interface.Bus(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/util.py", line 369, in wrapper
+    return f(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interface.py", line 138, in __new__
+    bus = cls(channel, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 453, in __init__
+    self._read_handle = canOpenChannel(channel, flags)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 131, in __check_bus_handle_validity
+    raise CANLIBInitializationError(function, result, arguments)
+can.interfaces.kvaser.canlib.CANLIBInitializationError: Function canOpenChannel failed - Specified device not found [Error Code -3]
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/check_ch.py", line 35, in <module>
+    network.connect(channel='0', bustype='kvaser')
+  File "/home/pi/.local/lib/python3.7/site-packages/canopen/network.py", line 113, in connect
+    self.bus = can.interface.Bus(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/util.py", line 369, in wrapper
+    return f(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interface.py", line 138, in __new__
+    bus = cls(channel, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 453, in __init__
+    self._read_handle = canOpenChannel(channel, flags)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 131, in __check_bus_handle_validity
+    raise CANLIBInitializationError(function, result, arguments)
+can.interfaces.kvaser.canlib.CANLIBInitializationError: Function canOpenChannel failed - Specified device not found [Error Code -3]
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/check_ch.py", line 35, in <module>
+    network.connect(channel='0', bustype='kvaser')
+  File "/home/pi/.local/lib/python3.7/site-packages/canopen/network.py", line 113, in connect
+    self.bus = can.interface.Bus(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/util.py", line 369, in wrapper
+    return f(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interface.py", line 138, in __new__
+    bus = cls(channel, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 453, in __init__
+    self._read_handle = canOpenChannel(channel, flags)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 131, in __check_bus_handle_validity
+    raise CANLIBInitializationError(function, result, arguments)
+can.interfaces.kvaser.canlib.CANLIBInitializationError: Function canOpenChannel failed - Specified device not found [Error Code -3]
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/check_ch.py", line 35, in <module>
+    network.connect(channel='0', bustype='kvaser')
+  File "/home/pi/.local/lib/python3.7/site-packages/canopen/network.py", line 113, in connect
+    self.bus = can.interface.Bus(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/util.py", line 369, in wrapper
+    return f(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interface.py", line 138, in __new__
+    bus = cls(channel, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 453, in __init__
+    self._read_handle = canOpenChannel(channel, flags)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 131, in __check_bus_handle_validity
+    raise CANLIBInitializationError(function, result, arguments)
+can.interfaces.kvaser.canlib.CANLIBInitializationError: Function canOpenChannel failed - Specified device not found [Error Code -3]
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/check_ch.py", line 35, in <module>
+    network.connect(channel='0', bustype='kvaser')
+  File "/home/pi/.local/lib/python3.7/site-packages/canopen/network.py", line 113, in connect
+    self.bus = can.interface.Bus(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/util.py", line 369, in wrapper
+    return f(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interface.py", line 138, in __new__
+    bus = cls(channel, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 453, in __init__
+    self._read_handle = canOpenChannel(channel, flags)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 131, in __check_bus_handle_validity
+    raise CANLIBInitializationError(function, result, arguments)
+can.interfaces.kvaser.canlib.CANLIBInitializationError: Function canOpenChannel failed - Specified device not found [Error Code -3]
+Traceback (most recent call last):
+  File "/home/pi/Manned_PEP/check_ch.py", line 35, in <module>
+    network.connect(channel='0', bustype='kvaser')
+  File "/home/pi/.local/lib/python3.7/site-packages/canopen/network.py", line 113, in connect
+    self.bus = can.interface.Bus(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/util.py", line 369, in wrapper
+    return f(*args, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interface.py", line 138, in __new__
+    bus = cls(channel, **kwargs)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 453, in __init__
+    self._read_handle = canOpenChannel(channel, flags)
+  File "/home/pi/.local/lib/python3.7/site-packages/can/interfaces/kvaser/canlib.py", line 131, in __check_bus_handle_validity
+    raise CANLIBInitializationError(function, result, arguments)
+can.interfaces.kvaser.canlib.CANLIBInitializationError: Function canOpenChannel failed - Specified device not found [Error Code -3]

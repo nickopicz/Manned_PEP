@@ -15,3 +15,4 @@ class DataEntry(db.Model):
     torque = db.Column(db.Float)
     motor_temp = db.Column(db.Float)
     current = db.Column(db.Float)
+    

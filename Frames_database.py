@@ -38,7 +38,13 @@ def create_table_for_trial(conn, trial_number):
         RPM INTEGER,
         torque REAL,
         motor_temp REAL,
-        current REAL
+        current REAL,
+        pitch REAL,
+        roll REAL,
+        yaw REAL,
+        ax REAL,
+        ay REAL,
+        az REAL,
     )
     ''')
     conn.commit()

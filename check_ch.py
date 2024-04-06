@@ -6,6 +6,7 @@ from canlib import canlib
 from Frames_database import get_next_trial_number, create_table_for_trial, store_data_for_trial
 # Import the provided module components
 from New_UI import CANVariableDisplay, CurrentMeter, Speedometer, Graph, VoltageGraph, ThrottleGauge, ThermometerGauge
+from Gather_Data import read_serial
 # from database_functions import store_data_for_trial
 import sqlite3
 import time
@@ -50,7 +51,7 @@ def read_and_log_sdo(node, index, subindex):
         value = node.sdo[index][subindex].raw
         return value
     except Exception as e:
-        print(f"Error reading SDO [{hex(index)}:{subindex}]: {e}")
+#         print(f"Error reading SDO [{hex(index)}:{subindex}]: {e}")
         return 0
 
 
@@ -68,11 +69,12 @@ def get_sdo_obj() -> {}:
     current = read_and_log_sdo(node, 0x2073, 1)
     # temperature
     temperature = read_and_log_sdo(node, 0x2A0D, 1)
-
+    
+    serial_data = read_serial()
     # timestamp = read_and_log_sdo(node, 0x2002, 1)
     # print("timestamp: ", timestamp)
     #
-    return {
+    sdo_data = {
         'voltage': voltage,
         'throttle_mv': throttle_mv,
         'throttle_percentage': throttle_percent,
@@ -80,7 +82,10 @@ def get_sdo_obj() -> {}:
         'torque': torque,
         'motor_temp': temperature,
         'current': current
-    }
+    } 
+    
+    full_data = {**serial_data, **sdo_data}
+    return full_data
 
 
 FRAMES_DATABASE = "frames_data.db"
@@ -103,7 +108,11 @@ class CANApplication(tk.Tk):
         super().__init__()
         self.title("CAN Bus Monitoring")
 
-        self.state('zoomed')
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        self.geometry(f"{screen_width}x{screen_height}+0+0")
+        
+        
         # screenWidth = self.winfo_screenwidth()
         # screenHeight = self.winfo_screenheight()
         # # Set window size to screen dimensions
@@ -234,14 +243,15 @@ class CANApplication(tk.Tk):
             if self.current_data:  # Check if there is data to send
                 try:
                     # Directly pass the dictionary to the json parameter of the post method
-
-                    print("current data: ", self.current_data)
+                    
+#                     print("current data: ", self.current_data)
                     response = put(url, json=self.current_data)
                     if response.ok:
                         print("Data sent successfully!")
                     else:
-                        print(
-                            f"Failed to send data. Status code: {response.status_code}")
+                        print("")
+#                         print(
+#                             f"Failed to send data. Status code: {response.status_code}")
                 except Exception as e:
                     print(f"Failed to send data: {e}")
             time.sleep(0.25)  # Adjust the sleep time as needed
@@ -314,7 +324,7 @@ class CANApplication(tk.Tk):
 
 if __name__ == "__main__":
     app = CANApplication()
-
+    
     def handle_sigint(signal, frame):
         print("CTRL+C detected. Closing application...")
         app.on_closing()
