@@ -15,7 +15,7 @@ class ThrottleGauge:
         # Existing initialization code
         self.master = master
         self.canvas = tk.Canvas(master, width=100, height=300)
-        self.canvas.grid(row=4, column=8, padx=20, pady=10)
+        self.canvas.grid(row=1, column=8, padx=20, pady=10, rowspan=2)
         self.min_real_value = 170  # Minimum real throttle value
         self.max_real_value = 2810  # Maximum real throttle value
         self.gauge_height = 250
@@ -24,8 +24,9 @@ class ThrottleGauge:
         self.gauge_y = 25
         self.current_value = 0  # This will now store the real value, not the percentage
         self.draw_gauge_background()
-        self.value_label = tk.Label(master, text="0", font=('Helvetica', 10))
-        self.value_label.grid(row=4, column=8)
+        self.canvas.configure(background='lightblue')
+        self.value_label = tk.Label(master, text="0 %", font=('Helvetica', 10))
+        self.value_label.grid(row=2, column=8)
         # Draw the initial oval
         # self.temp_oval = self.canvas.create_oval(
         #     5, 5, 5, 5, fill="blue", outline="black")
@@ -61,16 +62,18 @@ class ThrottleGauge:
 class CurrentMeter:
     def __init__(self, master):
         self.canvas = tk.Canvas(master, width=300, height=300)
-        self.canvas.grid(row=0, column=6, rowspan=2, padx=20)
+        self.canvas.grid(row=0, column=6, rowspan=2)
         self.center_x, self.center_y = 150, 150
         self.max_value = 500
         self.needle = self.create_current_dial()
         self.label = tk.Label(master, text="DC Current Supply (Amps)",
                               font=('Helvetica', 12))
-        self.label.grid(row=0, column=6)
-        self.value_label = tk.Label(
-            master, text="0", font=('Helvetica', 10))
-        self.value_label.grid(row=2, column=6)
+        self.label.grid(row=1, column=6)
+        self.canvas.configure(background='lightblue')
+
+        # self.value_label = tk.Label(
+        #     master, text="0", font=('Helvetica', 10))
+        # self.value_label.grid(row=2, column=6)
 
     def create_current_dial(self):
         radius = 90
@@ -105,7 +108,7 @@ class CurrentMeter:
         angle = math.radians(150 + (240 * current / self.max_value))
         x1, y1 = self.center_x + 80 * \
             math.cos(angle), self.center_y + 80 * math.sin(angle)
-        self.value_label.config(text=f"{current}")
+        # self.value_label.config(text=f"{current}")
 
         self.needle = self.canvas.create_line(
             self.center_x, self.center_y, x1, y1, fill="red", width=2)
@@ -114,16 +117,17 @@ class CurrentMeter:
 class Speedometer:
     def __init__(self, master):
         self.canvas = tk.Canvas(master, width=300, height=300)
-        self.canvas.grid(row=0, column=3, rowspan=2, padx=20)
+        self.canvas.grid(row=0, column=3, padx=20, rowspan=2)
         self.center_x, self.center_y = 150, 150
         self.max_value = 3500
         self.needle = self.create_speedometer_dial()
         self.label = tk.Label(master, text="RPM",
                               font=('Helvetica', 12))
-        self.label.grid(row=0, column=3)
-        self.value_label = tk.Label(
-            master, text="0 rpm", font=('Helvetica', 10))
-        self.value_label.grid(row=2, column=3)
+        self.canvas.configure(background='lightblue')
+        self.label.grid(row=1, column=3)
+        # self.value_label = tk.Label(
+        #     master, text="0 rpm", font=('Helvetica', 10))
+        # self.value_label.grid(row=2, column=3)
 
     def create_speedometer_dial(self):
         radius = 90
@@ -158,7 +162,7 @@ class Speedometer:
         angle = math.radians(150 + (240 * speed / self.max_value))
         x1, y1 = self.center_x + 80 * \
             math.cos(angle), self.center_y + 80 * math.sin(angle)
-        self.value_label.config(text=f"{speed}")
+        # self.value_label.config(text=f"{speed}")
 
         self.needle = self.canvas.create_line(
             self.center_x, self.center_y, x1, y1, fill="red", width=2)
@@ -172,11 +176,12 @@ class Graph:
         self.canvas_widget = self.canvas.get_tk_widget()
         # Adjust the line below to use grid instead of pack
         # Adjust the row, column, and rowspan as needed
-        self.canvas_widget.grid(row=3, column=3, rowspan=4, sticky="nsew")
+        self.canvas_widget.grid(row=2, column=3, sticky="nsew")
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Actual Torque')
         self.ax.set_title('Time Series of Actual Torque')
         self.torque_data = {'time': [], 'value': []}
+        # self.canvas.configure(background='lightblue')
 
     def update_graph(self, new_data, timestamp):
         # current_time = datetime.datetime.now()
@@ -197,11 +202,12 @@ class VoltageGraph:
         self.canvas_widget = self.canvas.get_tk_widget()
         # Adjust the line below to use grid instead of pack
         # Adjust the row, column, and rowspan as needed
-        self.canvas_widget.grid(row=3, column=6, rowspan=4, sticky="nsew")
+        self.canvas_widget.grid(row=2, column=6, sticky="nsew")
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Motor Voltage')
         self.ax.set_title('Time Series of Motor Voltage')
         self.voltage_data = {'time': [], 'value': []}
+        # self.canvas.configure(background='lightblue')
 
     def update_graph(self, new_data, timestamp):
         current_time = datetime.datetime.now()
@@ -218,12 +224,12 @@ class VoltageGraph:
 class ThermometerGauge:
     def __init__(self, master):
         self.master = master
-        self.canvas = tk.Canvas(master, width=90, height=310)
+        self.canvas = tk.Canvas(master, width=90, height=350)
         # Adjust grid placement as needed
-        self.canvas.grid(row=1, column=8, padx=20, pady=5)
+        self.canvas.grid(row=1, column=7, padx=20, pady=5, rowspan=2)
         self.value_label = tk.Label(
             master, text="0 °C", font=('Helvetica', 10))
-        self.value_label.grid(row=2, column=8)
+        self.value_label.grid(row=2, column=7)
         self.min_temp = 0  # Minimum temperature value
         self.max_temp = 140  # Maximum temperature value
         self.gauge_height = 320
@@ -231,6 +237,7 @@ class ThermometerGauge:
         self.gauge_x = 20
         self.gauge_y = 5
         self.draw_gauge_background()
+        self.canvas.configure(background='lightblue')
 
     def draw_gauge_background(self):
         # Draw the outer rectangle
@@ -291,6 +298,7 @@ class PitchGauge:
         self.label = tk.Label(self.master, text="Pitch",
                               font=('Helvetica', 12))
         self.label.grid(row=0, column=9)
+        self.canvas.configure(background='lightblue')
 
     def draw_gauge(self):
         # Draw the main square
@@ -339,6 +347,7 @@ class RollGauge:
         self.draw_gauge()
         self.label = tk.Label(self.master, text="Roll", font=('Helvetica', 12))
         self.label.grid(row=1, column=9)
+        self.canvas.configure(background='lightblue')
 
     def draw_gauge(self):
         # Draw the main circle
@@ -351,6 +360,7 @@ class RollGauge:
             # Adjust to make lines horizontal
             angle_rad = math.radians(angle_deg)
             # Calculate positions for lines
+
             line_end_x = self.center_x + self.radius * math.cos(angle_rad)
             line_end_y = self.center_y + self.radius * math.sin(angle_rad)
             # Draw lines extending horizontally to the right
@@ -360,6 +370,7 @@ class RollGauge:
             self.canvas.create_text(
                 line_end_x + 15, line_end_y, text=f"{angle_deg}°", font=("Helvetica", 10), anchor="w")
         # Initial line (flat at angle 0)
+
         self.rotate_line = self.canvas.create_line(
             self.center_x, self.center_y,
             self.center_x + self.radius, self.center_y,
@@ -377,3 +388,79 @@ class RollGauge:
         # Update the line's coordinates to reflect the new roll angle
         self.canvas.coords(self.rotate_line, start_x,
                            start_y, end_x, end_y)
+
+
+class Compass:
+    def __init__(self, master):
+        self.canvas = tk.Canvas(master, width=300, height=300)
+        self.canvas.grid(row=0, column=7, padx=20, pady=20)
+        self.center_x, self.center_y = 150, 150
+        self.radius = 100
+        self.draw_compass_dial()
+        self.needle = self.create_compass_needle()
+        self.canvas.configure(background='lightblue')
+
+    def draw_compass_dial(self):
+        # Create the outer circle
+        self.canvas.create_oval(
+            self.center_x - self.radius, self.center_y - self.radius,
+            self.center_x + self.radius, self.center_y + self.radius,
+            outline="black"
+        )
+        # Adding cardinal directions and degree marks
+        directions = [("N", 0), ("E", 90), ("S", 180), ("W", 270)]
+        for label, angle in directions:
+            # Adjust to start from the top
+            angle_rad = math.radians(angle - 90)
+            text_x = self.center_x + self.radius * 0.85 * math.cos(angle_rad)
+            text_y = self.center_y + self.radius * 0.85 * math.sin(angle_rad)
+            self.canvas.create_text(text_x, text_y, text=label, font=(
+                'Helvetica', 12), anchor=tk.CENTER)
+
+        # Adding degree values every 20 degrees
+        for i in range(0, 360, 20):
+            angle_rad = math.radians(i - 90)  # Adjust to start from the top
+            # Calculate positions for text
+            text_x = self.center_x + self.radius * 0.75 * math.cos(angle_rad)
+            text_y = self.center_y + self.radius * 0.75 * math.sin(angle_rad)
+            # Only draw degree marks for non-cardinal directions
+            if i % 90 != 0:
+                self.canvas.create_text(text_x, text_y, text=f"{i}°", font=(
+                    'Helvetica', 8), anchor=tk.CENTER)
+
+    def create_compass_needle(self):
+        # Create a triangular needle with a red and black part
+        angle_rad = math.radians(-90)  # Pointing North
+        x_end = self.center_x + self.radius * 0.8 * math.cos(angle_rad)
+        y_end = self.center_y + self.radius * 0.8 * math.sin(angle_rad)
+        # Red triangle
+        red_triangle = self.canvas.create_polygon(self.center_x, self.center_y, x_end, y_end,
+                                                  self.center_x - 10 *
+                                                  math.sin(
+                                                      angle_rad), self.center_y + 10 * math.cos(angle_rad),
+                                                  fill="red", outline="black")
+        # Black triangle (opposite direction)
+        black_triangle = self.canvas.create_polygon(self.center_x, self.center_y, x_end, y_end,
+                                                    self.center_x + 10 *
+                                                    math.sin(
+                                                        angle_rad), self.center_y - 10 * math.cos(angle_rad),
+                                                    fill="black", outline="black")
+        return red_triangle, black_triangle
+
+    def update_compass(self, heading_degrees):
+        self.canvas.delete("needle")
+        angle_rad = math.radians(heading_degrees-90)  # Adjusted by 90 degrees
+        x_end = self.center_x + self.radius * 0.8 * math.cos(angle_rad)
+        y_end = self.center_y + self.radius * 0.8 * math.sin(angle_rad)
+        # Red triangle
+        red_triangle = self.canvas.create_polygon(self.center_x, self.center_y, x_end, y_end,
+                                                  self.center_x - 10 *
+                                                  math.sin(
+                                                      angle_rad), self.center_y + 10 * math.cos(angle_rad),
+                                                  fill="red", outline="black", tags="needle")
+        # Black triangle (opposite direction)
+        black_triangle = self.canvas.create_polygon(self.center_x, self.center_y, x_end, y_end,
+                                                    self.center_x + 10 *
+                                                    math.sin(
+                                                        angle_rad), self.center_y - 10 * math.cos(angle_rad),
+                                                    fill="black", outline="black", tags="needle")

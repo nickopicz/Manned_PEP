@@ -6,30 +6,39 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import datetime
 import requests
 import threading
-from New_UI import ThrottleGauge, Speedometer, Graph, VoltageGraph, CurrentMeter, ThermometerGauge, PitchGauge, RollGauge
+from New_UI import ThrottleGauge, Speedometer, Graph, VoltageGraph, CurrentMeter, ThermometerGauge, PitchGauge, RollGauge, Compass
 
 # Your previously defined classes (CANVariableDisplay, ThrottleGauge, etc.) go here
 
 
-class Application:
-    def __init__(self, root):
-        self.root = root
+class Application(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Shore Data Feed")
         self.update_interval = 250  # Update interval in milliseconds
-
+        self.state('zoomed')
+        self.configure(background='lightblue')
         self.init_ui()
 
     def init_ui(self):
         # Initialize your UI components here
-        self.throttle_gauge = ThrottleGauge(self.root)
-        self.current_meter = CurrentMeter(self.root)
-        self.speedometer = Speedometer(self.root)
-        self.graph = Graph(self.root)
-        self.voltage_graph = VoltageGraph(self.root)
-        self.thermometer = ThermometerGauge(self.root)
-        self.pitch = PitchGauge(self.root)
-        self.roll = RollGauge(self.root)
+        self.throttle_gauge = ThrottleGauge(self)
+        self.current_meter = CurrentMeter(self)
+        self.speedometer = Speedometer(self)
+        self.graph = Graph(self)
+        self.voltage_graph = VoltageGraph(self)
+        self.thermometer = ThermometerGauge(self)
+        self.pitch = PitchGauge(self)
+        self.roll = RollGauge(self)
+        self.compass = Compass(self)
         # Start the data update loop
         self.update_data_loop()
+
+    def on_closing(self):
+        print("Closing application...")
+
+        # Destroy the Tkinter app window
+        self.destroy()
 
     def fetch_data(self):
         # Replace 'http://yourserver/get_data' with the actual URL of your API
@@ -61,6 +70,7 @@ class Application:
             self.thermometer.update_gauge(data['motor_temp'])
             self.roll.update_gauge(data['roll'])
             self.pitch.update_gauge(data['pitch'])
+            self.compass.update_compass(data['heading'])
             # self.accel.update_vectors(data['ax'], data['ay'], data['az'])
 
             # And so on for other UI components as necessary
@@ -71,14 +81,15 @@ class Application:
         # Update the UI with this new data
         self.update_ui(data)
         # Schedule the next update
-        self.root.after(self.update_interval, self.update_data_loop)
+        self.after(self.update_interval, self.update_data_loop)
 
 
 def main():
-    root = tk.Tk()
-    root.title("Data Monitoring Application")
-    app = Application(root)
-    root.mainloop()
+    app = Application()
+    try:
+        app.mainloop()
+    except KeyboardInterrupt:
+        app.on_closing()
 
 
 if __name__ == "__main__":
