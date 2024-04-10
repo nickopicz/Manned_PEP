@@ -5,9 +5,45 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import datetime
 import numpy as np
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.figure import Figure
+
+
+class CANVariableDisplay:
+    def __init__(self, master):
+        self.labels = {}
+        self.descriptors = [
+            'Actual speed', 'RMS motor Current', 'DC Bus Voltage',
+            'Actual Torque', 'Motor measurements: DC bus current'
+        ]
+        self.create_labels(master)
+
+    def create_labels(self, master):
+        for row_index, desc in enumerate(self.descriptors, start=1):
+            ttk.Separator(master, orient='horizontal').grid(
+                row=row_index * 2 - 1, columnspan=2, sticky='ew')
+            tk.Label(master, text=desc).grid(row=row_index *
+                                             2, column=0, sticky='w', padx=10, pady=5)
+            value_label = tk.Label(master, text="N/A", font=('Helvetica', 10))
+            value_label.grid(row=row_index * 2, column=1,
+                             sticky='e', padx=10)
+            self.labels[desc] = value_label
+
+    def update_display(self, frame_data):
+        # Extract the nested 'data_values' dictionary, if it exists
+        data_values = frame_data.get('data_values', {})
+
+        # Now iterate over the items in the data_values dictionary
+        for desc, value_tuple in data_values.items():
+            # Extract the first element of the tuple, which is the actual value
+            value = value_tuple[0]
+            if desc == 'Actual currents: iq':
+                value = abs(value)
+            if desc in self.labels:
+                self.labels[desc].config(text=f"{value}")
+            else:
+                continue
+                # print(f"Label for {desc} not found in UI")
 
 
 class ThrottleGauge:
@@ -24,7 +60,8 @@ class ThrottleGauge:
         self.gauge_y = 25
         self.current_value = 0  # This will now store the real value, not the percentage
         self.draw_gauge_background()
-        self.value_label = tk.Label(master, text="0", font=('Helvetica', 10))
+        self.value_label = tk.Label(
+            master, text="50 %", font=('Helvetica', 10))
         self.value_label.grid(row=4, column=8)
         # Draw the initial oval
         # self.temp_oval = self.canvas.create_oval(
@@ -34,6 +71,25 @@ class ThrottleGauge:
         # Draw the outer rectangle
         self.canvas.create_rectangle(self.gauge_x, self.gauge_y, self.gauge_x +
                                      self.gauge_width, self.gauge_y + self.gauge_height, outline="black")
+        real_value = 1400
+        self.current_value = max(self.min_real_value, min(
+            self.max_real_value, real_value))
+        # Convert the real value to a percentage of the gauge scale
+        percentage = ((self.current_value - self.min_real_value) /
+                      (self.max_real_value - self.min_real_value)) * 100
+        # Update the label with the real value
+
+        # Calculate the oval's new vertical position based on the percentage
+        oval_bottom_y = self.gauge_y + self.gauge_height - \
+            ((percentage / 100) * self.gauge_height)
+        oval_top_y = oval_bottom_y - self.gauge_width
+        # Move the oval to the new position
+        # self.canvas.coords(self.temp_oval, self.gauge_x, oval_top_y,
+        #                    self.gauge_x + self.gauge_width, oval_bottom_y)
+        # Ensure the fill rectangle and oval are redrawn to reflect the new value
+        self.canvas.delete("fill")
+        self.canvas.create_rectangle(self.gauge_x + 1, self.gauge_y + self.gauge_height,
+                                     self.gauge_x + self.gauge_width - 1, oval_bottom_y, fill="yellow", tags="fill")
 
     def update_gauge(self, real_value):
         # Ensure value is within the real bounds
@@ -55,7 +111,7 @@ class ThrottleGauge:
         # Ensure the fill rectangle and oval are redrawn to reflect the new value
         self.canvas.delete("fill")
         self.canvas.create_rectangle(self.gauge_x + 1, self.gauge_y + self.gauge_height,
-                                     self.gauge_x + self.gauge_width - 1, oval_bottom_y, fill="yellow", tags="fill")
+                                     self.gauge_x + self.gauge_width - 1, oval_bottom_y, fill="green", tags="fill")
 
 
 class CurrentMeter:
@@ -63,7 +119,7 @@ class CurrentMeter:
         self.canvas = tk.Canvas(master, width=300, height=300)
         self.canvas.grid(row=0, column=6, rowspan=2, padx=20)
         self.center_x, self.center_y = 150, 150
-        self.max_value = 500
+        self.max_value = 90
         self.needle = self.create_current_dial()
         self.label = tk.Label(master, text="DC Current Supply (Amps)",
                               font=('Helvetica', 12))
@@ -71,6 +127,7 @@ class CurrentMeter:
         self.value_label = tk.Label(
             master, text="0", font=('Helvetica', 10))
         self.value_label.grid(row=2, column=6)
+        self.update_dial(41)
 
     def create_current_dial(self):
         radius = 90
@@ -124,6 +181,7 @@ class Speedometer:
         self.value_label = tk.Label(
             master, text="0 rpm", font=('Helvetica', 10))
         self.value_label.grid(row=2, column=3)
+        self.update_dial()
 
     def create_speedometer_dial(self):
         radius = 90
@@ -153,7 +211,7 @@ class Speedometer:
             math.cos(angle), self.center_y + 80 * math.sin(angle)
         return self.canvas.create_line(self.center_x, self.center_y, x1, y1, fill="red", width=2)
 
-    def update_dial(self, speed):
+    def update_dial(self, speed=1200):
         self.canvas.delete(self.needle)
         angle = math.radians(150 + (240 * speed / self.max_value))
         x1, y1 = self.center_x + 80 * \
@@ -170,18 +228,19 @@ class Graph:
             figsize=(5, 4))  # Adjust the figsize here
         self.canvas = FigureCanvasTkAgg(self.fig, master=master)
         self.canvas_widget = self.canvas.get_tk_widget()
+
         # Adjust the line below to use grid instead of pack
         # Adjust the row, column, and rowspan as needed
         self.canvas_widget.grid(row=3, column=3, rowspan=4, sticky="nsew")
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Actual Torque')
         self.ax.set_title('Time Series of Actual Torque')
-        self.torque_data = {'time': [], 'value': []}
+        self.torque_data = {'time': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], 'value': [0.0, 1, 2.5, 5.5, 6.0, 7.8, 9.2, 10.3, 12.9, 13.1, 15.2, 16.9, 18.1, 19.9, 21.1, 22.3, 24.1, 25.9, 27.9, 28.5]
+                            }
+        self.update_graph()
 
-    def update_graph(self, new_data, timestamp):
-        # current_time = datetime.datetime.now()
-        self.torque_data['time'].append(timestamp)
-        self.torque_data['value'].append(new_data)
+    def update_graph(self):
+        # current_time = datetime.datetime.now(
         self.ax.clear()
         self.ax.plot(self.torque_data['time'], self.torque_data['value'])
         self.ax.set_xlabel('Time')
@@ -201,12 +260,11 @@ class VoltageGraph:
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Motor Voltage')
         self.ax.set_title('Time Series of Motor Voltage')
-        self.voltage_data = {'time': [], 'value': []}
+        self.voltage_data = {'time': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], 'value': [52.3, 52.3, 53.3, 52.1, 52.3, 52.3, 52.3, 52.3, 52.1, 52.3, 52.4, 52.1, 52.4, 52.3, 52.3, 52.3, 52.3, 52.3, 52.3, 52.3]
+                             }
+        self.update_graph()
 
-    def update_graph(self, new_data, timestamp):
-        current_time = datetime.datetime.now()
-        self.voltage_data['time'].append(timestamp)
-        self.voltage_data['value'].append(new_data)
+    def update_graph(self):
 
         self.ax.clear()
         self.ax.plot(self.voltage_data['time'], self.voltage_data['value'])
@@ -257,6 +315,15 @@ class ThermometerGauge:
             self.canvas.create_text(
                 self.gauge_x + self.gauge_width + 10, y, text=f"{temp}°C", anchor="w")
 
+            current_temp = 40
+            percentage = (current_temp - self.min_temp) / \
+                (self.max_temp - self.min_temp)
+            fill_height = percentage * self.gauge_height
+
+            self.canvas.create_rectangle(self.gauge_x + 1, self.gauge_y + self.gauge_height - fill_height,
+                                         self.gauge_x + self.gauge_width - 1, self.gauge_y + self.gauge_height,
+                                         fill="green", tags="temp_fill")
+
     def update_gauge(self, current_temp):
         # Validate current temperature
         current_temp = max(self.min_temp, min(self.max_temp, current_temp))
@@ -278,102 +345,46 @@ class ThermometerGauge:
                                          fill="green", tags="temp_fill")
 
 
-class PitchGauge:
+class AccelerationDisplay:
     def __init__(self, master):
-        self.master = master
-        self.canvas = tk.Canvas(master, width=330, height=300)
-        self.canvas.grid(row=0, column=9, padx=20, pady=20)
-        self.center_x, self.center_y = 150, 150
-        self.side_length = 280  # Set the side length for the square
-        self.half_side = self.side_length / 2  # Half of the side length
-        self.max_pitch = 20  # Maximum pitch value in degrees
-        self.draw_gauge()
-        self.label = tk.Label(self.master, text="Pitch",
-                              font=('Helvetica', 12))
-        self.label.grid(row=0, column=9)
+        # Creating the figure and 3D axes
+        self.fig = Figure(figsize=(4, 4))
+        self.ax = self.fig.add_subplot(111, projection='3d')
 
-    def draw_gauge(self):
-        # Draw the main square
-        self.canvas.create_rectangle(self.center_x - self.half_side, self.center_y - self.half_side,
-                                     self.center_x + self.half_side, self.center_y + self.half_side,
-                                     outline="black")
-        # Initial horizon line (flat)
-        self.horizon = self.canvas.create_line(self.center_x - self.half_side, self.center_y,
-                                               self.center_x + self.half_side, self.center_y,
-                                               fill="red", width=2)
-        # Create the blue fill for 'water' below the horizon
-        self.blue_fill = self.canvas.create_polygon(self.center_x - self.half_side, self.center_y,
-                                                    self.center_x + self.half_side, self.center_y,
-                                                    self.center_x + self.half_side, self.center_y + self.half_side,
-                                                    self.center_x - self.half_side, self.center_y + self.half_side,
-                                                    fill="blue")
-        # Degree markers and labels
-        for i in range(-4, 5):  # -20 to +20 degrees in 5-degree increments
-            # Calculate Y offset based on degree
-            line_y = self.center_y - (i * self.half_side / 4)
-            self.canvas.create_line(self.center_x + self.half_side, line_y,
-                                    self.center_x + self.half_side + 10, line_y,
-                                    fill="black")
-            self.canvas.create_text(self.center_x + self.half_side + 15, line_y,
-                                    text=f"{i*5}°", font=("Helvetica", 8), anchor="w")
-        self.update_gauge(0)  # Start with a flat horizon
+        # Setting the limits of the 3D axes
+        self.ax.set_xlim([-10, 10])
+        self.ax.set_ylim([-10, 10])
+        self.ax.set_zlim([-10, 10])
 
-    def update_gauge(self, pitch):
-        y_offset = (pitch / self.max_pitch) * self.half_side
-        new_y = self.center_y - y_offset
-        self.canvas.coords(self.horizon, self.center_x - self.half_side, new_y,
-                           self.center_x + self.half_side, new_y)
-        self.canvas.coords(self.blue_fill, self.center_x - self.half_side, new_y,
-                           self.center_x + self.half_side, new_y,
-                           self.center_x + self.half_side, self.center_y + self.half_side,
-                           self.center_x - self.half_side, self.center_y + self.half_side)
+        # Labeling the axes
+        self.ax.set_xlabel('X acceleration')
+        self.ax.set_ylabel('Y acceleration')
+        self.ax.set_zlabel('Z acceleration')
 
+        # Creating a canvas and adding it to the Tkinter window
+        self.canvas = FigureCanvasTkAgg(self.fig, master=master)
+        self.canvas_widget = self.canvas.get_tk_widget()
+        self.canvas_widget.grid(row=0, column=7)
 
-class RollGauge:
-    def __init__(self, master):
-        self.master = master
-        self.canvas = tk.Canvas(master, width=330, height=300)
-        self.canvas.grid(row=1, column=9, padx=20, pady=20)
-        self.center_x, self.center_y = 150, 150
-        self.radius = 140  # Radius of the gauge
-        self.draw_gauge()
-        self.label = tk.Label(self.master, text="Roll", font=('Helvetica', 12))
-        self.label.grid(row=1, column=9)
+        # This will store the arrow objects
+        self.arrows = None
 
-    def draw_gauge(self):
-        # Draw the main circle
-        self.canvas.create_oval(self.center_x - self.radius, self.center_y - self.radius,
-                                self.center_x + self.radius, self.center_y + self.radius,
-                                outline="black")
-        # Degree markers and labels horizontally oriented at the right of the gauge
-        for i in range(-4, 5):  # -20 to +20 degrees in 5-degree increments
-            angle_deg = i * 5
-            # Adjust to make lines horizontal
-            angle_rad = math.radians(angle_deg)
-            # Calculate positions for lines
-            line_end_x = self.center_x + self.radius * math.cos(angle_rad)
-            line_end_y = self.center_y + self.radius * math.sin(angle_rad)
-            # Draw lines extending horizontally to the right
-            self.canvas.create_line(
-                line_end_x, line_end_y, line_end_x + 10, line_end_y, fill="black")
-            # Draw labels to the right of the lines
-            self.canvas.create_text(
-                line_end_x + 15, line_end_y, text=f"{angle_deg}°", font=("Helvetica", 10), anchor="w")
-        # Initial line (flat at angle 0)
-        self.rotate_line = self.canvas.create_line(
-            self.center_x, self.center_y,
-            self.center_x + self.radius, self.center_y,
-            fill="red", width=2)
+    def update_vectors(self, acc_x, acc_y, acc_z):
+        # Clear existing arrows
+        if self.arrows:
+            for arrow in self.arrows:
+                arrow.remove()
 
-    def update_gauge(self, roll):
-        # Calculate new endpoint based on the roll angle
-        # Adjust by -90 degrees to make line horizontal
-        angle_rad = math.radians(roll*-1)
+        # Redefine arrows based on the current data
+        self.arrows = []
+        origin = np.array([0, 0, 0])
+        vectors = np.array(
+            [[acc_x, 0, 0], [0, acc_y, 0], [0, 0, acc_z]])
 
-        start_x = self.center_x - self.radius*math.cos(angle_rad)
-        start_y = self.center_y - self.radius*math.sin(angle_rad)
-        end_x = self.center_x + self.radius * math.cos(angle_rad)
-        end_y = self.center_y + self.radius * math.sin(angle_rad)
-        # Update the line's coordinates to reflect the new roll angle
-        self.canvas.coords(self.rotate_line, start_x,
-                           start_y, end_x, end_y)
+        # Colors for each vector
+        colors = ['r', 'g', 'b']
+        for vec, color in zip(vectors, colors):
+            self.arrows.append(self.ax.quiver(
+                *origin, *vec, color=color, length=np.linalg.norm(vec), pivot='tail'))
+
+        self.canvas.draw()

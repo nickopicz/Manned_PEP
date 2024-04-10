@@ -21,3 +21,4 @@ class DataEntry(db.Model):
     ax = db.Column(db.Float)
     ay = db.Column(db.Float)
     az = db.Column(db.Float)
+    heading = db.Column(db.Float)

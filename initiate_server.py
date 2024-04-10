@@ -42,7 +42,8 @@ def put_data():
         yaw=data['yaw'],
         ax=data['ax'],
         ay=data['ay'],
-        az=data['az']
+        az=data['az'],
+        heading=data['heading']
     )
 
     # Insert the new entry into the database
@@ -77,7 +78,8 @@ def get_data():
             'yaw': entry.yaw,
             'ax': entry.ax,
             'ay': entry.ay,
-            'az': entry.az
+            'az': entry.az,
+            'heading': entry.heading
         }
         return jsonify(entry_data)
     else:
