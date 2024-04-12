@@ -15,6 +15,7 @@ class DataEntry(db.Model):
     torque = db.Column(db.Float)
     motor_temp = db.Column(db.Float)
     current = db.Column(db.Float)
+    power = db.Column(db.Float)
     pitch = db.Column(db.Float)
     roll = db.Column(db.Float)
     yaw = db.Column(db.Float)

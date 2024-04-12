@@ -14,19 +14,19 @@ class ThrottleGauge:
     def __init__(self, master):
         # Existing initialization code
         self.master = master
-        self.canvas = tk.Canvas(master, width=100, height=300)
-        self.canvas.grid(row=1, column=8, padx=20, pady=10, rowspan=2)
+        self.canvas = tk.Canvas(master, width=50, height=300)
+        self.canvas.grid(row=1, column=4, rowspan=2)
         self.min_real_value = 170  # Minimum real throttle value
         self.max_real_value = 2810  # Maximum real throttle value
         self.gauge_height = 250
-        self.gauge_width = 50
+        self.gauge_width = 20
         self.gauge_x = 25
         self.gauge_y = 25
         self.current_value = 0  # This will now store the real value, not the percentage
         self.draw_gauge_background()
         self.canvas.configure(background='lightblue')
         self.value_label = tk.Label(master, text="0 %", font=('Helvetica', 10))
-        self.value_label.grid(row=2, column=8)
+        self.value_label.grid(row=2, column=4)
         # Draw the initial oval
         # self.temp_oval = self.canvas.create_oval(
         #     5, 5, 5, 5, fill="blue", outline="black")
@@ -62,13 +62,13 @@ class ThrottleGauge:
 class CurrentMeter:
     def __init__(self, master):
         self.canvas = tk.Canvas(master, width=300, height=300)
-        self.canvas.grid(row=0, column=6, rowspan=2)
+        self.canvas.grid(row=0, column=2, rowspan=2)
         self.center_x, self.center_y = 150, 150
         self.max_value = 500
         self.needle = self.create_current_dial()
         self.label = tk.Label(master, text="DC Current Supply (Amps)",
                               font=('Helvetica', 12))
-        self.label.grid(row=1, column=6)
+        self.label.grid(row=1, column=2)
         self.canvas.configure(background='lightblue')
 
         # self.value_label = tk.Label(
@@ -117,14 +117,14 @@ class CurrentMeter:
 class Speedometer:
     def __init__(self, master):
         self.canvas = tk.Canvas(master, width=300, height=300)
-        self.canvas.grid(row=0, column=3, padx=20, rowspan=2)
+        self.canvas.grid(row=0, column=1, rowspan=2)
         self.center_x, self.center_y = 150, 150
         self.max_value = 3500
         self.needle = self.create_speedometer_dial()
         self.label = tk.Label(master, text="RPM",
                               font=('Helvetica', 12))
         self.canvas.configure(background='lightblue')
-        self.label.grid(row=1, column=3)
+        self.label.grid(row=1, column=1)
         # self.value_label = tk.Label(
         #     master, text="0 rpm", font=('Helvetica', 10))
         # self.value_label.grid(row=2, column=3)
@@ -176,7 +176,7 @@ class Graph:
         self.canvas_widget = self.canvas.get_tk_widget()
         # Adjust the line below to use grid instead of pack
         # Adjust the row, column, and rowspan as needed
-        self.canvas_widget.grid(row=2, column=3, sticky="nsew")
+        self.canvas_widget.grid(row=2, column=2, sticky="nsew")
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Actual Torque')
         self.ax.set_title('Time Series of Actual Torque')
@@ -185,7 +185,7 @@ class Graph:
 
     def update_graph(self, new_data, timestamp):
         # current_time = datetime.datetime.now()
-        self.torque_data['time'].append(timestamp)
+        self.torque_data['time'].append(timestamp*0.001)
         self.torque_data['value'].append(new_data)
         self.ax.clear()
         self.ax.plot(self.torque_data['time'], self.torque_data['value'])
@@ -202,16 +202,16 @@ class VoltageGraph:
         self.canvas_widget = self.canvas.get_tk_widget()
         # Adjust the line below to use grid instead of pack
         # Adjust the row, column, and rowspan as needed
-        self.canvas_widget.grid(row=2, column=6, sticky="nsew")
+        self.canvas_widget.grid(row=2, column=1, sticky="nsew")
         self.ax.set_xlabel('Time')
-        self.ax.set_ylabel('Motor Voltage')
-        self.ax.set_title('Time Series of Motor Voltage')
+        self.ax.set_ylabel('Motor Current')
+        self.ax.set_title('Time Series of Motor Current')
         self.voltage_data = {'time': [], 'value': []}
         # self.canvas.configure(background='lightblue')
 
     def update_graph(self, new_data, timestamp):
         current_time = datetime.datetime.now()
-        self.voltage_data['time'].append(timestamp)
+        self.voltage_data['time'].append(timestamp*0.001)
         self.voltage_data['value'].append(new_data)
 
         self.ax.clear()
@@ -226,10 +226,10 @@ class ThermometerGauge:
         self.master = master
         self.canvas = tk.Canvas(master, width=90, height=350)
         # Adjust grid placement as needed
-        self.canvas.grid(row=1, column=7, padx=20, pady=5, rowspan=2)
+        self.canvas.grid(row=1, column=3, rowspan=2)
         self.value_label = tk.Label(
             master, text="0 °C", font=('Helvetica', 10))
-        self.value_label.grid(row=2, column=7)
+        self.value_label.grid(row=2, column=3)
         self.min_temp = 0  # Minimum temperature value
         self.max_temp = 140  # Maximum temperature value
         self.gauge_height = 320
@@ -289,7 +289,7 @@ class PitchGauge:
     def __init__(self, master):
         self.master = master
         self.canvas = tk.Canvas(master, width=330, height=300)
-        self.canvas.grid(row=0, column=9, padx=20, pady=20)
+        self.canvas.grid(row=0, column=0, padx=20, pady=20)
         self.center_x, self.center_y = 150, 150
         self.side_length = 280  # Set the side length for the square
         self.half_side = self.side_length / 2  # Half of the side length
@@ -297,7 +297,7 @@ class PitchGauge:
         self.draw_gauge()
         self.label = tk.Label(self.master, text="Pitch",
                               font=('Helvetica', 12))
-        self.label.grid(row=0, column=9)
+        self.label.grid(row=0, column=0)
         self.canvas.configure(background='lightblue')
 
     def draw_gauge(self):
@@ -341,12 +341,12 @@ class RollGauge:
     def __init__(self, master):
         self.master = master
         self.canvas = tk.Canvas(master, width=330, height=300)
-        self.canvas.grid(row=1, column=9, padx=20, pady=20)
+        self.canvas.grid(row=1, column=0)
         self.center_x, self.center_y = 150, 150
         self.radius = 140  # Radius of the gauge
         self.draw_gauge()
         self.label = tk.Label(self.master, text="Roll", font=('Helvetica', 12))
-        self.label.grid(row=1, column=9)
+        self.label.grid(row=1, column=0)
         self.canvas.configure(background='lightblue')
 
     def draw_gauge(self):
@@ -393,7 +393,7 @@ class RollGauge:
 class Compass:
     def __init__(self, master):
         self.canvas = tk.Canvas(master, width=300, height=300)
-        self.canvas.grid(row=0, column=7, padx=20, pady=20)
+        self.canvas.grid(row=0, column=3, padx=20, pady=20)
         self.center_x, self.center_y = 150, 150
         self.radius = 100
         self.draw_compass_dial()
@@ -464,3 +464,29 @@ class Compass:
                                                     math.sin(
                                                         angle_rad), self.center_y - 10 * math.cos(angle_rad),
                                                     fill="black", outline="black", tags="needle")
+
+
+class PowerGraph:
+    def __init__(self, master):
+        self.fig, self.ax = plt.subplots(
+            figsize=(5, 4))  # Adjust the figsize here
+        self.canvas = FigureCanvasTkAgg(self.fig, master=master)
+        self.canvas_widget = self.canvas.get_tk_widget()
+        # Adjust the line below to use grid instead of pack
+        # Adjust the row, column, and rowspan as needed
+        self.canvas_widget.grid(row=2, column=0, sticky="nsew")
+        self.ax.set_xlabel('Time')
+        self.ax.set_ylabel('Motor Power')
+        self.ax.set_title('Time Series of Motor Power')
+        self.power_data = {'time': [], 'value': []}
+        # self.canvas.configure(background='lightblue')
+
+    def update_graph(self, new_data, timestamp):
+        # current_time = datetime.datetime.now()
+        self.power_data['time'].append(timestamp*0.001)
+        self.power_data['value'].append(new_data)
+        self.ax.clear()
+        self.ax.plot(self.power_data['time'], self.power_data['value'])
+        self.ax.set_xlabel('Time')
+        self.ax.set_ylabel('Motor Power')
+        self.canvas.draw()

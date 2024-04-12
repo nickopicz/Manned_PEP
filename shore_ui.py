@@ -6,7 +6,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import datetime
 import requests
 import threading
-from New_UI import ThrottleGauge, Speedometer, Graph, VoltageGraph, CurrentMeter, ThermometerGauge, PitchGauge, RollGauge, Compass
+from New_UI import ThrottleGauge, Speedometer, Graph, VoltageGraph, CurrentMeter, ThermometerGauge, PitchGauge, RollGauge, Compass, PowerGraph
 
 # Your previously defined classes (CANVariableDisplay, ThrottleGauge, etc.) go here
 
@@ -31,6 +31,7 @@ class Application(tk.Tk):
         self.pitch = PitchGauge(self)
         self.roll = RollGauge(self)
         self.compass = Compass(self)
+        self.power = PowerGraph(self)
         # Start the data update loop
         self.update_data_loop()
 
@@ -71,6 +72,7 @@ class Application(tk.Tk):
             self.roll.update_gauge(data['roll'])
             self.pitch.update_gauge(data['pitch'])
             self.compass.update_compass(data['heading'])
+            self.power.update_graph(data['power'], current_time)
             # self.accel.update_vectors(data['ax'], data['ay'], data['az'])
 
             # And so on for other UI components as necessary

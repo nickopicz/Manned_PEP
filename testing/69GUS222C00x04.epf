@@ -133,7 +133,7 @@
 
 -->
 <!--
-   Created from           :C:\dev\apps\Nicolaus\69GUS222CXX\trunk\software\output\raw_od.xml
+   Created from           :C:\dev\ryan.kleiman\plasma\69GUS222CXX\software\output\raw_od.xml
    And                    :SAddressMap.xml
    Transformed by         :basetrans.xsl
    addressmap Group count :169
@@ -151,7 +151,7 @@
    ExternalInductance   = 1.0
    ExternalFlux         = 10
 -->
-<Product Name="" ArticleNumber="69GUS222C00x03" CustomerSpecific="Stevens University" TimeStamp="1683815975" TimeStampUF="Thu May 11 10:39:35 2023" BasedOnPlasmaLabel="PLASMA_3_3_004_04_RTM" Checksum="0xE4ED">
+<Product Name="" ArticleNumber="69GUS222C00x04" CustomerSpecific="Stevens University" TimeStamp="1712844315" TimeStampUF="Thu Apr 11 10:05:15 2024" BasedOnPlasmaLabel="PLASMA_3_3_004_04_RTM" Checksum="0xEDB1">
 <Configuration>
 <CANopen BitRate="500U">
 <NodeID HWID0Value="6U" HWID1Value="6U" HWID2Value="6U" HWID3Value="6U" />
@@ -2816,7 +2816,7 @@
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="ModeratelyHighLevel" Index="0x2030" SubIndex="4" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="4000    " Factor="0.01" Unit="Vdc">
+<Parameter SymbolName="ModeratelyHighLevel" Index="0x2030" SubIndex="4" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="110% of 48     * 100  " Factor="0.01" Unit="Vdc">
 <Description><![CDATA[
 
         If Dc Voltage exceeds this level, a warning is set, and currents
@@ -2834,7 +2834,7 @@
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="ModeratelyLowLevel" Index="0x2030" SubIndex="6" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="2800    " Factor="0.01" Unit="Vdc">
+<Parameter SymbolName="ModeratelyLowLevel" Index="0x2030" SubIndex="6" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="75% of 48     * 100  " Factor="0.01" Unit="Vdc">
 <Description><![CDATA[
 
         If DC Voltage goes below this level, a warning is set, and currents starts
@@ -2845,7 +2845,7 @@
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="LowLevel" Index="0x2030" SubIndex="7" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="2400    " Factor="0.01" Unit="Vdc">
+<Parameter SymbolName="LowLevel" Index="0x2030" SubIndex="7" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="50% of 48     * 100  " Factor="0.01" Unit="Vdc">
 <Description><![CDATA[
 
        If DC Voltage goes below this level, the application trips.
@@ -2913,7 +2913,7 @@
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="ChargingLevel" Index="0x2030" SubIndex="17" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="85% of 2800    " Factor="0.01" Unit="Vdc">
+<Parameter SymbolName="ChargingLevel" Index="0x2030" SubIndex="17" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="85% of (0.75 * 48     * 100  )" Factor="0.01" Unit="Vdc">
 <Description><![CDATA[
 
         The voltage level when charging is said to be finished and "switch on" becomes allowed.
@@ -3149,14 +3149,14 @@
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="ModeratelyHighLevel" Index="0x2040" SubIndex="5" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="-32768" MaximumValue="32767" DefaultValue="145" Factor="1" Unit="degC">
+<Parameter SymbolName="ModeratelyHighLevel" Index="0x2040" SubIndex="5" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="-32768" MaximumValue="32767" DefaultValue="100" Factor="1" Unit="degC">
 <Description><![CDATA[
 
         Level at which a Moderately High Temp Status will become active.
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="ReductionEndHighLevel" Index="0x2040" SubIndex="6" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="-32768" MaximumValue="32767" DefaultValue="165" Factor="1" Unit="degC">
+<Parameter SymbolName="ReductionEndHighLevel" Index="0x2040" SubIndex="6" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="-32768" MaximumValue="32767" DefaultValue="120" Factor="1" Unit="degC">
 <Description><![CDATA[
 
         Temperature level at which the linear current reduction will be at full reduction (no current) due to high temperature.<br/>
@@ -3167,7 +3167,7 @@
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="HighLevel" Index="0x2040" SubIndex="7" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="-32768" MaximumValue="32767" DefaultValue="180" Factor="1" Unit="degC">
+<Parameter SymbolName="HighLevel" Index="0x2040" SubIndex="7" ObjectType="VAR" DataType="INTEGER16" Visibility="OEM" AccessType="rw" MinimumValue="-32768" MaximumValue="32767" DefaultValue="130" Factor="1" Unit="degC">
 <Description><![CDATA[
 
         Level at which a High Temp Status will become active.
@@ -3472,14 +3472,14 @@
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="OpenLoopCurrent" Index="0x2051" SubIndex="3" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="(425) / 2" Factor="1" Unit="Arms">
+<Parameter SymbolName="OpenLoopCurrent" Index="0x2051" SubIndex="3" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="(550) / 2" Factor="1" Unit="Arms">
 <Description><![CDATA[
 
        The d-axis current to apply when pulling motor without angle feedback.
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="AccAndBrakeCurrent" Index="0x2051" SubIndex="4" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="(425) / 10" Factor="1" Unit="Arms">
+<Parameter SymbolName="AccAndBrakeCurrent" Index="0x2051" SubIndex="4" ObjectType="VAR" DataType="INTEGER16" Visibility="Operator" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="(550) / 10" Factor="1" Unit="Arms">
 <Description><![CDATA[
 
        The AC current to apply when accelerating and decelerating motor.
@@ -3949,7 +3949,7 @@
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="Sensor1mVOffset" Index="0x2053" SubIndex="36" ObjectType="VAR" DataType="INTEGER16" Visibility="Internal" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="3000L" Factor="1" Unit="mV">
+<Parameter SymbolName="Sensor1mVOffset" Index="0x2053" SubIndex="36" ObjectType="VAR" DataType="INTEGER16" Visibility="Internal" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="3015L" Factor="1" Unit="mV">
 <Description><![CDATA[
 
         Signal1 offset default value in millvolt. <br/>
@@ -3960,7 +3960,7 @@
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="Sensor2mVOffset" Index="0x2053" SubIndex="37" ObjectType="VAR" DataType="INTEGER16" Visibility="Internal" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="3000L" Factor="1" Unit="mV">
+<Parameter SymbolName="Sensor2mVOffset" Index="0x2053" SubIndex="37" ObjectType="VAR" DataType="INTEGER16" Visibility="Internal" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="3015L" Factor="1" Unit="mV">
 <Description><![CDATA[
 
         Signal2 offset default value in millvolt. <br/>
@@ -3971,7 +3971,7 @@
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="Sensor1mVAmplitude" Index="0x2053" SubIndex="38" ObjectType="VAR" DataType="INTEGER16" Visibility="Internal" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="900L" Factor="1" Unit="mV">
+<Parameter SymbolName="Sensor1mVAmplitude" Index="0x2053" SubIndex="38" ObjectType="VAR" DataType="INTEGER16" Visibility="Internal" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="950L" Factor="1" Unit="mV">
 <Description><![CDATA[
 
         Signal1 amplitude default value in millvolt. The peak to peak value is 2 * Sensor1mVAmplitude. <br/>
@@ -3982,7 +3982,7 @@
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="Sensor2mVAmplitude" Index="0x2053" SubIndex="39" ObjectType="VAR" DataType="INTEGER16" Visibility="Internal" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="900L" Factor="1" Unit="mV">
+<Parameter SymbolName="Sensor2mVAmplitude" Index="0x2053" SubIndex="39" ObjectType="VAR" DataType="INTEGER16" Visibility="Internal" AccessType="rw" MinimumValue="0" MaximumValue="32767" DefaultValue="950L" Factor="1" Unit="mV">
 <Description><![CDATA[
 
         Signal1 amplitude default value in millvolt. The peak to peak value is 2 * Sensor2mVAmplitude. <br/>
@@ -11779,7 +11779,7 @@ and increment the counter that closest represent the operation point in that sam
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="ApplicationSwArticleNumber" Index="0x5F01" SubIndex="4" ObjectType="VAR" DataType="VISIBLE_STRING" Visibility="Operator" AccessType="ro" MinimumValue="-" MaximumValue="-" DefaultValue="69GUS222C00x03" Factor="1" Unit="-">
+<Parameter SymbolName="ApplicationSwArticleNumber" Index="0x5F01" SubIndex="4" ObjectType="VAR" DataType="VISIBLE_STRING" Visibility="Operator" AccessType="ro" MinimumValue="-" MaximumValue="-" DefaultValue="69GUS222C00x04" Factor="1" Unit="-">
 <Description><![CDATA[
 
        "ASCII" according to ISO 8859-1.<br/>
@@ -11788,7 +11788,7 @@ and increment the counter that closest represent the operation point in that sam
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="ApplicationSwBuildTime" Index="0x5F01" SubIndex="5" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" MinimumValue="0" MaximumValue="4294967295" DefaultValue="1683815975" Factor="1" Unit="see Description">
+<Parameter SymbolName="ApplicationSwBuildTime" Index="0x5F01" SubIndex="5" ObjectType="VAR" DataType="UNSIGNED32" Visibility="Operator" AccessType="ro" MinimumValue="0" MaximumValue="4294967295" DefaultValue="1712844315" Factor="1" Unit="see Description">
 <Description><![CDATA[
 
        Number of seconds since 1970-01-01.
@@ -11809,14 +11809,14 @@ and increment the counter that closest represent the operation point in that sam
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="ApplicationSwSvnRevision" Index="0x5F01" SubIndex="8" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" MinimumValue="0" MaximumValue="65535" DefaultValue="173439U" Factor="1" Unit="-">
+<Parameter SymbolName="ApplicationSwSvnRevision" Index="0x5F01" SubIndex="8" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" MinimumValue="0" MaximumValue="65535" DefaultValue="0U" Factor="1" Unit="-">
 <Description><![CDATA[
 
        Subversion revision. Data generated by compiler at compile time.
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="ApplicationSwSvnModifiedFiles" Index="0x5F01" SubIndex="9" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" MinimumValue="0" MaximumValue="65535" DefaultValue="0" Factor="1" Unit="-">
+<Parameter SymbolName="ApplicationSwSvnModifiedFiles" Index="0x5F01" SubIndex="9" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" MinimumValue="0" MaximumValue="65535" DefaultValue="1" Factor="1" Unit="-">
 <Description><![CDATA[
 
        No of modified files in current Subversion revision. Data generated by compiler at compile time.
@@ -11862,7 +11862,7 @@ and increment the counter that closest represent the operation point in that sam
 
        ]]></Description>
 </Parameter>
-<Parameter SymbolName="SoftwareMinorVersion" Index="0x5F01" SubIndex="15" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" MinimumValue="0" MaximumValue="65535" DefaultValue="3u" Factor="1" Unit="-">
+<Parameter SymbolName="SoftwareMinorVersion" Index="0x5F01" SubIndex="15" ObjectType="VAR" DataType="UNSIGNED16" Visibility="Operator" AccessType="ro" MinimumValue="0" MaximumValue="65535" DefaultValue="4u" Factor="1" Unit="-">
 <Description><![CDATA[
 
        Application software minor version.<br/>
@@ -12169,7 +12169,7 @@ and increment the counter that closest represent the operation point in that sam
 <Replaces ArticleNumber="69G21003V02">
 </Replaces>
 </ReplaceList>
-<!--C:\dev\apps\Nicolaus\69GUS222CXX\trunk\software\output\peventdef.xml-->
+<!--C:\dev\ryan.kleiman\plasma\69GUS222CXX\software\output\peventdef.xml-->
 <ErrorCodes>
 <Groups>
 <Group Name="Main:Power stage">
@@ -13758,9 +13758,9 @@ and increment the counter that closest represent the operation point in that sam
 
      <ul>
 
-      <li>MotorHighWarningLevel = 145</li>
+      <li>MotorHighWarningLevel = 100</li>
 
-      <li>MotorReductionEndHighLevel = 165</li>
+      <li>MotorReductionEndHighLevel = 120</li>
 
      </ul>
 
@@ -13809,7 +13809,7 @@ and increment the counter that closest represent the operation point in that sam
 
      Event is set if motor temperature is above predefined level.<br/>
 
-     Limits: Event is set at 180 deg celsius. <br/>
+     Limits: Event is set at 130 deg celsius. <br/>
 
      <b>When is event evaluated</b><br/>
 
@@ -24662,7 +24662,7 @@ and increment the counter that closest represent the operation point in that sam
 :10A8E000704700004DA50108820C0C004C28002088
 :10A8F000E0DB01088C2D002010B5401E012802D994
 :10A90000C01E04D010BDDFF8B403EBF7C3FDDFF8C1
-:10A91000AC4301202076062100206076A0769120AD
+:10A91000AC4301202076062100206076A0766420DA
 :10A92000EDF756FDA0810020E076A0834FF4FA7089
 :10A93000E0814B202082FA2060824FF41660A082D2
 :10A9400040F63400E08210BD80B501210FF278306E
@@ -25297,8 +25297,8 @@ and increment the counter that closest represent the operation point in that sam
 :10D0900011FF0000050000002103207200001D00A8
 :10D0A0000FFF0000000000002003FFFF0001000050
 :10D0B000FFFF000005000000C206303300001D0025
-:10D0C00011FF0000BB3C612B402C5808B1083C010B
-:10D0D000811D590B65100E3465100E3401000000DF
+:10D0C00011FF0000B93EE7290475EB46C94F0B007C
+:10D0D0009A93B003880F5034880F50340100000039
 :10D0E000050000004006107200001D000FFF000048
 :10D0F000050000004106117200001D000FFF000036
 :10D10000050000004206127200001D000FFF000023
@@ -25317,8 +25317,8 @@ and increment the counter that closest represent the operation point in that sam
 :10D1D00058022042800000001FFF000001000000F4
 :10D1E00059022042800000001FFF000013000CFEC7
 :10D1F00034080A00000000000000000070D101089F
-:10D2000074D1010888D10108A2FEAA0572060000A7
-:10D210000807800CD0070000000000001F800000FD
+:10D2000074D1010888D10108A2FEE803B00400002F
+:10D210001405800CD0070000000000001F800000F3
 :10D22000FFFF5555FF000010001000000100000036
 :10D2300002000000040000000800000010000000D0
 :10D2400020000000400000008000000000010000FD
@@ -25332,13 +25332,13 @@ and increment the counter that closest represent the operation point in that sam
 :10D2C00058020D21ECF7ADBC0FF2660201E00FF23F
 :10D2D0003C020C21ECF7A5BC0FF218021621ECF76A
 :10D2E000A0BC0000363947555332323243303078D3
-:10D2F00030330000536F6C61722053706C6173683F
+:10D2F00030340000536F6C61722053706C6173683E
 :10D30000205468727573746572000000504C41536C
 :10D310004D41332053544400383047323135303199
-:10D32000454330320000000027FE5C64DE00000050
-:10D3300003004D617920313120323032330000005A
-:10D3400000000001990000007FA50000401AC012F3
-:10D3500040014001F00A6009A00FF0184C091027A5
+:10D3200045433032000000001BEE1766DE000000AF
+:10D33000040041707220313120323032340000005C
+:10D34000000000019900000000000100401AC01216
+:10D3500040014001100E6009A014F018F40B1027D2
 :10D3600000000000050000009601213200001D00B1
 :10D3700001FF0000070000009401113200001D00B1
 :10D3800002FF0000070000009201123200001D00A1
@@ -25363,7 +25363,7 @@ and increment the counter that closest represent the operation point in that sam
 :10D4B00000010000FFFF000001000000BD02FFFFAF
 :10D4C00000010000FFFF000012000CFEB0040A0083
 :10D4D00000000000000000005CD4010860D40108D6
-:10D4E0006CD40108100E000000000000881306FF35
+:10D4E0006CD401083011000000000000881306FF12
 :10D4F0001E1E00000A0232000100000006000000AB
 :10D500000000000008000000000000000000000013
 :10D51000000000000000000000000000000000000B
@@ -25387,11 +25387,11 @@ and increment the counter that closest represent the operation point in that sam
 :10D63000AA05508400010000FFFF00000500000063
 :10D64000AB05528400010000FFFF0000536F6C61C6
 :10D65000722053706C6173682054687275737465BE
-:10D6600072203639475553323232433030783033B6
+:10D6600072203639475553323232433030783034B5
 :10D670000000000053746576656E7320556E697600
 :10D680006572736974790000240000004CD60108AB
 :10D6900000000000000000001200000074D6010825
-:10D6A00000000000000000007A177A177A177A1736
+:10D6A0000000000000000000621E621E621E621E7A
 :10D6B00086050004DC0500000A00100E740E000050
 :10D6C000000000000000000000000000000000005A
 :10D6D00000007C6E7C6E7C6E7C6E7C6E7C6E7C6EE4
@@ -25420,8 +25420,8 @@ and increment the counter that closest represent the operation point in that sam
 :10D8400000FF00000100000067004123000100000C
 :10D85000FF0A0000070000007300552300001D00B0
 :10D8600012FF000000010000000400000010000092
-:10D870002F0300002C012C0129042904860002003A
-:10D88000020002000400662664007A17000004000B
+:10D870002F0300002C012C01290429045900020067
+:10D8800002000200040066266400621E000004001C
 :10D89000070000003601102300001D000DFF0000EE
 :10D8A0007017A00F7017881301000000050000001A
 :10D8B0004C040055000113000CFF0000050000009F
@@ -25430,7 +25430,7 @@ and increment the counter that closest represent the operation point in that sam
 :10D8E0006C07200402170000C48D00084C029C0144
 :10D8F00002160000CC8D00085802900103070000BA
 :10D90000DC8D00087805E803030B0000EC8D0008AF
-:10D910007805E803030A00002C01B60B1027520219
+:10D910007805E803030A00002C01310F10270A03E1
 :10D92000010000005406507200001D0010FF0000AE
 :10D93000010000005506517200001D0010FF00009C
 :10D94000010000005606527200001D0010FF00008A
@@ -25447,7 +25447,7 @@ and increment the counter that closest represent the operation point in that sam
 :10D9F000D007EC09CC0BAC0D1717B4167213070F38
 :10DA0000DF0C600CE20A480900016400000000001D
 :10DA1000000000004001000040010000000500007F
-:10DA20000100000000005905000000000100000096
+:10DA200001000000000047FB0000000001000000B2
 :10DA30008C05215500010000FF130000F0D3010800
 :10DA40004C2E002000D40108582E002010D40108CC
 :10DA5000642E002020D40108A42C002030D401081A
@@ -25479,8 +25479,8 @@ and increment the counter that closest represent the operation point in that sam
 :10DBF000000000001427056000010000FFFF000086
 :10DC0000000000001327046000010000FFFF000077
 :10DC10000100000012270360000008000BFF000055
-:10DC200008000C002C0312022C031202000000005A
-:10DC3000050064000A0032003200100E05000000EA
+:10DC200008000C0026026C0226026C0200000000B4
+:10DC3000050064000A0032003200301105000000C7
 :10DC4000401F4800000000001E00401F401F000051
 :10DC5000010000004001B080000000001AFF000039
 :10DC600001000000C404FFFF00010000FFFF0000EE
@@ -26052,7 +26052,7 @@ and increment the counter that closest represent the operation point in that sam
 :10FFC000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF41
 :10FFD000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF31
 :10FFE000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF21
-:10FFF000FFFFFFFFFFFFFFFFFFFFFFFFFFFFEDE43E
+:10FFF000FFFFFFFFFFFFFFFFFFFFFFFFFFFFB1ED71
 :00000001FF
 ]]>
 </Software>
