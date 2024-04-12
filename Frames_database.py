@@ -4,8 +4,6 @@ import json as JSON
 DATABASE_NAME = "/home/pi/Manned_PEP/frames_data.db"
 
 
-FRAMES_DATABASE = "frames_data.db"
-
 
 def get_next_trial_number():
     with sqlite3.connect(DATABASE_NAME) as conn:

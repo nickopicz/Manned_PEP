@@ -2,10 +2,9 @@
 import tkinter as tk
 from threading import Thread, Event
 import queue
-from canlib import canlib
 from Frames_database import get_next_trial_number, create_table_for_trial, store_data_for_trial
 # Import the provided module components
-from New_UI import CANVariableDisplay, CurrentMeter, Speedometer, Graph, VoltageGraph, ThrottleGauge, ThermometerGauge
+from New_UI import CurrentMeter, Speedometer, Graph, VoltageGraph, ThrottleGauge, ThermometerGauge, Compass
 from Gather_Data import read_serial
 # from database_functions import store_data_for_trial
 import sqlite3
@@ -40,7 +39,7 @@ network.subscribe(0, log_message)
 
 # You can create a node with a known node-ID
 node_id = 6  # Replace with your node ID
-node = canopen.BaseNode402(node_id, canopen.import_od('testing/69GUS222C00x03.epf')
+node = canopen.BaseNode402(node_id, canopen.import_od('/home/pi/Manned_PEP/testing/69GUS222C00x05.epf')
                            )  # Use a dummy EDS here
 network.add_node(node)
 
@@ -51,7 +50,7 @@ def read_and_log_sdo(node, index, subindex):
         value = node.sdo[index][subindex].raw
         return value
     except Exception as e:
-#         print(f"Error reading SDO [{hex(index)}:{subindex}]: {e}")
+        print(f"Error reading SDO [{hex(index)}:{subindex}]: {e}")
         return 0
 
 
@@ -59,7 +58,7 @@ def get_sdo_obj() -> {}:
     voltage = read_and_log_sdo(node, 0x2A06, 1)
     throttle_mv = read_and_log_sdo(node, 0x2013, 1)
     # print("throttle value: ", throttle_mv)
-    throttle_percent = read_and_log_sdo(node, 0x2013, 7)
+    throttle_percent = throttle_mv/2800
 
     rpm = read_and_log_sdo(node, 0x2001, 2)
     # print("rpm: ", rpm)
@@ -67,8 +66,10 @@ def get_sdo_obj() -> {}:
     torque = read_and_log_sdo(node, 0x2076, 2)
     # current
     current = read_and_log_sdo(node, 0x2073, 1)
+    
+    power = read_and_log_sdo(node, 0x2073, 3)
     # temperature
-    temperature = read_and_log_sdo(node, 0x2A0D, 1)
+    temperature = read_and_log_sdo(node, 0x2040, 2)
     
     serial_data = read_serial()
     # timestamp = read_and_log_sdo(node, 0x2002, 1)
@@ -81,9 +82,10 @@ def get_sdo_obj() -> {}:
         'RPM': rpm,
         'torque': torque,
         'motor_temp': temperature,
-        'current': current
+        'current': current,
+        'power':power
     } 
-    
+    print("SDO data: ", sdo_data)
     full_data = {**serial_data, **sdo_data}
     return full_data
 
@@ -111,8 +113,8 @@ class CANApplication(tk.Tk):
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
         self.geometry(f"{screen_width}x{screen_height}+0+0")
-        
-        
+        #self.attributes("-fullscreen", True)
+        self.configure(background="lightblue")
         # screenWidth = self.winfo_screenwidth()
         # screenHeight = self.winfo_screenheight()
         # # Set window size to screen dimensions
@@ -149,9 +151,10 @@ class CANApplication(tk.Tk):
         self.current_meter = CurrentMeter(self)
         self.speedometer = Speedometer(self)
         self.thermometer = ThermometerGauge(self)
-        self.graph = Graph(self)
-        self.voltage_graph = VoltageGraph(self)
-        self.throttle_gauge = ThrottleGauge(self)
+       # self.graph = Graph(self)
+        #self.voltage_graph = VoltageGraph(self)
+#         self.throttle_gauge = ThrottleGauge(self)
+        self.compass = Compass(self)
 
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
@@ -266,31 +269,7 @@ class CANApplication(tk.Tk):
         self.after(250, self.send_to_shore)
 
     def update_ui(self, data):
-        #     (390, (2, 3)): ("S16", "Actual speed", "-32768 to 32767", "Rpm"),
-        #     (390, (4, 5)): ("U16", "RMS motor Current", "0-65535", "Arms"),
-        #     (390, (6, 7)): ("S16", "DC Bus Voltage", "-32768 to 32767", "Adc"),
-        #     (646, (0, 1)): ("S16", "Internal Speed Reference", "-32768 to 32767", "Rpm"),
-        #     (646, (2, 3)): ("S16", "Reference Torque", "-32768 to 32767", "Nm"),
-        #     (646, (4, 5)): ("S16", "Actual Torque", "-32768 to 32767", "Nm"),
-        #     (646, (6, 7)): ("S16", "Field weakening control: voltage angle", "-32768 to 32767", "Deg"),
-        #     (902, 0): ("U8", "Field weakening control: regulator status", "0-255", ""),
-        #     (902, 1): ("U8", "Current limit: actual limit type", "0-15", ""),
-        #     (902, (2, 3)): ("S16", "Motor voltage control: U peak normalized", "-32768 to 32767", ""),
-        #     (902, (4, 5)): ("U16", "Digital status word", "0-65535", ""),
-        #     (902, (6, 7)): ("S16", "Scaled throttle percent", "-32768 to 32767", ""),
-        #     (1158, (0, 1)): ("S16", "Motor voltage control: idLimit", "-32768 to 32767", ""),
-        #     (1158, (2, 3)): ("S16", "Motor voltage control: Idfiltered", "-32768 to 32767", "Arms"),
-        #     (1158, (4, 5)): ("S16", "Actual currents: iq", "-32768 to 32767", "Apk"),
-        #     (1158, (6, 7)): ("S16", "Motor measurements: DC bus current", "-32768 to 32767", "Adc"),
-
-        #     'voltage': voltage,
-        # 'throttle_mv': throttle_mv,
-        # 'throttle_percentage': throttle_percent,
-        # 'RPM': rpm,
-        # 'torque': torque,
-        # 'motor temp': temperature,
-        # 'current': current
-        # voltage = data['voltage']
+       
         try:
             speed = data['RPM']
             torque = data['torque']
@@ -303,21 +282,24 @@ class CANApplication(tk.Tk):
             timestamp = data['timestamp']
 
             voltage = data['voltage']
+            heading = data['heading']
 
             # self.can_variable_display.update_display(data)
             # Add updates for other UI components as needed
             if motor_temp:
                 self.thermometer.update_gauge(motor_temp)
-            if throttle_mv:
-                self.throttle_gauge.update_gauge(throttle_mv)
+           # if throttle_mv:
+               # self.throttle_gauge.update_gauge(throttle_mv)
             if speed:
                 self.speedometer.update_dial(speed)
-            if torque:
-                self.graph.update_graph(torque, timestamp)
+#             if torque:
+#                 self.graph.update_graph(torque, timestamp)
             if current:
                 self.current_meter.update_dial(current)
-            if voltage:
-                self.voltage_graph.update_graph(voltage, timestamp)
+#             if voltage:
+#                 self.voltage_graph.update_graph(current, timestamp)
+            if heading:
+                self.compass.update_compass(heading)
         except Exception as e:
             print("error updating UI: ", e)
 
