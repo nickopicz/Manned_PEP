@@ -57,6 +57,9 @@ class Application(tk.Tk):
 
     def update_ui(self, data):
         if data:
+
+            power = round(data['power']*0.00134, 2)
+            torque = round(data['torque']*0.7376, 1)
             # Here you would update your individual UI components with the new data
             # For example, updating the throttle gauge:
             self.throttle_gauge.update_gauge(data.get('throttle_mv', 0))
@@ -64,15 +67,16 @@ class Application(tk.Tk):
 
             # Assuming your data includes a timestamp, current, rpm, and voltage, you could do:
             current_time = data['timestamp']
-            self.graph.update_graph(data['torque'], current_time)
-            self.voltage_graph.update_graph(data['voltage'], current_time)
-            self.current_meter.update_dial(data['current'])
-            self.speedometer.update_dial(data['RPM'])
+            self.graph.update_graph(torque, current_time)
+            self.voltage_graph.update_graph(
+                data.get('current', 0), current_time)
+            self.current_meter.update_dial(data.get('current', 0))
+            self.speedometer.update_dial(data.get('RPM', 0))
             self.thermometer.update_gauge(data['motor_temp'])
             self.roll.update_gauge(data['roll'])
             self.pitch.update_gauge(data['pitch'])
             self.compass.update_compass(data['heading'])
-            self.power.update_graph(data['power'], current_time)
+            self.power.update_graph(power, current_time)
             # self.accel.update_vectors(data['ax'], data['ay'], data['az'])
 
             # And so on for other UI components as necessary

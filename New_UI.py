@@ -66,17 +66,17 @@ class CurrentMeter:
         self.center_x, self.center_y = 150, 150
         self.max_value = 500
         self.needle = self.create_current_dial()
-        self.label = tk.Label(master, text="DC Current Supply (Amps)",
+        self.label = tk.Label(master, text="Motor Current (Amps)",
                               font=('Helvetica', 12))
-        self.label.grid(row=1, column=2)
+        self.label.grid(row=0, column=2)
         self.canvas.configure(background='lightblue')
 
-        # self.value_label = tk.Label(
-        #     master, text="0", font=('Helvetica', 10))
-        # self.value_label.grid(row=2, column=6)
+        self.value_label = tk.Label(
+            master, text=f"{str(0)} amps", font=('Helvetica', 10))
+        self.value_label.grid(row=1, column=2)
 
     def create_current_dial(self):
-        radius = 90
+        radius = 140
         self.canvas.create_arc(
             self.center_x - radius, self.center_y - radius,
             self.center_x + radius, self.center_y + radius,
@@ -85,18 +85,19 @@ class CurrentMeter:
         major_ticks = 10
         for i in range(major_ticks + 1):
             angle = math.radians(150 + (240 * i / major_ticks))
-            start_x = self.center_x + (80 * math.cos(angle))
-            start_y = self.center_y + (80 * math.sin(angle))
-            end_x = self.center_x + (90 * math.cos(angle))
-            end_y = self.center_y + (90 * math.sin(angle))
+            start_x = self.center_x + (125 * math.cos(angle))
+            start_y = self.center_y + (125 * math.sin(angle))
+            end_x = self.center_x + (140 * math.cos(angle))
+            end_y = self.center_y + (140 * math.sin(angle))
             self.canvas.create_line(
                 start_x, start_y, end_x, end_y, fill="black")
 
             label_angle = math.radians(150 + (240 * i / major_ticks))
-            label_x = self.center_x + (70 * math.cos(label_angle))
-            label_y = self.center_y + (70 * math.sin(label_angle))
+            label_x = self.center_x + (110 * math.cos(label_angle))
+            label_y = self.center_y + (110 * math.sin(label_angle))
             label_value = int((self.max_value / major_ticks) * i)
-            self.canvas.create_text(label_x, label_y, text=str(label_value))
+            self.canvas.create_text(
+                label_x, label_y, text=str(label_value))
 
         angle = math.radians(150)  # Initial angle pointing at 0
         x1, y1 = self.center_x + 80 * \
@@ -108,7 +109,7 @@ class CurrentMeter:
         angle = math.radians(150 + (240 * current / self.max_value))
         x1, y1 = self.center_x + 80 * \
             math.cos(angle), self.center_y + 80 * math.sin(angle)
-        # self.value_label.config(text=f"{current}")
+        self.value_label.config(text=f"{str(current)} amps")
 
         self.needle = self.canvas.create_line(
             self.center_x, self.center_y, x1, y1, fill="red", width=2)
@@ -124,13 +125,13 @@ class Speedometer:
         self.label = tk.Label(master, text="RPM",
                               font=('Helvetica', 12))
         self.canvas.configure(background='lightblue')
-        self.label.grid(row=1, column=1)
-        # self.value_label = tk.Label(
-        #     master, text="0 rpm", font=('Helvetica', 10))
-        # self.value_label.grid(row=2, column=3)
+        self.label.grid(row=0, column=1)
+        self.value_label = tk.Label(
+            master, text="0 rpm", font=('Helvetica', 10))
+        self.value_label.grid(row=1, column=1)
 
     def create_speedometer_dial(self):
-        radius = 90
+        radius = 140
         self.canvas.create_arc(
             self.center_x - radius, self.center_y - radius,
             self.center_x + radius, self.center_y + radius,
@@ -139,16 +140,16 @@ class Speedometer:
         major_ticks = 10
         for i in range(major_ticks + 1):
             angle = math.radians(150 + (240 * i / major_ticks))
-            start_x = self.center_x + (80 * math.cos(angle))
-            start_y = self.center_y + (80 * math.sin(angle))
-            end_x = self.center_x + (90 * math.cos(angle))
-            end_y = self.center_y + (90 * math.sin(angle))
+            start_x = self.center_x + (125 * math.cos(angle))
+            start_y = self.center_y + (125 * math.sin(angle))
+            end_x = self.center_x + (140 * math.cos(angle))
+            end_y = self.center_y + (140 * math.sin(angle))
             self.canvas.create_line(
                 start_x, start_y, end_x, end_y, fill="black")
 
             label_angle = math.radians(150 + (240 * i / major_ticks))
-            label_x = self.center_x + (70 * math.cos(label_angle))
-            label_y = self.center_y + (70 * math.sin(label_angle))
+            label_x = self.center_x + (110 * math.cos(label_angle))
+            label_y = self.center_y + (110 * math.sin(label_angle))
             label_value = int((self.max_value / major_ticks) * i)
             self.canvas.create_text(label_x, label_y, text=str(label_value))
 
@@ -179,18 +180,21 @@ class Graph:
         self.canvas_widget.grid(row=2, column=2, sticky="nsew")
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Actual Torque')
-        self.ax.set_title('Time Series of Actual Torque')
+        self.ax.set_title('Time Series of Torque (lb ft)')
         self.torque_data = {'time': [], 'value': []}
         # self.canvas.configure(background='lightblue')
 
     def update_graph(self, new_data, timestamp):
+        if len(self.torque_data['time']) > 100:
+            self.torque_data['time'].pop(0)
+            self.torque_data['value'].pop(0)
         # current_time = datetime.datetime.now()
         self.torque_data['time'].append(timestamp*0.001)
         self.torque_data['value'].append(new_data)
         self.ax.clear()
         self.ax.plot(self.torque_data['time'], self.torque_data['value'])
         self.ax.set_xlabel('Time')
-        self.ax.set_ylabel('Actual Torque')
+        self.ax.set_ylabel('Torque')
         self.canvas.draw()
 
 
@@ -205,11 +209,15 @@ class VoltageGraph:
         self.canvas_widget.grid(row=2, column=1, sticky="nsew")
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Motor Current')
-        self.ax.set_title('Time Series of Motor Current')
+        self.ax.set_title('Time Series of Motor Current (amps)')
         self.voltage_data = {'time': [], 'value': []}
         # self.canvas.configure(background='lightblue')
 
     def update_graph(self, new_data, timestamp):
+        if len(self.voltage_data['time']) > 100:
+            self.voltage_data['time'].pop(0)
+            self.voltage_data['value'].pop(0)
+
         current_time = datetime.datetime.now()
         self.voltage_data['time'].append(timestamp*0.001)
         self.voltage_data['value'].append(new_data)
@@ -217,7 +225,7 @@ class VoltageGraph:
         self.ax.clear()
         self.ax.plot(self.voltage_data['time'], self.voltage_data['value'])
         self.ax.set_xlabel('Time')
-        self.ax.set_ylabel('Motor Voltage')
+        self.ax.set_ylabel('Motor Current')
         self.canvas.draw()
 
 
@@ -395,7 +403,7 @@ class Compass:
         self.canvas = tk.Canvas(master, width=300, height=300)
         self.canvas.grid(row=0, column=3, padx=20, pady=20)
         self.center_x, self.center_y = 150, 150
-        self.radius = 100
+        self.radius = 140
         self.draw_compass_dial()
         self.needle = self.create_compass_needle()
         self.canvas.configure(background='lightblue')
@@ -415,7 +423,7 @@ class Compass:
             text_x = self.center_x + self.radius * 0.85 * math.cos(angle_rad)
             text_y = self.center_y + self.radius * 0.85 * math.sin(angle_rad)
             self.canvas.create_text(text_x, text_y, text=label, font=(
-                'Helvetica', 12), anchor=tk.CENTER)
+                'Helvetica', 14), anchor=tk.CENTER)
 
         # Adding degree values every 20 degrees
         for i in range(0, 360, 20):
@@ -426,7 +434,7 @@ class Compass:
             # Only draw degree marks for non-cardinal directions
             if i % 90 != 0:
                 self.canvas.create_text(text_x, text_y, text=f"{i}°", font=(
-                    'Helvetica', 8), anchor=tk.CENTER)
+                    'Helvetica', 10), anchor=tk.CENTER)
 
     def create_compass_needle(self):
         # Create a triangular needle with a red and black part
@@ -477,11 +485,14 @@ class PowerGraph:
         self.canvas_widget.grid(row=2, column=0, sticky="nsew")
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Motor Power')
-        self.ax.set_title('Time Series of Motor Power')
+        self.ax.set_title('Time Series of Motor Power (hp)')
         self.power_data = {'time': [], 'value': []}
         # self.canvas.configure(background='lightblue')
 
     def update_graph(self, new_data, timestamp):
+        if len(self.power_data['time']) > 100:
+            self.power_data['time'].pop(0)
+            self.power_data['value'].pop(0)
         # current_time = datetime.datetime.now()
         self.power_data['time'].append(timestamp*0.001)
         self.power_data['value'].append(new_data)
