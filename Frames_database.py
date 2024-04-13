@@ -1,78 +1,55 @@
 import sqlite3
-import json as JSON
+import csv
 
 DATABASE_NAME = "/home/pi/Manned_PEP/frames_data.db"
 
 
-FRAMES_DATABASE = "frames_data.db"
+def export_trial_data_to_csv(trial_number):
+    # CSV file path setup
+    CSV_FILE_PATH = f"/home/pi/Manned_PEP/csv_data/trial_{trial_number}_data.csv"
 
-
-def get_next_trial_number():
-    with sqlite3.connect(FRAMES_DATABASE) as conn:
-        cursor = conn.cursor()
-        cursor.execute('''
-        CREATE TABLE IF NOT EXISTS meta (
-            key TEXT PRIMARY KEY,
-            value INTEGER
-        )
-        ''')
-        cursor.execute("SELECT value FROM meta WHERE key='trial_number'")
-        row = cursor.fetchone()
-        trial_number = (row[0] + 1) if row else 1
-        cursor.execute(
-            "INSERT OR REPLACE INTO meta (key, value) VALUES ('trial_number', ?)", (trial_number,))
-    print("returning trial number: ", trial_number)
-    return trial_number
-
-
-def create_table_for_trial(conn, trial_number):
+    # Connect to the SQLite database
+    conn = sqlite3.connect(DATABASE_NAME)
     cursor = conn.cursor()
-    # Ensure table name is a string and properly formatted
-    table_name = trial_number
-    cursor.execute(f'''
-    CREATE TABLE IF NOT EXISTS "{table_name}" (
-        timestamp REAL PRIMARY KEY,
-        voltage REAL,
-        throttle_mv REAL,
-        throttle_percentage INTEGER,
-        RPM INTEGER,
-        torque REAL,
-        motor_temp REAL,
-        current REAL
-        pitch REAL
-        roll REAL
-        yaw REAL
-        ax REAL
-        ay REAL
-        az REAL
-    )
-    ''')
-    conn.commit()
+
+    # Dynamically set the table name based on trial_number
+    table_name = str(trial_number)
+
+    # SQL query to fetch all data from the specified table
+    sql_query = f"""
+        SELECT timestamp, voltage, throttle_mv, throttle_percentage, RPM, torque, motor_temp, current,
+        pitch, roll, yaw, ax, ay, az, power, heading
+        FROM "{table_name}"
+        ORDER BY timestamp ASC
+    """
+
+    try:
+        cursor.execute(sql_query)
+        rows = cursor.fetchall()
+    except sqlite3.OperationalError as e:
+        print(f"Error: {e}")
+        print("It seems the table does not exist or there is a typo in the table name.")
+        conn.close()
+        return  # Exit function early if there is an error
+
+    conn.close()
+
+    # Column headers for the CSV based on the database schema
+    headers = [
+        'Timestamp', 'Voltage', 'Throttle mV', 'Throttle %', 'RPM', 'Torque', 'Motor Temp', 'Current',
+        'Pitch', 'Roll', 'Yaw', 'Ax', 'Ay', 'Az', 'Power', 'Heading'
+    ]
+
+    # Writing to CSV
+    with open(CSV_FILE_PATH, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(headers)
+        for row in rows:
+            writer.writerow(row)
+
+    print(f"Data exported successfully to {CSV_FILE_PATH}")
 
 
-def store_data_for_trial(data_dicts, trial_number):
-    with sqlite3.connect(FRAMES_DATABASE) as conn:
-        table_name = trial_number
-        create_table_for_trial(conn, trial_number)
-        cursor = conn.cursor()
-        for data_dict in data_dicts:
-            print("storing: ", data_dict)
-            placeholders = ', '.join(['?'] * len(data_dict))
-            columns = ', '.join([f'"{column}"' for column in data_dict.keys()])
-            values = tuple(data_dict.values())
-            cursor.execute(
-                f'INSERT INTO "{table_name}" ({columns}) VALUES ({placeholders})', values)
-        conn.commit()
-
-
-# def store_frames_to_database(frame_objects):
-#     conn = sqlite3.connect(FRAMES_DATABASE)
-#     create_tables(conn)
-
-#     # Get the next trial number for this batch of frames
-#     trial_number = get_next_trial_number(conn)
-#     print("frame objects: ", frame_objects)
-#     for frame in frame_objects:
-#         store_frame(conn, trial_number, frame)
-
-#     conn.close()
+# Example usage
+trial_number = 17  # Set the trial number you want to export
+export_trial_data_to_csv(trial_number)
