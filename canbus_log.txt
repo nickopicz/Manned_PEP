@@ -1,0 +1,4 @@
+2024-04-13 23:30:12,878 - loaded kvaser's CAN library
+2024-04-13 23:30:12,881 - CAN Filters: None
+2024-04-13 23:30:12,881 - Got configuration of: {}
+2024-04-13 23:30:12,898 - Found 0 available channels

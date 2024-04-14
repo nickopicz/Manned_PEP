@@ -43,6 +43,8 @@ def create_table_for_trial(conn, trial_number):
         ax REAL,
         ay REAL,
         az REAL,
+        heading REAL,
+        power REAL,
     )
     ''')
     conn.commit()

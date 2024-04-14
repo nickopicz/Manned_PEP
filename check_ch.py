@@ -4,7 +4,7 @@ from threading import Thread, Event
 import queue
 from Frames_database import get_next_trial_number, create_table_for_trial, store_data_for_trial
 # Import the provided module components
-from New_UI import CurrentMeter, Speedometer, Graph, VoltageGraph, ThrottleGauge, ThermometerGauge, Compass
+from New_UI import CurrentMeter, Speedometer, ThermometerGauge, Compass
 from Gather_Data import read_serial
 # from database_functions import store_data_for_trial
 import sqlite3
@@ -67,7 +67,7 @@ def get_sdo_obj() -> {}:
     # current
     current = read_and_log_sdo(node, 0x2073, 1)
     
-    power = read_and_log_sdo(node, 0x2073, 3)
+    power = current*rpm*1.4
     # temperature
     temperature = read_and_log_sdo(node, 0x2040, 2)
     
@@ -85,7 +85,6 @@ def get_sdo_obj() -> {}:
         'current': current,
         'power':power
     } 
-    print("SDO data: ", sdo_data)
     full_data = {**serial_data, **sdo_data}
     return full_data
 
@@ -252,9 +251,8 @@ class CANApplication(tk.Tk):
                     if response.ok:
                         print("Data sent successfully!")
                     else:
-                        print("")
-#                         print(
-#                             f"Failed to send data. Status code: {response.status_code}")
+                        print(
+                            f"Failed to send data. Status code: {response.status_code}")
                 except Exception as e:
                     print(f"Failed to send data: {e}")
             time.sleep(0.25)  # Adjust the sleep time as needed
