@@ -109,7 +109,7 @@ class CurrentMeter:
         angle = math.radians(150 + (240 * current / self.max_value))
         x1, y1 = self.center_x + 80 * \
             math.cos(angle), self.center_y + 80 * math.sin(angle)
-        self.value_label.config(text=f"{str(current)} amps")
+        self.value_label.config(text=f"{current} amps")
 
         self.needle = self.canvas.create_line(
             self.center_x, self.center_y, x1, y1, fill="red", width=2)
@@ -163,7 +163,7 @@ class Speedometer:
         angle = math.radians(150 + (240 * speed / self.max_value))
         x1, y1 = self.center_x + 80 * \
             math.cos(angle), self.center_y + 80 * math.sin(angle)
-        # self.value_label.config(text=f"{speed}")
+        self.value_label.config(text=f"{speed} rpm")
 
         self.needle = self.canvas.create_line(
             self.center_x, self.center_y, x1, y1, fill="red", width=2)
@@ -185,7 +185,7 @@ class Graph:
         # self.canvas.configure(background='lightblue')
 
     def update_graph(self, new_data, timestamp):
-        if len(self.torque_data['time']) > 100:
+        if len(self.torque_data['time']) > 50:
             self.torque_data['time'].pop(0)
             self.torque_data['value'].pop(0)
         # current_time = datetime.datetime.now()
@@ -198,7 +198,7 @@ class Graph:
         self.canvas.draw()
 
 
-class VoltageGraph:
+class CurrentGraph:
     def __init__(self, master):
         self.fig, self.ax = plt.subplots(
             figsize=(5, 4))  # Adjust the figsize here
@@ -210,20 +210,20 @@ class VoltageGraph:
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Motor Current')
         self.ax.set_title('Time Series of Motor Current (amps)')
-        self.voltage_data = {'time': [], 'value': []}
+        self.current_data = {'time': [], 'value': []}
         # self.canvas.configure(background='lightblue')
 
     def update_graph(self, new_data, timestamp):
-        if len(self.voltage_data['time']) > 100:
-            self.voltage_data['time'].pop(0)
-            self.voltage_data['value'].pop(0)
+        if len(self.current_data['time']) > 100:
+            self.current_data['time'].pop(0)
+            self.current_data['value'].pop(0)
 
         current_time = datetime.datetime.now()
-        self.voltage_data['time'].append(timestamp*0.001)
-        self.voltage_data['value'].append(new_data)
+        self.current_data['time'].append(timestamp*0.001)
+        self.current_data['value'].append(new_data)
 
         self.ax.clear()
-        self.ax.plot(self.voltage_data['time'], self.voltage_data['value'])
+        self.ax.plot(self.current_data['time'], self.current_data['value'])
         self.ax.set_xlabel('Time')
         self.ax.set_ylabel('Motor Current')
         self.canvas.draw()

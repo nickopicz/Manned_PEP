@@ -6,7 +6,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import datetime
 import requests
 import threading
-from New_UI import ThrottleGauge, Speedometer, Graph, VoltageGraph, CurrentMeter, ThermometerGauge, PitchGauge, RollGauge, Compass, PowerGraph
+from New_UI import ThrottleGauge, Speedometer, Graph, CurrentGraph, CurrentMeter, ThermometerGauge, PitchGauge, RollGauge, Compass, PowerGraph
 
 # Your previously defined classes (CANVariableDisplay, ThrottleGauge, etc.) go here
 
@@ -26,7 +26,7 @@ class Application(tk.Tk):
         self.current_meter = CurrentMeter(self)
         self.speedometer = Speedometer(self)
         self.graph = Graph(self)
-        self.voltage_graph = VoltageGraph(self)
+        self.current_graph = CurrentGraph(self)
         self.thermometer = ThermometerGauge(self)
         self.pitch = PitchGauge(self)
         self.roll = RollGauge(self)
@@ -58,8 +58,8 @@ class Application(tk.Tk):
     def update_ui(self, data):
         if data:
 
-            power = round(data['power']*0.00134, 2)
-            torque = round(data['torque']*0.7376, 1)
+            torque = round(data['torque']*0.74)
+            print("torque: ", torque)
             # Here you would update your individual UI components with the new data
             # For example, updating the throttle gauge:
             self.throttle_gauge.update_gauge(data.get('throttle_mv', 0))
@@ -68,15 +68,15 @@ class Application(tk.Tk):
             # Assuming your data includes a timestamp, current, rpm, and voltage, you could do:
             current_time = data['timestamp']
             self.graph.update_graph(torque, current_time)
-            self.voltage_graph.update_graph(
+            self.current_graph.update_graph(
                 data.get('current', 0), current_time)
             self.current_meter.update_dial(data.get('current', 0))
-            self.speedometer.update_dial(data.get('RPM', 0))
+            self.speedometer.update_dial(data.get('RPM')*-1)
             self.thermometer.update_gauge(data['motor_temp'])
             self.roll.update_gauge(data['roll'])
             self.pitch.update_gauge(data['pitch'])
             self.compass.update_compass(data['heading'])
-            self.power.update_graph(power, current_time)
+            self.power.update_graph(data['power'], current_time)
             # self.accel.update_vectors(data['ax'], data['ay'], data['az'])
 
             # And so on for other UI components as necessary
