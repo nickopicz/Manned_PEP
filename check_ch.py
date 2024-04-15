@@ -258,11 +258,7 @@ class CANApplication(tk.Tk):
             time.sleep(0.25)  # Adjust the sleep time as needed
 
 
-# Check response from the server
-        if response.ok:
-            print("Data sent successfully!")
-        else:
-            print("Failed to send data.")
+# Check response from the serve
 
         self.after(250, self.send_to_shore)
 

@@ -128,7 +128,7 @@ class ThermometerGauge:
         self.master = master
         self.canvas = tk.Canvas(master, width=500, height=100)
         self.canvas.grid(row=3, column=1, padx=20, pady=5, columnspan=3)
-        self.value_label = tk.Label(master, text="0 °C", font=('Helvetica', 14))
+        self.value_label = tk.Label(master, text="0 °C", font=('Helvetica', 30))
         self.value_label.grid(row=3, column=1)
         self.min_temp = 0  # Minimum temperature value
         self.max_temp = 100  # Maximum temperature value
@@ -167,7 +167,12 @@ class ThermometerGauge:
         # Clear previous fill
         self.canvas.delete("temp_fill")
         # Draw new fill
-        color = "red" if current_temp > 60 else "green"
+        if current_temp > 70:
+            color = "red"
+        elif current_temp > 40 and current_temp < 70:
+            color="green"
+        else:
+            color='blue'
         self.canvas.create_rectangle(self.gauge_x, self.gauge_y + 1,
                                      self.gauge_x + fill_width, self.gauge_y + self.gauge_height - 1,
                                      fill=color, tags="temp_fill")
