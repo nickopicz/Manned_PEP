@@ -28,7 +28,7 @@ def create_table_for_trial(conn, trial_number):
     # Ensure table name is a string and properly formatted
     table_name = trial_number
     cursor.execute(f'''
-    CREATE TABLE IF NOT EXISTS "{table_name}" (
+    CREATE TABLE IF NOT EXISTS "trial_{table_name}" (
         timestamp REAL PRIMARY KEY,
         voltage REAL,
         throttle_mv REAL,
@@ -61,7 +61,7 @@ def store_data_for_trial(data_dicts, trial_number):
             columns = ', '.join([f'"{column}"' for column in data_dict.keys()])
             values = tuple(data_dict.values())
             cursor.execute(
-                f'INSERT INTO "{table_name}" ({columns}) VALUES ({placeholders})', values)
+                f'INSERT INTO "trial_{table_name}" ({columns}) VALUES ({placeholders})', values)
         conn.commit()
 
 

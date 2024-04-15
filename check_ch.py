@@ -63,11 +63,11 @@ def get_sdo_obj() -> {}:
     rpm = read_and_log_sdo(node, 0x2001, 2)
     # print("rpm: ", rpm)
     # torque
-    torque = read_and_log_sdo(node, 0x2076, 2)
     # current
-    current = read_and_log_sdo(node, 0x2073, 1)
-    
-    power = current*rpm*1.4
+    current = abs(read_and_log_sdo(node, 0x2073, 1))
+    torque = current*0.15
+    power = ((torque*12)*rpm)/63025.0
+
     # temperature
     temperature = read_and_log_sdo(node, 0x2040, 2)
     
@@ -212,9 +212,9 @@ class CANApplication(tk.Tk):
                 self.current_data = msg
                 self.update_queue.put(msg)
                 self.db_queue.put(msg)
-                time.sleep(0.25)
+                time.sleep(0.1)
             except Exception as e:
-                time.sleep(1)
+                time.sleep(0.25)
                 # print(f"Error reading CAN message: {e}")
 
     def database_thread_function(self):
@@ -233,11 +233,10 @@ class CANApplication(tk.Tk):
                     # If the queue is empty and no messages are collected, continue checking
                     continue
 
-            if len(batch) == 50:
-                print("storing to db : ", len(batch))
                 # If we have messages in the batch, store them to the database
+            if batch:
                 store_data_for_trial(batch, self.trial_num)
-
+                self.after(self.database_thread_function)
     def send_to_shore(self):
         # Replace with your actual URL
         url = 'https://hugely-dashing-lemming.ngrok-free.app/put_method'
