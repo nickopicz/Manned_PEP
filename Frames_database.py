@@ -30,6 +30,7 @@ def create_table_for_trial(conn, trial_number):
     cursor.execute(f'''
     CREATE TABLE IF NOT EXISTS "trial_{table_name}" (
         timestamp REAL PRIMARY KEY,
+        trial_num INTEGER,
         voltage REAL,
         throttle_mv REAL,
         throttle_percentage INTEGER,
@@ -44,7 +45,7 @@ def create_table_for_trial(conn, trial_number):
         ay REAL,
         az REAL,
         heading REAL,
-        power REAL,
+        power REAL
     )
     ''')
     conn.commit()

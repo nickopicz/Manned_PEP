@@ -18,7 +18,7 @@ def read_serial():
                 }
 
         yaw, pitch, roll, ax, ay, az, heading = [float(v) for v in values]
-        print("good data:", values)
+#         print("good data:", values)
         return {
                 'yaw':yaw,
                 'pitch':pitch,

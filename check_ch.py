@@ -219,12 +219,12 @@ class CANApplication(tk.Tk):
 
     def database_thread_function(self):
         batch_size = 50  # Define the size of each batch
-        while self.running_event.is_set() and not self.db_queue.empty():
-            print("batch running")
-            batch = []  # Initialize the batch list
+        while self.running_event.is_set():
+            # Initialize the batch list outside of the while loop
+            batch = []
             while len(batch) < batch_size:
                 try:
-                    msg_data = self.db_queue.get(timeout=1)
+                    msg_data = self.db_queue.get_nowait()
                     batch.append(msg_data)
                 except queue.Empty:
                     # If the queue is empty and we have collected some messages, break the loop to process them
@@ -233,10 +233,11 @@ class CANApplication(tk.Tk):
                     # If the queue is empty and no messages are collected, continue checking
                     continue
 
-                # If we have messages in the batch, store them to the database
+            # If we have messages in the batch, store them to the database
             if batch:
                 store_data_for_trial(batch, self.trial_num)
-                self.after(self.database_thread_function)
+                batch.clear()
+                
     def send_to_shore(self):
         # Replace with your actual URL
         url = 'https://hugely-dashing-lemming.ngrok-free.app/put_method'
@@ -249,9 +250,10 @@ class CANApplication(tk.Tk):
                     response = put(url, json=self.current_data)
                     if response.ok:
                         print("Data sent successfully!")
-                    else:
-                        print(
-                            f"Failed to send data. Status code: {response.status_code}")
+#                     else:
+#                         print()
+#                         #print(
+#                           #  f"Failed to send data. Status code: {response.status_code}")
                 except Exception as e:
                     print(f"Failed to send data: {e}")
             time.sleep(0.25)  # Adjust the sleep time as needed
