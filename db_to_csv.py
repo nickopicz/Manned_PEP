@@ -8,7 +8,14 @@ def export_trial_data_to_csv(trial_number):
     CSV_FILE_PATH = f"./csv_data/data_trial_{trial_number}.csv"
     conn = sqlite3.connect(DATABASE_NAME)
     cursor = conn.cursor()
-    table_name = f"{trial_number}"  # Consistent formatted table name
+    table_name = f"{trial_number}"  # Ensure table name is treated as a string
+
+    # Check if the table exists before querying
+    cursor.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name=?", (table_name,))
+    if cursor.fetchone() is None:
+        print(f"No data table found for trial {trial_number}.")
+        return  # Exit the function if no table is found
 
     sql_query = f"""
         SELECT timestamp, voltage, throttle_mv, throttle_percentage, RPM, torque, motor_temp,
@@ -33,4 +40,4 @@ def export_trial_data_to_csv(trial_number):
             writer.writerow(row)
 
 
-export_trial_data_to_csv(17)
+export_trial_data_to_csv("trial_2")

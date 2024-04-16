@@ -58,25 +58,32 @@ class Application(tk.Tk):
     def update_ui(self, data):
         if data:
 
-            torque = round(data['torque']*0.74)
+            rpm = abs(data['RPM'])
+            current = abs(data['current'])
+            roll = data['roll']
+            pitch = data['pitch']
+            # converting current with torque constant, from Nm to lbft
+            # converting lbft to lbin, then getting HP by multiplying by rpm then
+            torque = data['torque']
+            power = data['power']
+            temp = data['motor_temp']
             print("torque: ", torque)
             # Here you would update your individual UI components with the new data
             # For example, updating the throttle gauge:
             self.throttle_gauge.update_gauge(data.get('throttle_mv', 0))
             # Similarly, update other components...
-
             # Assuming your data includes a timestamp, current, rpm, and voltage, you could do:
             current_time = data['timestamp']
             self.graph.update_graph(torque, current_time)
             self.current_graph.update_graph(
-                data.get('current', 0), current_time)
-            self.current_meter.update_dial(data.get('current', 0))
-            self.speedometer.update_dial(data.get('RPM')*-1)
-            self.thermometer.update_gauge(data['motor_temp'])
-            self.roll.update_gauge(data['roll'])
-            self.pitch.update_gauge(data['pitch'])
+                current, current_time)
+            self.current_meter.update_dial(current)
+            self.speedometer.update_dial(rpm)
+            self.thermometer.update_gauge(temp)
+            self.roll.update_gauge(roll)
+            self.pitch.update_gauge(pitch)
             self.compass.update_compass(data['heading'])
-            self.power.update_graph(data['power'], current_time)
+            self.power.update_graph(power, current_time)
             # self.accel.update_vectors(data['ax'], data['ay'], data['az'])
 
             # And so on for other UI components as necessary
