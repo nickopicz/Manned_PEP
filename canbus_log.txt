@@ -1,8 +1,8 @@
-2024-04-15 18:00:15,493 - loaded kvaser's CAN library
-2024-04-15 18:00:15,496 - CAN Filters: None
-2024-04-15 18:00:15,496 - Got configuration of: {}
-2024-04-15 18:00:15,509 - Found 1 available channels
-2024-04-15 18:00:15,548 - 0: Kvaser U100, S/N 1002607 (#1)
-2024-04-15 18:00:15,576 - Hardware filtering has been disabled
-2024-04-15 18:00:15,577 - An error occured while disabling filtering: Function canSetAcceptanceFilter failed - Not implemented [Error Code -32]
-2024-04-15 18:00:15,578 - Connected to 'Kvaser U100, S/N 1002607 (#1)'
+2024-04-16 09:10:06,566 - loaded kvaser's CAN library
+2024-04-16 09:10:06,568 - CAN Filters: None
+2024-04-16 09:10:06,568 - Got configuration of: {}
+2024-04-16 09:10:06,582 - Found 1 available channels
+2024-04-16 09:10:06,621 - 0: Kvaser U100, S/N 1002607 (#1)
+2024-04-16 09:10:06,666 - Hardware filtering has been disabled
+2024-04-16 09:10:06,666 - An error occured while disabling filtering: Function canSetAcceptanceFilter failed - Not implemented [Error Code -32]
+2024-04-16 09:10:06,667 - Connected to 'Kvaser U100, S/N 1002607 (#1)'
