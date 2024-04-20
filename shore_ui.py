@@ -6,8 +6,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import datetime
 import requests
 import threading
-from New_UI import ThrottleGauge, Speedometer, Graph, CurrentGraph, CurrentMeter, ThermometerGauge, PitchGauge, RollGauge, Compass, PowerGraph
-
+from New_UI import ThrottleGauge, Speedometer, CurrentMeter, ThermometerGauge, PitchGauge, RollGauge, Compass, PowerGraph, Graph, CurrentGraph
 # Your previously defined classes (CANVariableDisplay, ThrottleGauge, etc.) go here
 
 

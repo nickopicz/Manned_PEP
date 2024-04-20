@@ -127,7 +127,7 @@ class CurrentMeter:
         self.value_label = tk.Label(
             master, text="0", font=('Helvetica', 10))
         self.value_label.grid(row=2, column=6)
-        self.update_dial(41)
+        self.update_dial(293)
 
     def create_current_dial(self):
         radius = 90
@@ -211,7 +211,7 @@ class Speedometer:
             math.cos(angle), self.center_y + 80 * math.sin(angle)
         return self.canvas.create_line(self.center_x, self.center_y, x1, y1, fill="red", width=2)
 
-    def update_dial(self, speed=1200):
+    def update_dial(self, speed=2682):
         self.canvas.delete(self.needle)
         angle = math.radians(150 + (240 * speed / self.max_value))
         x1, y1 = self.center_x + 80 * \
@@ -231,11 +231,11 @@ class Graph:
 
         # Adjust the line below to use grid instead of pack
         # Adjust the row, column, and rowspan as needed
-        self.canvas_widget.grid(row=3, column=3, rowspan=4, sticky="nsew")
+        self.canvas_widget.grid(row=2, column=2, sticky="nsew")
         self.ax.set_xlabel('Time')
-        self.ax.set_ylabel('Actual Torque')
+        self.ax.set_ylabel('Actual Torque (lb-ft)')
         self.ax.set_title('Time Series of Actual Torque')
-        self.torque_data = {'time': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], 'value': [0.0, 1, 2.5, 5.5, 6.0, 7.8, 9.2, 10.3, 12.9, 13.1, 15.2, 16.9, 18.1, 19.9, 21.1, 22.3, 24.1, 25.9, 27.9, 28.5]
+        self.torque_data = {'time': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], 'value': [22.8, 25.8, 28.65, 27.9, 29.4, 37.95, 43.05, 45, 47.7, 47.4, 50.4, 52.35, 52.2, 52.35, 47.25, 46.95, 46.05, 44.4, 46.35, 43.95]
                             }
         self.update_graph()
 
@@ -248,7 +248,7 @@ class Graph:
         self.canvas.draw()
 
 
-class VoltageGraph:
+class CurrentGraph:
     def __init__(self, master):
         self.fig, self.ax = plt.subplots(
             figsize=(5, 4))  # Adjust the figsize here
@@ -256,11 +256,11 @@ class VoltageGraph:
         self.canvas_widget = self.canvas.get_tk_widget()
         # Adjust the line below to use grid instead of pack
         # Adjust the row, column, and rowspan as needed
-        self.canvas_widget.grid(row=3, column=6, rowspan=4, sticky="nsew")
+        self.canvas_widget.grid(row=2, column=1, sticky="nsew")
         self.ax.set_xlabel('Time')
-        self.ax.set_ylabel('Motor Voltage')
-        self.ax.set_title('Time Series of Motor Voltage')
-        self.voltage_data = {'time': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], 'value': [52.3, 52.3, 53.3, 52.1, 52.3, 52.3, 52.3, 52.3, 52.1, 52.3, 52.4, 52.1, 52.4, 52.3, 52.3, 52.3, 52.3, 52.3, 52.3, 52.3]
+        self.ax.set_ylabel('Motor Current (amps)')
+        self.ax.set_title('Time Series of Motor Current')
+        self.voltage_data = {'time': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], 'value': [152, 172, 191, 186, 196, 253, 287, 300, 318, 316, 336, 349, 348, 349, 315, 313, 307, 296, 309, 293]
                              }
         self.update_graph()
 
@@ -387,4 +387,35 @@ class AccelerationDisplay:
             self.arrows.append(self.ax.quiver(
                 *origin, *vec, color=color, length=np.linalg.norm(vec), pivot='tail'))
 
+        self.canvas.draw()
+
+
+class PowerGraph:
+    def __init__(self, master):
+        self.fig, self.ax = plt.subplots(
+            figsize=(5, 4))  # Adjust the figsize here
+        self.canvas = FigureCanvasTkAgg(self.fig, master=master)
+        self.canvas_widget = self.canvas.get_tk_widget()
+        # Adjust the line below to use grid instead of pack
+        # Adjust the row, column, and rowspan as needed
+        self.canvas_widget.grid(row=2, column=0, sticky="nsew")
+        self.ax.set_xlabel('Time')
+        self.ax.set_ylabel('Motor Power')
+        self.ax.set_title('Time Series of Motor Power (hp)')
+        self.power_data = {'time': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], 'value': [
+            9.17, 10.27, 11.70, 11.21, 11.86, 16.37, 19.67, 21.27, 23.16, 23.38, 25.53, 27.34, 27.70, 28.03, 24.61, 24.25, 23.91, 22.99, 23.83, 22.44]}
+        # self.canvas.configure(background='lightblue')
+        self.update_graph()
+
+    def update_graph(self):
+        if len(self.power_data['time']) > 100:
+            self.power_data['time'].pop(0)
+            self.power_data['value'].pop(0)
+        # current_time = datetime.datetime.now()
+        # self.power_data['time'].append(timestamp*0.001)
+        # self.power_data['value'].append(new_data)
+        self.ax.clear()
+        self.ax.plot(self.power_data['time'], self.power_data['value'])
+        self.ax.set_xlabel('Time')
+        self.ax.set_ylabel('Motor Power')
         self.canvas.draw()
