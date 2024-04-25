@@ -7,9 +7,11 @@ import datetime
 import requests
 import threading
 from New_UI import ThrottleGauge, Speedometer, CurrentMeter, ThermometerGauge, PitchGauge, RollGauge, Compass, PowerGraph, Graph, CurrentGraph
-# Your previously defined classes (CANVariableDisplay, ThrottleGauge, etc.) go here
 
 
+# Run this before or after running "initiate_server.py" script.
+# The script will display the UI in fullscreen mode when run, and will GET data via REST from the live server
+# data being shown will be most recent that the ship has sent, based on timestamp
 class Application(tk.Tk):
     def __init__(self):
         super().__init__()

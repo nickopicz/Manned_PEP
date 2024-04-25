@@ -5,6 +5,16 @@ from models import db, DataEntry
 import os
 app = Flask(__name__)
 
+# The first thing you must do to get this script/server to run, you must get a new domain to host a server on
+# The way this has been done for the original script was using ngrok. It is free and
+# sufficient as there is no reason to have better domain since 'having a cool domain name' is useless
+# Using ngrok is simple, just login with github, and go to the dashboard. Navigate to the -
+# Cloud Edge section on the left tabs, and click domains. Next just do what seems obvious.
+
+# This is the function that is called to start the database,
+# will only run once when script is started
+# Nothing will happen unless you completely wipe the "live_data.db" file
+
 
 def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
@@ -19,6 +29,15 @@ def create_app():
 
 # POST method
 create_app()
+
+
+# If you add or remove any data being sent or displayed, you must make changes to all of the-
+# dependencies associated with the data object. This includes:
+# DataEntry class,
+# data object sent from raspberrypi,
+# data object from GET in shore_ui.py,
+# "new_entry" from "put_data()" method below,
+# "entry_data" from "get_data()" method below
 
 
 @app.route('/put_method', methods=['PUT'])
@@ -88,7 +107,6 @@ def get_data():
         return jsonify(message="No data available."), 404
 
 
-# @app.before_first_request
 # def create_tables():
 
 

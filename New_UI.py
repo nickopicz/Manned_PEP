@@ -6,8 +6,10 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import datetime
 import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.figure import Figure
+
+# For in depth information regarding libraries being used, follow official documentation for:
+# Matplotlib, Tkinter, datetime, etc.
 
 
 class ThrottleGauge:
@@ -55,7 +57,6 @@ class ThrottleGauge:
 # 2) Adjust the radius to be about half of the width or height, no greater.
 # 3) If further adjustments are needed, check the values in "createCurrentDial()" method and -
 #    adjust the values that are associated with radius.
-# almost half the width or height. The nex
 
 # The class CurrentMeter represents a current meter in a user interface
 class CurrentMeter:
