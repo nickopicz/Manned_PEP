@@ -1,10 +1,15 @@
 import serial
 
+#This program is for reading serial data from the arduino
+# Any new sensor or data being read, must be added to the dictionaries below.
+# All you must do is make sure the order in which it is getting printed corresponsd to the loop below
+
 ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
 def read_serial():
     try:
         line = ser.readline().decode('utf-8').strip()  # Read a line from the serial port
         values = line.split(",")  # Split the line by commas
+        
         # Ensure we have the expected number of values before proceeding
         if len(values) != 7:
             return {
@@ -17,6 +22,7 @@ def read_serial():
                 'heading':0
                 }
 
+        #loop mentioned in desctiption
         yaw, pitch, roll, ax, ay, az, heading = [float(v) for v in values]
 #         print("good data:", values)
         return {

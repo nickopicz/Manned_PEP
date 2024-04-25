@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+
+
+# This is the main script that is run on reboot. Setting up reboot on a new raspberry pi is simple. use crontab,
+# look it up or use chatGPT to help setup, in depth documentation will be in the user manual
+
 import tkinter as tk
 from threading import Thread, Event
 import queue
@@ -44,6 +49,7 @@ node = canopen.BaseNode402(node_id, canopen.import_od('/home/pi/Manned_PEP/testi
 network.add_node(node)
 
 
+# The SDO index (or address) is found in the parameters.csv file.
 def read_and_log_sdo(node, index, subindex):
 
     try:
@@ -54,6 +60,9 @@ def read_and_log_sdo(node, index, subindex):
         return 0
 
 
+# These are SDOs retrieved from the controller via CANbus using above function
+# There is a wide list of sensor data that can be read, but these are the useful ones.
+# Feel free to browse the parameter list which is in testing/parameters.csv
 def get_sdo_obj() -> {}:
     voltage = read_and_log_sdo(node, 0x2A06, 1)
     throttle_mv = read_and_log_sdo(node, 0x2013, 1)
@@ -68,13 +77,10 @@ def get_sdo_obj() -> {}:
     torque = current*0.15
     power = ((torque*12)*rpm)/63025.0
 
-    # temperature
     temperature = read_and_log_sdo(node, 0x2040, 2)
     
     serial_data = read_serial()
-    # timestamp = read_and_log_sdo(node, 0x2002, 1)
-    # print("timestamp: ", timestamp)
-    #
+   
     sdo_data = {
         'voltage': voltage,
         'throttle_mv': throttle_mv,
@@ -112,30 +118,33 @@ class CANApplication(tk.Tk):
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
         self.geometry(f"{screen_width}x{screen_height}+0+0")
-        #self.attributes("-fullscreen", True)
         self.configure(background="lightblue")
-        # screenWidth = self.winfo_screenwidth()
-        # screenHeight = self.winfo_screenheight()
-        # # Set window size to screen dimensions
-        # self.geometry(f"{screenWidth}x{screenHeight}+0+0")
-        # self.geometry('1600x1280')
-        # self.resizable(False, False)
         self.trial_num_initialized = Event()
+        
+        # trial num is unique to each time the program 
+        # successfully launches and collects data
+        # if you clear the database, the trial num obviously sets back to 1
         self.trial_num = 0
         self.init_trial_num()
         self.last_update_time = 0
         self.last_speed = 0
+        # Queues are used because for other threads to access the latest data 
+        # (UI queue is cleared when data gets displayed to remove latency)
         self.db_queue = queue.Queue()
+        self.update_queue = queue.Queue()
+        #starting an event so that the functions in the threads know when to start and stop
         self.running_event = Event()
         self.running_event.set()
         self.start_time = 0
         self.timestamp = self
         self.current_data = {}
+        # if you close the window somehow, it ends the program, including all threads
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        #launching ui
         self.init_ui()
+        #starting the threads
         self.init_threads()
 
-        self.update_queue = queue.Queue()
         self.after(100, self.process_ui_updates)
         # self.check_queue()
 
@@ -208,17 +217,20 @@ class CANApplication(tk.Tk):
 
                 msg['timestamp'] = current_time
                 msg['trial_num'] = self.trial_num
-                # Add to CAN queue for UI update
+                # Add to "update_queue" for UI update and "db_queue" for database operations
                 self.current_data = msg
                 self.update_queue.put(msg)
                 self.db_queue.put(msg)
                 time.sleep(0.1)
             except Exception as e:
                 time.sleep(0.25)
-                # print(f"Error reading CAN message: {e}")
+                print(f"Error reading CAN message: {e}")
 
+    # This function uses batch calls to reduce the amount of latency while doing database operations
+    # batches of 50 should be enough depending on the frequency of data reading (see "read_can_messages()" delays in the loop to change sample rate)
     def database_thread_function(self):
         batch_size = 50  # Define the size of each batch
+        
         while self.running_event.is_set():
             # Initialize the batch list outside of the while loop
             batch = []
@@ -239,28 +251,24 @@ class CANApplication(tk.Tk):
                 batch.clear()
                 
     def send_to_shore(self):
-        # Replace with your actual URL
+        # Replace with your URL generated on ngrok (more info found in "initiate_server.py"  in the shore directory)
         url = 'https://hugely-dashing-lemming.ngrok-free.app/put_method'
         while self.running_event.is_set():
             if self.current_data:  # Check if there is data to send
                 try:
                     # Directly pass the dictionary to the json parameter of the post method
                     
-#                     print("current data: ", self.current_data)
                     response = put(url, json=self.current_data)
                     if response.ok:
                         print("Data sent successfully!")
-#                     else:
-#                         print()
-#                         #print(
-#                           #  f"Failed to send data. Status code: {response.status_code}")
+                    else:
+                        print(
+                           f"Failed to send data. Status code: {response.status_code}")
                 except Exception as e:
                     print(f"Failed to send data: {e}")
             time.sleep(0.25)  # Adjust the sleep time as needed
 
-
-# Check response from the serve
-
+        #this is to call recursively, after 250 milliseconds, so the data can send forever (until script ends or pi shuts down)
         self.after(250, self.send_to_shore)
 
     def update_ui(self, data):
@@ -272,27 +280,17 @@ class CANApplication(tk.Tk):
             current = data['current']
             throttle_prct = data['throttle_percentage']
             throttle_mv = data['throttle_mv']
-            # print("data: ", throttle_mv)
-
             timestamp = data['timestamp']
-
             voltage = data['voltage']
             heading = data['heading']
 
-            # self.can_variable_display.update_display(data)
-            # Add updates for other UI components as needed
+            # Add updates for any aditional UI components as needed
             if motor_temp:
                 self.thermometer.update_gauge(motor_temp)
-           # if throttle_mv:
-               # self.throttle_gauge.update_gauge(throttle_mv)
             if speed:
                 self.speedometer.update_dial(speed)
-#             if torque:
-#                 self.graph.update_graph(torque, timestamp)
             if current:
                 self.current_meter.update_dial(current)
-#             if voltage:
-#                 self.voltage_graph.update_graph(current, timestamp)
             if heading:
                 self.compass.update_compass(heading)
         except Exception as e:

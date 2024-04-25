@@ -4,7 +4,7 @@ import json as JSON
 DATABASE_NAME = "/home/pi/Manned_PEP/frames_data.db"
 
 
-
+#gets next trial number and creates a meta table containing trial numbers if this is a new/cleaned database
 def get_next_trial_number():
     with sqlite3.connect(DATABASE_NAME) as conn:
         cursor = conn.cursor()
