@@ -8,9 +8,8 @@ import requests
 import threading
 from Fake_UI import ThrottleGauge, Speedometer, Graph, CurrentGraph, CurrentMeter, ThermometerGauge, AccelerationDisplay
 
-# Your previously defined classes (CANVariableDisplay, ThrottleGauge, etc.) go here
 
-
+# Like Fake_UI this is just for showing mock data for something like a presentation
 class Application:
     def __init__(self, root):
         self.root = root

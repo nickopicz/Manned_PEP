@@ -1,6 +1,9 @@
 import canopen
 import logging
 import time
+
+# This is just a test script to make sure the python script can read the canbus and if it is functioning correctly/reading controller data.
+
 # Set up logging
 logging.basicConfig(level=logging.INFO, filename='canbus_log.txt', filemode='w',
                     format='%(asctime)s - %(message)s')

@@ -1,7 +1,9 @@
 import xml.etree.ElementTree as ET
 import csv
 
-tree = ET.parse('69GUS222C00x03.epf')
+# this is for converting an epf to a csv file to simply just look at the indexes and the different SDO options
+# You will need to change the filename if inmotion gives you a new epf tile, as well as the path
+tree = ET.parse('69GUS222C00x05.epf')
 root = tree.getroot()
 
 

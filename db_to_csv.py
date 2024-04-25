@@ -3,6 +3,8 @@ import csv
 
 DATABASE_NAME = "frames_data.db"  # Make sure this path is correctly set
 
+# This essentially just turns a trial from the database into a csv file for post processing
+# If there is any new data being read, you must adjust the sql_query and heaters list to accomodate
 
 def export_trial_data_to_csv(trial_number):
     CSV_FILE_PATH = f"./csv_data/data_trial_{trial_number}.csv"

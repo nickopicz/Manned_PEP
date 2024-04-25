@@ -8,6 +8,7 @@ import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.figure import Figure
 
+#this is created becase I didnt want to keep changing to original UI classes program, used when I would show the UI for a presentation without having data
 
 class CANVariableDisplay:
     def __init__(self, master):
