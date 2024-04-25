@@ -10,6 +10,8 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.figure import Figure
 
 
+# More information on this file in the shore directory version of this program
+# There are some differences, mainly in the sizes
 class CurrentMeter:
     def __init__(self, master):
         self.canvas = tk.Canvas(master, width=350, height=350)
@@ -21,7 +23,8 @@ class CurrentMeter:
 #                               font=('Helvetica', 12))
 #         self.label.grid(row=0, column=1)
         self.canvas.configure(background='lightblue')
-        self.value_label = tk.Label(master, text="0 amps", font=('Helvetica', 14))
+        self.value_label = tk.Label(
+            master, text="0 amps", font=('Helvetica', 14))
         self.value_label.grid(row=0, column=1)
 #         self.value_label = tk.Label(
 #              master, text="0", font=('Helvetica', 10))
@@ -48,7 +51,8 @@ class CurrentMeter:
             label_x = self.center_x + (160 * math.cos(label_angle))
             label_y = self.center_y + (160 * math.sin(label_angle))
             label_value = int((self.max_value / major_ticks) * i)
-            self.canvas.create_text(label_x, label_y, text=str(label_value), font=("Helvetica", 12))
+            self.canvas.create_text(label_x, label_y, text=str(
+                label_value), font=("Helvetica", 12))
         angle = math.radians(150)  # Initial angle pointing at 0
         x1, y1 = self.center_x + 120 * \
             math.cos(angle), self.center_y + 120 * math.sin(angle)
@@ -66,6 +70,7 @@ class CurrentMeter:
         self.value_label.config(
             text=f"{current} amps")
 
+
 class Speedometer:
     def __init__(self, master):
         self.canvas = tk.Canvas(master, width=350, height=350)
@@ -77,7 +82,8 @@ class Speedometer:
 #                               font=('Helvetica', 12))
         self.canvas.configure(background='lightblue')
 #         self.label.grid(row=1, column=3)
-        self.value_label = tk.Label(master, text="0 rpm", font=('Helvetica', 14))
+        self.value_label = tk.Label(
+            master, text="0 rpm", font=('Helvetica', 14))
         self.value_label.grid(row=0, column=3)
         # self.value_label = tk.Label(
         #     master, text="0 rpm", font=('Helvetica', 10))
@@ -104,7 +110,8 @@ class Speedometer:
             label_x = self.center_x + (160 * math.cos(label_angle))
             label_y = self.center_y + (160 * math.sin(label_angle))
             label_value = int((self.max_value / major_ticks) * i)
-            self.canvas.create_text(label_x, label_y, text=str(label_value),font=("Helvetica", 12))
+            self.canvas.create_text(label_x, label_y, text=str(
+                label_value), font=("Helvetica", 12))
 
         angle = math.radians(150)  # Initial angle pointing at 0
         x1, y1 = self.center_x + 115 * \
@@ -113,7 +120,7 @@ class Speedometer:
 
     def update_dial(self, speed):
         self.canvas.delete(self.needle)
-        angle = math.radians(150+ (240 * speed / self.max_value))
+        angle = math.radians(150 + (240 * speed / self.max_value))
         x1, y1 = self.center_x + 80 * \
             math.cos(angle), self.center_y + 80 * math.sin(angle)
         # self.value_label.config(text=f"{speed}")
@@ -123,12 +130,14 @@ class Speedometer:
         self.value_label.config(
             text=f"{speed} rpm")
 
+
 class ThermometerGauge:
     def __init__(self, master):
         self.master = master
         self.canvas = tk.Canvas(master, width=500, height=100)
         self.canvas.grid(row=3, column=1, padx=20, pady=5, columnspan=3)
-        self.value_label = tk.Label(master, text="0 °C", font=('Helvetica', 30))
+        self.value_label = tk.Label(
+            master, text="0 °C", font=('Helvetica', 30))
         self.value_label.grid(row=3, column=1)
         self.min_temp = 0  # Minimum temperature value
         self.max_temp = 100  # Maximum temperature value
@@ -147,21 +156,28 @@ class ThermometerGauge:
 
         # Draw ticks and labels for horizontal orientation
         for temp in range(self.min_temp, self.max_temp + 1, 10):
-            percentage = (temp - self.min_temp) / (self.max_temp - self.min_temp)
-            x = self.gauge_x + percentage * self.gauge_width  # x position for ticks and labels
+            percentage = (temp - self.min_temp) / \
+                (self.max_temp - self.min_temp)
+            # x position for ticks and labels
+            x = self.gauge_x + percentage * self.gauge_width
 
             # Ticks
-            self.canvas.create_line(x, self.gauge_y, x, self.gauge_y + 10, fill="black")
-            self.canvas.create_line(x, self.gauge_y + self.gauge_height - 10, x, self.gauge_y + self.gauge_height, fill="black")
+            self.canvas.create_line(
+                x, self.gauge_y, x, self.gauge_y + 10, fill="black")
+            self.canvas.create_line(x, self.gauge_y + self.gauge_height -
+                                    10, x, self.gauge_y + self.gauge_height, fill="black")
 
             # Labels, adjusted for horizontal layout
-            self.canvas.create_text(x, self.gauge_y + self.gauge_height + 15, text=f"{temp}°C", anchor="n")
+            self.canvas.create_text(
+                x, self.gauge_y + self.gauge_height + 15, text=f"{temp}°C", anchor="n")
 
     def update_gauge(self, current_temp):
         # Validate current temperature
         current_temp = max(self.min_temp, min(self.max_temp, current_temp))
-        percentage = (current_temp - self.min_temp) / (self.max_temp - self.min_temp)
-        fill_width = percentage * self.gauge_width  # Width of the fill reflects the current temperature
+        percentage = (current_temp - self.min_temp) / \
+            (self.max_temp - self.min_temp)
+        # Width of the fill reflects the current temperature
+        fill_width = percentage * self.gauge_width
 
         self.value_label.config(text=f"{current_temp} °C")
         # Clear previous fill
@@ -170,12 +186,13 @@ class ThermometerGauge:
         if current_temp > 70:
             color = "red"
         elif current_temp > 40 and current_temp < 70:
-            color="green"
+            color = "green"
         else:
-            color='blue'
+            color = 'blue'
         self.canvas.create_rectangle(self.gauge_x, self.gauge_y + 1,
                                      self.gauge_x + fill_width, self.gauge_y + self.gauge_height - 1,
                                      fill=color, tags="temp_fill")
+
 
 class Compass:
     def __init__(self, master):

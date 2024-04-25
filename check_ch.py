@@ -78,9 +78,9 @@ def get_sdo_obj() -> {}:
     power = ((torque*12)*rpm)/63025.0
 
     temperature = read_and_log_sdo(node, 0x2040, 2)
-    
+
     serial_data = read_serial()
-   
+
     sdo_data = {
         'voltage': voltage,
         'throttle_mv': throttle_mv,
@@ -89,8 +89,8 @@ def get_sdo_obj() -> {}:
         'torque': torque,
         'motor_temp': temperature,
         'current': current,
-        'power':power
-    } 
+        'power': power
+    }
     full_data = {**serial_data, **sdo_data}
     return full_data
 
@@ -120,19 +120,19 @@ class CANApplication(tk.Tk):
         self.geometry(f"{screen_width}x{screen_height}+0+0")
         self.configure(background="lightblue")
         self.trial_num_initialized = Event()
-        
-        # trial num is unique to each time the program 
+
+        # trial num is unique to each time the program
         # successfully launches and collects data
         # if you clear the database, the trial num obviously sets back to 1
         self.trial_num = 0
         self.init_trial_num()
         self.last_update_time = 0
         self.last_speed = 0
-        # Queues are used because for other threads to access the latest data 
+        # Queues are used because for other threads to access the latest data
         # (UI queue is cleared when data gets displayed to remove latency)
         self.db_queue = queue.Queue()
         self.update_queue = queue.Queue()
-        #starting an event so that the functions in the threads know when to start and stop
+        # starting an event so that the functions in the threads know when to start and stop
         self.running_event = Event()
         self.running_event.set()
         self.start_time = 0
@@ -140,9 +140,9 @@ class CANApplication(tk.Tk):
         self.current_data = {}
         # if you close the window somehow, it ends the program, including all threads
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
-        #launching ui
+        # launching ui
         self.init_ui()
-        #starting the threads
+        # starting the threads
         self.init_threads()
 
         self.after(100, self.process_ui_updates)
@@ -160,7 +160,7 @@ class CANApplication(tk.Tk):
         self.speedometer = Speedometer(self)
         self.thermometer = ThermometerGauge(self)
        # self.graph = Graph(self)
-        #self.voltage_graph = VoltageGraph(self)
+        # self.voltage_graph = VoltageGraph(self)
 #         self.throttle_gauge = ThrottleGauge(self)
         self.compass = Compass(self)
 
@@ -219,7 +219,16 @@ class CANApplication(tk.Tk):
                 msg['trial_num'] = self.trial_num
                 # Add to "update_queue" for UI update and "db_queue" for database operations
                 self.current_data = msg
+
+                # maybe remove this if getting any the error, experimental feature
+                if self.update_queue.qsize() > 1:
+                    try:
+                        self.update_queue.get_nowait()
+                    except Exception as e:
+                        print("error dequeing: ", e)
+
                 self.update_queue.put(msg)
+
                 self.db_queue.put(msg)
                 time.sleep(0.1)
             except Exception as e:
@@ -230,12 +239,13 @@ class CANApplication(tk.Tk):
     # batches of 50 should be enough depending on the frequency of data reading (see "read_can_messages()" delays in the loop to change sample rate)
     def database_thread_function(self):
         batch_size = 50  # Define the size of each batch
-        
+
         while self.running_event.is_set():
             # Initialize the batch list outside of the while loop
             batch = []
             while len(batch) < batch_size:
                 try:
+
                     msg_data = self.db_queue.get_nowait()
                     batch.append(msg_data)
                 except queue.Empty:
@@ -249,7 +259,7 @@ class CANApplication(tk.Tk):
             if batch:
                 store_data_for_trial(batch, self.trial_num)
                 batch.clear()
-                
+
     def send_to_shore(self):
         # Replace with your URL generated on ngrok (more info found in "initiate_server.py"  in the shore directory)
         url = 'https://hugely-dashing-lemming.ngrok-free.app/put_method'
@@ -257,22 +267,22 @@ class CANApplication(tk.Tk):
             if self.current_data:  # Check if there is data to send
                 try:
                     # Directly pass the dictionary to the json parameter of the post method
-                    
+
                     response = put(url, json=self.current_data)
                     if response.ok:
                         print("Data sent successfully!")
                     else:
                         print(
-                           f"Failed to send data. Status code: {response.status_code}")
+                            f"Failed to send data. Status code: {response.status_code}")
                 except Exception as e:
                     print(f"Failed to send data: {e}")
             time.sleep(0.25)  # Adjust the sleep time as needed
 
-        #this is to call recursively, after 250 milliseconds, so the data can send forever (until script ends or pi shuts down)
+        # this is to call recursively, after 250 milliseconds, so the data can send forever (until script ends or pi shuts down)
         self.after(250, self.send_to_shore)
 
     def update_ui(self, data):
-       
+
         try:
             speed = data['RPM']
             torque = data['torque']
@@ -299,7 +309,7 @@ class CANApplication(tk.Tk):
 
 if __name__ == "__main__":
     app = CANApplication()
-    
+
     def handle_sigint(signal, frame):
         print("CTRL+C detected. Closing application...")
         app.on_closing()
