@@ -13,7 +13,6 @@ from New_UI import CurrentMeter, Speedometer, ThermometerGauge, Compass
 from Gather_Data import read_serial
 # from database_functions import store_data_for_trial
 import sqlite3
-import time
 import signal
 import sys
 import canopen
@@ -21,6 +20,7 @@ import logging
 import time
 from requests import put
 import json
+import math
 # Set up logging
 logging.basicConfig(level=logging.INFO, filename='canbus_log.txt', filemode='w',
                     format='%(asctime)s - %(message)s')
@@ -64,22 +64,20 @@ def read_and_log_sdo(node, index, subindex):
 # There is a wide list of sensor data that can be read, but these are the useful ones.
 # Feel free to browse the parameter list which is in testing/parameters.csv
 def get_sdo_obj() -> {}:
-    voltage = read_and_log_sdo(node, 0x2A06, 1)
-    throttle_mv = read_and_log_sdo(node, 0x2013, 1)
-    # print("throttle value: ", throttle_mv)
-    throttle_percent = throttle_mv/2800
+    voltage = read_and_log_sdo(node, 0x2A06, 1)  # Volts
+    throttle_mv = read_and_log_sdo(node, 0x2013, 1)  # mV
+    rpm = read_and_log_sdo(node, 0x2001, 2)  # rpm
+    current = abs(read_and_log_sdo(node, 0x2073, 1))  # Arms
+    temperature = read_and_log_sdo(node, 0x2040, 2)  # deg C
 
-    rpm = read_and_log_sdo(node, 0x2001, 2)
-    # print("rpm: ", rpm)
-    # torque
-    # current
-    current = abs(read_and_log_sdo(node, 0x2073, 1))
-    torque = current*0.15
-    power = ((torque*12)*rpm)/63025.0
+    serial_data = read_serial()  # data from Arduino
 
-    temperature = read_and_log_sdo(node, 0x2040, 2)
+    throttle_percent = throttle_mv/2800  # %
 
-    serial_data = read_serial()
+    # this torque must be converted to lb*ft, because it is preferred
+    torque = current*0.15  # Nm
+
+    power = (torque*rpm)*math.pi/30000  # kW
 
     sdo_data = {
         'voltage': voltage,
@@ -93,21 +91,6 @@ def get_sdo_obj() -> {}:
     }
     full_data = {**serial_data, **sdo_data}
     return full_data
-
-
-FRAMES_DATABASE = "frames_data.db"
-
-
-def get_trial_num():
-    # Ensure all necessary tables are created before fetching the trial number
-    trial_num = 1
-    try:
-        trial_num = get_next_trial_number()
-    except Exception as e:
-        print(f"Error getting next trial number: {e}")
-        trial_num = 1  # Default to 1 if unable to fetch next trial number
-    print("trial number: ", trial_num)
-    return trial_num
 
 
 class CANApplication(tk.Tk):
@@ -126,8 +109,6 @@ class CANApplication(tk.Tk):
         # if you clear the database, the trial num obviously sets back to 1
         self.trial_num = 0
         self.init_trial_num()
-        self.last_update_time = 0
-        self.last_speed = 0
         # Queues are used because for other threads to access the latest data
         # (UI queue is cleared when data gets displayed to remove latency)
         self.db_queue = queue.Queue()
@@ -200,7 +181,7 @@ class CANApplication(tk.Tk):
         self.db_thread.join(timeout=1)
         self.server_thread.join(timeout=1)
 
-        # Clean up other resources
+        # Disconnect the CAN network
         network.disconnect()
 
         # Destroy the Tkinter app window

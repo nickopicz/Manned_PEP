@@ -17,7 +17,7 @@ class CurrentMeter:
         self.canvas = tk.Canvas(master, width=350, height=350)
         self.canvas.grid(row=0, column=1, rowspan=2)
         self.center_x, self.center_y = 175, 175
-        self.max_value = 450
+        self.max_value = 550
         self.needle = self.create_current_dial()
 #         self.label = tk.Label(master, text="Motor Current (Amps)",
 #                               font=('Helvetica', 12))
@@ -183,9 +183,9 @@ class ThermometerGauge:
         # Clear previous fill
         self.canvas.delete("temp_fill")
         # Draw new fill
-        if current_temp > 70:
+        if current_temp > 105:
             color = "red"
-        elif current_temp > 40 and current_temp < 70:
+        elif current_temp > 40 and current_temp < 105:
             color = "green"
         else:
             color = 'blue'
