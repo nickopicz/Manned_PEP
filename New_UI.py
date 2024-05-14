@@ -105,6 +105,7 @@ class CurrentMeter:
         return self.canvas.create_line(self.center_x, self.center_y, x1, y1, fill="red", width=2)
 
     def update_dial(self, current):
+        radius = 140
         # Update the dial to reflect the current value
         self.canvas.delete(self.needle)
         angle = math.radians(150 + (240 * current / self.max_value))
@@ -161,6 +162,7 @@ class Speedometer:
 
     def update_dial(self, speed):
         # Update the needle on the dial based on the speed input
+        radius = 140
         self.canvas.delete(self.needle)
         angle = math.radians(150 + (240 * speed / self.max_value))
         x1, y1 = self.center_x + (radius-radius*0.3) * \

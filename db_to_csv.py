@@ -6,6 +6,7 @@ DATABASE_NAME = "frames_data.db"  # Make sure this path is correctly set
 # This essentially just turns a trial from the database into a csv file for post processing
 # If there is any new data being read, you must adjust the sql_query and heaters list to accomodate
 
+
 def export_trial_data_to_csv(trial_number):
     CSV_FILE_PATH = f"./csv_data/data_trial_{trial_number}.csv"
     conn = sqlite3.connect(DATABASE_NAME)
@@ -31,8 +32,8 @@ def export_trial_data_to_csv(trial_number):
     conn.close()
 
     headers = [
-        'Timestamp', 'Voltage', 'Throttle mV', 'Throttle %', 'RPM', 'Torque', 'Motor Temp', 'Current',
-        'Pitch', 'Roll', 'Yaw', 'Ax', 'Ay', 'Az', 'Heading', 'Power'
+        'Timestamp [raw]', 'Voltage (V) [raw]', 'Throttle (mV) [raw]', 'Throttle %', 'RPM [raw]', 'Torque (N-m)', 'Motor Temp (deg C) [raw]', 'Current (Arms) [raw]',
+        'Pitch (deg) [raw]', 'Roll (deg) [raw]', 'Yaw (deg) [raw]', 'Ax (G*16384) [raw]', 'Ay (G*16384) [raw]', 'Az (G*16384) [raw]', 'Heading [raw]', 'Power (kW)'
     ]
 
     with open(CSV_FILE_PATH, mode='w', newline='') as file:

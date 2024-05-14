@@ -26,23 +26,6 @@ class Application:
         self.graph = Graph(self.root)
         self.voltage_graph = CurrentGraph(self.root)
         self.thermometer = ThermometerGauge(self.root)
-        # self.accel = AccelerationDisplay(self.root)
-        # Start the data update loop
-        # self.update_data_loop()
-
-    # def fetch_data(self):
-    #     # Replace 'http://yourserver/get_data' with the actual URL of your API
-    #     try:
-    #         response = requests.get(
-    #             'https://hugely-dashing-lemming.ngrok-free.app/get_data')
-    #         if response.status_code == 200:
-    #             print("data in fetch() : ", response.json())
-    #             return response.json()
-    #         else:
-    #             return None
-    #     except Exception as e:
-    #         print(f"Failed to fetch data: {e}")
-    #         return None
 
     def update_ui(self, data):
         if data:
@@ -58,19 +41,6 @@ class Application:
             self.current_meter.update_dial(45)
             self.speedometer.update_dial(2100)
             self.thermometer.update_gauge(40)
-            # self.accel.update_vectors(data['ax'], data['ay'], data['az'])
-
-            # And so on for other UI components as necessary
-
-    # def update_data_loop(self):
-    #     # Fetch new data
-    #     data = self.fetch_data()
-    #     # Update the UI with this new data
-    #     self.update_ui(data)
-    #     # Schedule the next update
-    #     self.root.after(self.update_interval, self.update_data_loop)
-
-
 def main():
     root = tk.Tk()
     root.title("Data Monitoring Application")
