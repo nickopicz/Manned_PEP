@@ -2,8 +2,6 @@ import sqlite3
 
 DATABASE_NAME = "/home/pi/Manned_PEP/frames_data.db"
 
-NAME = "frames_data.db"
-
 
 def get_next_trial_number():
     with sqlite3.connect(DATABASE_NAME) as conn:

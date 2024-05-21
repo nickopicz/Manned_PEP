@@ -1,7 +1,9 @@
 import xml.etree.ElementTree as ET
 import csv
 
-tree = ET.parse('69GUS222C00x03.epf')
+#if you get a new epf file,just change to this
+# epf files are given by inmotion so you shouldnt worry unless you need help from inmotion
+tree = ET.parse('69GUS222C00x05.epf')
 root = tree.getroot()
 
 
