@@ -213,7 +213,7 @@ class CANApplication(tk.Tk):
                 self.db_queue.put(msg)
                 time.sleep(0.1)
             except Exception as e:
-                time.sleep(0.25)
+                time.sleep(0.1)
                 print(f"Error reading CAN message: {e}")
 
     # This function uses batch calls to reduce the amount of latency while doing database operations
