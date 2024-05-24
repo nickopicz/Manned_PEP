@@ -64,7 +64,7 @@ def read_and_log_sdo(node, index, subindex):
 # There is a wide list of sensor data that can be read, but these are the useful ones.
 # Feel free to browse the parameter list which is in testing/parameters.csv
 def get_sdo_obj() -> {}:
-    voltage = read_and_log_sdo(node, 0x2A06, 1)  # Volts
+    voltage = read_and_log_sdo(node, 0x2030, 2)  # Volts
     throttle_mv = read_and_log_sdo(node, 0x2013, 1)  # mV
     rpm = read_and_log_sdo(node, 0x2001, 2)  # rpm
     current = read_and_log_sdo(node, 0x2073, 1)  # Arms
