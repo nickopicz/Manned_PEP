@@ -67,7 +67,7 @@ def get_sdo_obj() -> {}:
     voltage = read_and_log_sdo(node, 0x2A06, 1)  # Volts
     throttle_mv = read_and_log_sdo(node, 0x2013, 1)  # mV
     rpm = read_and_log_sdo(node, 0x2001, 2)  # rpm
-    current = abs(read_and_log_sdo(node, 0x2073, 1))  # Arms
+    current = read_and_log_sdo(node, 0x2073, 1)  # Arms
     temperature = read_and_log_sdo(node, 0x2040, 2)  # deg C
 
     serial_data = read_serial()  # data from Arduino
@@ -279,9 +279,9 @@ class CANApplication(tk.Tk):
             if motor_temp:
                 self.thermometer.update_gauge(motor_temp)
             if speed:
-                self.speedometer.update_dial(speed)
+                self.speedometer.update_dial(abs(speed))
             if current:
-                self.current_meter.update_dial(current)
+                self.current_meter.update_dial(abs(current))
             if heading:
                 self.compass.update_compass(heading)
         except Exception as e:
