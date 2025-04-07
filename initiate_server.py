@@ -79,7 +79,7 @@ def get_data():
 if __name__ == '__main__':
     # Setup ngrok
     ngrok_tunnel = ngrok.connect(
-        addr=5000, hostname="hugely-dashing-lemming.ngrok-free.app")
+        addr=5000, hostname="bold-privately-koala.ngrok-free.app")
     print('NGROK Tunnel URL:', ngrok_tunnel.public_url)
 
     # Run Flask app

@@ -28,12 +28,10 @@ value_range_map = {
     (1158, (6, 7)): ("S16", "Motor measurements: DC bus current", "-32768 to 32767", "Adc"),
 }
 
-
 def export_trial_data_to_csv(trial_number):
     CSV_FILE_PATH = f"./csv_data/_data_{trial_number}.csv"
     conn = sqlite3.connect(DATABASE_NAME)
     cursor = conn.cursor()
-
     # Fetch all messages for the given trial number, sorted by timestamp
     cursor.execute(
         "SELECT trial_number, timestamp, frame_id, data FROM frame_data WHERE trial_number=? ORDER BY timestamp ASC",
@@ -41,7 +39,7 @@ def export_trial_data_to_csv(trial_number):
     messages = cursor.fetchall()
 
     conn.close()
-
+    
     # Prepare headers for CSV based on value_range_map
     headers = ['Trial Number', 'Timestamp',
                'Message ID', 'PDO Label', 'DLC', 'Flags']
@@ -51,7 +49,6 @@ def export_trial_data_to_csv(trial_number):
 
     # Initialize a structure to hold decoded data by timestamp
     decoded_data_by_timestamp = {}
-
     for trial_num, timestamp, frame_id, data in messages:
         # Decode each message
         decoded_message = format_can_message_csv({
@@ -73,7 +70,6 @@ def export_trial_data_to_csv(trial_number):
     with open(CSV_FILE_PATH, mode='w', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=headers)
         writer.writeheader()
-
         for timestamp, messages in decoded_data_by_timestamp.items():
             for message in messages:
                 row = {
@@ -93,7 +89,7 @@ def export_trial_data_to_csv(trial_number):
                         row[desc[1]] = ''
 
                 writer.writerow(row)
-
+ 
 
 # Example usage
-#export_trial_data_to_csv(22)
+export_trial_data_to_csv(22)
