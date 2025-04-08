@@ -229,7 +229,7 @@ class CANApplication(tk.Tk):
 
     def send_to_shore(self):
         # Replace with your actual URL
-        url = 'https://hugely-dashing-lemming.ngrok-free.app/put_method'
+        url = 'https://enabling-cat-free.ngrok-free.app/put_method'
         while self.running_event.is_set():
             if self.current_data:  # Check if there is data to send
                 try:

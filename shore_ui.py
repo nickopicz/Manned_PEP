@@ -74,7 +74,7 @@ class Application:
         # Replace 'http://yourserver/get_data' with the actual URL of your API
         try:
             response = requests.get(
-                'http://bold-privately-koala.ngrok-free.app/get_data')
+                'http://enabling-cat-free.ngrok-free.app/get_data')
             if response.status_code == 200:
                 print("data in fetch() : ", response.json())
                 return response.json()
