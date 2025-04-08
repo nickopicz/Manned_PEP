@@ -3,10 +3,7 @@ from pyngrok import ngrok
 from datetime import time
 from models import db, DataEntry
 import os
-from flask_cors import CORS
-
 app = Flask(__name__)
-CORS(app)
 
 
 def create_app():
@@ -82,7 +79,7 @@ def get_data():
 if __name__ == '__main__':
     # Setup ngrok
     ngrok_tunnel = ngrok.connect(
-        addr=5000, hostname="enabling-cat-free.ngrok-free.app")
+        addr=5000, hostname="bold-privately-koala.ngrok-free.app")
     print('NGROK Tunnel URL:', ngrok_tunnel.public_url)
 
     # Run Flask app

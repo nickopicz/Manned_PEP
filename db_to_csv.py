@@ -92,4 +92,12 @@ def export_trial_data_to_csv(trial_number):
  
 
 # Example usage
-export_trial_data_to_csv(24)
+<<<<<<< HEAD
+<<<<<<< HEAD
+export_trial_data_to_csv(22)
+=======
+#export_trial_data_to_csv(22)
+>>>>>>> 8ef1066... vs settings, dbcsv example
+=======
+#export_trial_data_to_csv(22)
+>>>>>>> 8ef1066... vs settings, dbcsv example
