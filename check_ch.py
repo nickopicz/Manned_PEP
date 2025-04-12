@@ -101,7 +101,7 @@ class CANApplication(tk.Tk):
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
         self.geometry(f"{screen_width}x{screen_height}+0+0")
-        self.configure(background="lightblue")
+        self.configure(background="white")
         self.trial_num_initialized = Event()
 
         # trial num is unique to each time the program
