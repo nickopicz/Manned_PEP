@@ -243,7 +243,7 @@ class CANApplication(tk.Tk):
 
     def send_to_shore(self):
         # Replace with your URL generated on ngrok (more info found in "initiate_server.py"  in the shore directory)
-        url = 'https://bold-privately-koala.ngrok-free.app/put_method'
+        url = 'https://sitboatworks.ngrok.dev/put_method'
         while self.running_event.is_set():
             if self.current_data:  # Check if there is data to send
                 try:
